@@ -19,9 +19,11 @@
 x64/
 x86/
 bld/
-[Bb]in/
+[Bb]in/*
+!bin/runTest.bat
 [Oo]bj/
-lib/
+lib/*
+!lib/EMPTY.txt
 
 # Visual Studo 2015 cache/options directory
 .vs/
@@ -45,6 +47,7 @@ dlldata.c
 *.ilk
 *.meta
 *.obj
+!meshes/*.obj
 *.pch
 *.pdb
 *.pgc
