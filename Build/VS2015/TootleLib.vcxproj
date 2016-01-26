@@ -258,13 +258,9 @@
     <ClInclude Include="..\..\src\TootleLib\cloud.h" />
     <ClInclude Include="..\..\src\TootleLib\clustering.h" />
     <ClInclude Include="..\..\src\TootleLib\color.h" />
-    <ClInclude Include="..\..\src\TootleLib\d3dwindow.h" />
-    <ClInclude Include="..\..\src\TootleLib\d3dwm.h" />
     <ClInclude Include="..\..\src\TootleLib\error.h" />
     <ClInclude Include="..\..\src\TootleLib\feedback.h" />
     <ClInclude Include="..\..\src\TootleLib\fit.h" />
-    <ClInclude Include="..\..\src\TootleLib\gdiwindow.h" />
-    <ClInclude Include="..\..\src\TootleLib\gdiwm.h" />
     <ClInclude Include="..\..\src\TootleLib\heap.h" />
     <ClInclude Include="..\..\src\TootleLib\matrix.h" />
     <ClInclude Include="..\..\src\TootleLib\mesh.h" />
