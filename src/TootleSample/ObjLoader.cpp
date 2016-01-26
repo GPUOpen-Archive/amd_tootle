@@ -274,7 +274,7 @@ void ObjLoader::ReadVertexIndices(const char* szLine, int numVertsInLine,
     while (((*szNext) < '0') || ((*szNext) > '9'))
     {
         // Skip any character that's not a number
-        assert((*szNext) != NULL);
+        assert(szNext != NULL);
         szNext++;
     } // End while
 
@@ -405,4 +405,3 @@ void ObjLoader::BuildFinalVertices(const std::vector<ObjVertex3D>& vertices,
         } // End for
     } // End for
 } // End of BuildFinalVertices for CRmObjLoaderPlugIn
-
