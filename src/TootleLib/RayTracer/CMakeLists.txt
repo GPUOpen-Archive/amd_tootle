@@ -45,3 +45,8 @@ TARGET_INCLUDE_DIRECTORIES(RayTracer
         JRT
         Math
     PRIVATE ..) # For TootlePCH.h
+    
+IF(UNIX)
+    TARGET_COMPILE_DEFINITIONS(TootleLib
+        PUBLIC _LINUX)
+ENDIF()
