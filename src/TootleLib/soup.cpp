@@ -103,7 +103,7 @@ ComputeTriNormals(Array<Vector3>& tn)
         return 0;
     }
 
-    int nf = t().GetSize(), nv = v().GetSize();
+    int nf = t().GetSize();
 
     for (int i = 0; i < nf; i++)
     {
@@ -130,7 +130,7 @@ ComputeTriCenters(Array<Vector3>& tc)
         return 0;
     }
 
-    int nf = t().GetSize(), nv = v().GetSize();
+    int nf = t().GetSize();
 
     for (int i = 0; i < nf; i++)
     {

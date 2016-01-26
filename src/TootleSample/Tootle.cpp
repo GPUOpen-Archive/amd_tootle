@@ -632,20 +632,8 @@ void PrintOverdrawOptimizer(FILE* fp, TootleOverdrawOptimizer eOverdrawOptimizer
     switch (eOverdrawOptimizer)
     {
         case TOOTLE_OVERDRAW_AUTO:
-#ifdef _SOFTWARE_ONLY_VERSION
-            fprintf(fp, "#Overdraw Optimizer    : TOOTLE_OVERDRAW_AUTO (Software renderer)\n");
-#else
+			fprintf(fp, "#Overdraw Optimizer    : TOOTLE_OVERDRAW_AUTO (Software renderer)\n");
 
-            if (nClusters > 225)
-            {
-                fprintf(fp, "#Overdraw Optimizer    : TOOTLE_OVERDRAW_AUTO (Software renderer)\n");
-            }
-            else
-            {
-                fprintf(fp, "#Overdraw Optimizer    : TOOTLE_OVERDRAW_AUTO (Direct3D renderer)\n");
-            }
-
-#endif
             break;
 
         case TOOTLE_OVERDRAW_DIRECT3D:

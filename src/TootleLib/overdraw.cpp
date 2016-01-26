@@ -7,12 +7,6 @@
 #include "overdraw.h"
 #include "soup.h"
 
-#ifndef _SOFTWARE_ONLY_VERSION
-    #include "d3doverdrawwindow.h"
-    #include "d3dwm.h"
-    #include "gdiwm.h"
-#endif
-
 #include "array.h"
 
 #include "TootleRaytracer.h"
@@ -28,11 +22,6 @@ static bool s_bInitialized = false;
 
 /// The current soup being optimized
 static Soup* s_pSoup = NULL;
-
-#ifndef _SOFTWARE_ONLY_VERSION
-    /// Overdraw calculation window
-    D3DOverdrawWindow* s_pOverdrawWindow;
-#endif
 
 /// If number of clusters is higher than this, use the raytracing algorithm
 const UINT RAYTRACE_CLUSTER_THRESHOLD = 225;
@@ -143,46 +132,6 @@ TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
     return TOOTLE_OK;
 }
 
-#ifndef _SOFTWARE_ONLY_VERSION
-//=================================================================================================================================
-/// Computes the overdraw graph using the Direct3D implementation
-///
-/// \param pViewpoints    Array of viewpoints to use for overdraw computation.
-/// \param nViewpoints    Size of the viewpoint array
-/// \param rClusters      Array identifying the cluster for each face.  Faces are assumed sorted by cluster
-/// \param rClusterStart  Array giving the index of the first triangle in each cluster.  The size should be one plus the number
-///                        of clusters.  The value of the last element of this array is the number of triangles in the mesh
-/// \param rGraphOut      An array of edges that will contain the overdraw graph
-/// \return TOOTLE_OK, or TOOTLE_OUT_OF_MEMORY
-//=================================================================================================================================
-static TootleResult ODComputeGraphDirect3D(const float*      pViewpoints,
-                                           unsigned int      nViewpoints,
-                                           const Array<int>& rClusters,
-                                           const Array<int>& rClusterStart,
-                                           Array<t_edge>&    rGraphOut)
-{
-    s_pOverdrawWindow->SetViewpoint(pViewpoints, nViewpoints);
-
-    // tell overdraw window about the clusters
-    s_pOverdrawWindow->SetCluster(&rClusters, &rClusterStart);
-    s_pOverdrawWindow->FitClusters();
-
-    // we need to call SetSoup() here in case the index buffers have changed
-    if (!s_pOverdrawWindow->SetSoup(s_pSoup))
-    {
-        return TOOTLE_3D_API_ERROR;
-    }
-
-    // do it
-    if (!s_pOverdrawWindow->Graph(rGraphOut))
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
-
-    return TOOTLE_OK;
-}
-#endif
-
 //=================================================================================================================================
 //
 //          Exported functions
@@ -197,44 +146,6 @@ static TootleResult ODComputeGraphDirect3D(const float*      pViewpoints,
 
 TootleResult ODInit()
 {
-#ifndef _SOFTWARE_ONLY_VERSION
-
-    if (s_bInitialized)
-    {
-        // should not initialize twice
-        return TOOTLE_INTERNAL_ERROR;
-    }
-
-    // allocate memory for the overdraw window and create viewpoint array
-    try
-    {
-        s_pOverdrawWindow = new D3DOverdrawWindow();
-    }
-    catch (std::bad_alloc&)
-    {
-        ODCleanup();
-        return TOOTLE_OUT_OF_MEMORY;
-    }
-
-    // initialize overdraw window
-    GDIWMOpen();
-
-    if (!D3DWMOpen())
-    {
-        ODCleanup();
-        errorf(("Failed to initialize Direct3D.  Make sure that D3D is properly installed."));
-        return TOOTLE_3D_API_ERROR;
-    }
-
-    if (!D3DWMCreateWindow("Tootle...", s_pOverdrawWindow))
-    {
-        ODCleanup();
-        errorf(("Failed to initialize Direct3D.  Make sure that D3D is properly installed."));
-        return TOOTLE_3D_API_ERROR;
-    }
-
-    s_bInitialized = true;
-#endif
     return TOOTLE_OK;
 }
 
@@ -243,11 +154,7 @@ TootleResult ODInit()
 //=================================================================================================================================
 bool ODIsInitialized()
 {
-#ifdef _SOFTWARE_ONLY_VERSION
     return true;
-#else
-    return s_bInitialized;
-#endif
 }
 
 
@@ -262,70 +169,12 @@ bool ODIsInitialized()
 ///         TOOTLE_INTERNAL_ERROR if ODInit() hasn't been called,
 ///         TOOTLE_3D_API_ERROR if VB/IB allocation fails
 //=================================================================================================================================
-TootleResult ODSetSoup(Soup* pSoup, TootleFaceWinding eFrontWinding)
+TootleResult ODSetSoup(Soup* pSoup, TootleFaceWinding /*eFrontWinding*/)
 {
-#ifndef _SOFTWARE_ONLY_VERSION
-
-    if (!s_bInitialized)
-    {
-        // ODInit has not been called
-        return TOOTLE_INTERNAL_ERROR;
-    }
-
-    if (!s_pOverdrawWindow->SetSoup(pSoup))
-    {
-        return TOOTLE_3D_API_ERROR;
-    }
-
-    s_pOverdrawWindow->Fit();
-#endif
     s_pSoup = pSoup;
 
-#ifndef _SOFTWARE_ONLY_VERSION
-    // set face winding for culling
-
-    s_pOverdrawWindow->SetCulling(eFrontWinding != TOOTLE_CCW);    // cull CCW faces if they aren't front facing
-#endif
-
     return TOOTLE_OK;
 }
-
-#ifndef _SOFTWARE_ONLY_VERSION
-//=================================================================================================================================
-/// Computes object overdraw for the triangle soup
-/// \param pViewpoints  The viewpoints to use to measure overdraw
-/// \param nViewpoints  The number of viewpoints in the array
-/// \param fODAvg  (Output) Average overdraw
-/// \param fODMax  (Output) Maximum overdraw
-/// \return TOOTLE_OK,
-///         TOOTLE_INTERNAL_ERROR if ODInit() has not been called
-///         TOOTLE_3D_API_ERROR   if problems occur while measuring overdraw
-//=================================================================================================================================
-TootleResult ODObjectOverdraw(const float* pViewpoints, unsigned int nViewpoints, float& fODAvg, float& fODMax)
-{
-    if (!s_bInitialized || !s_pSoup)
-    {
-        // ODInit has not been called, or soup isn't set
-        return TOOTLE_INTERNAL_ERROR;
-    }
-
-    s_pOverdrawWindow->SetViewpoint(pViewpoints, nViewpoints);
-
-    // we need to call SetSoup() here in case the index buffers have changed
-    if (!s_pOverdrawWindow->SetSoup(s_pSoup))
-    {
-        return TOOTLE_3D_API_ERROR;
-    }
-
-    // compute overdraw
-    if (!s_pOverdrawWindow->Object(fODAvg, fODMax))
-    {
-        return TOOTLE_3D_API_ERROR;
-    }
-
-    return TOOTLE_OK;
-}
-#endif
 
 //=================================================================================================================================
 /// Computes the object overdraw for the triangle soup the ray tracing implementation
@@ -457,23 +306,11 @@ TootleResult ODOverdrawGraph(const float*            pViewpoints,
                              Array<t_edge>&          rGraphOut,
                              TootleOverdrawOptimizer eOverdrawOptimizer)
 {
-#ifdef _SOFTWARE_ONLY_VERSION
-
-    if (!s_pSoup)
-    {
-        // ODInit has not been called, or soup isn't set
-        return TOOTLE_INTERNAL_ERROR;
-    }
-
-#else
-
     if (!s_bInitialized || !s_pSoup)
     {
         // ODInit has not been called, or soup isn't set
         return TOOTLE_INTERNAL_ERROR;
     }
-
-#endif
 
     // sanity check
     if (rClusters.size() != s_pSoup->t().size())
@@ -483,28 +320,6 @@ TootleResult ODOverdrawGraph(const float*            pViewpoints,
 
     switch (eOverdrawOptimizer)
     {
-        case TOOTLE_OVERDRAW_AUTO:
-#ifndef _SOFTWARE_ONLY_VERSION
-
-            // if the number of clusters is high enough, then its faster to use software rendering to compute overdraw
-            // if it's small, then we want to use the GPU
-            if (rClusterStart.size() > RAYTRACE_CLUSTER_THRESHOLD)
-            {
-                return ODComputeGraphRaytrace(pViewpoints, nViewpoints, bCullCCW,
-                                              rClusters, (UINT) rClusterStart.size() - 1, rGraphOut);
-            }
-            else
-            {
-                return ODComputeGraphDirect3D(pViewpoints, nViewpoints, rClusters, rClusterStart, rGraphOut);
-            }
-
-            break;
-
-        case TOOTLE_OVERDRAW_DIRECT3D:
-            return ODComputeGraphDirect3D(pViewpoints, nViewpoints, rClusters, rClusterStart, rGraphOut);
-            break;
-#endif
-
         case TOOTLE_OVERDRAW_RAYTRACE:
 
             return ODComputeGraphRaytrace(pViewpoints, nViewpoints, bCullCCW,
@@ -525,26 +340,4 @@ TootleResult ODOverdrawGraph(const float*            pViewpoints,
 
 void ODCleanup()
 {
-#ifndef _SOFTWARE_ONLY_VERSION
-
-    if (!s_bInitialized)
-    {
-        // if we call Cleanup and we're not initialized, this is ok
-        return;
-    }
-
-    if (s_pOverdrawWindow)
-    {
-        s_pOverdrawWindow->ReleaseBuffers();
-        D3DWMDestroyWindow(s_pOverdrawWindow);
-        delete s_pOverdrawWindow;
-        s_pOverdrawWindow = NULL;
-    }
-
-
-    D3DWMClose();
-    GDIWMClose();
-
-    s_bInitialized = false;
-#endif
 }

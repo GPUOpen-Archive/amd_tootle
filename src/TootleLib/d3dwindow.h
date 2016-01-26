@@ -32,7 +32,7 @@ public:
             d3d = NULL;
         }
     }
-    virtual void SetD3DDevice(LPDIRECT3DDEVICE9 d3d) { this->d3d = d3d; }
+    virtual void SetD3DDevice(LPDIRECT3DDEVICE9 pd3d) { this->d3d = pd3d; }
     virtual LPDIRECT3DDEVICE9 GetD3DDevice(void) const { return d3d; }
     virtual int LostDevice(void) { return 1; }
     virtual int ResetDevice(void) { return 1; }

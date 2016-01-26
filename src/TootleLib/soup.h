@@ -81,8 +81,8 @@ protected:
     RCArray<Triangle>* pt;
 
 private:
-    Soup(const Soup& other): Cloud() { ; }
-    Soup& operator=(const Soup& other) { return *this; }
+	Soup (const Soup&);
+	Soup& operator=(const Soup&);
 
 };
 

@@ -11,7 +11,7 @@
       <AdditionalIncludeDirectories>$(DirectXSDKDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Platform)'=='Win32'">
@@ -23,7 +23,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(DirectXSDKDir)Lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-  </ItemDefinitionGroup>  
+  </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="DirectXSDKDir">
       <Value>$(DirectXSDKDir)</Value>

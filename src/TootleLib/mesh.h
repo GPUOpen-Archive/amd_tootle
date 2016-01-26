@@ -41,8 +41,8 @@ protected:
     Array< Array<UINT> > vv_;
 private:
     // prevent catastrophic copies
-    Mesh(const Mesh& other): Soup() { ; }
-    Mesh& operator=(const Mesh& other) { return *this; }
+	Mesh (const Mesh& other);
+	Mesh& operator=(const Mesh& other);
 };
 
 inline int

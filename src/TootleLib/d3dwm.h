@@ -7,7 +7,9 @@
 #define D3DWM_H
 
 #include <d3d9.h>
-#include <d3dx9.h>
+#if AMD_TOOTLE_HAS_D3DX9
+	#include <d3dx9.h>
+#endif
 
 class D3DWindow;
 

@@ -96,7 +96,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\DirectX.props" />
   </ImportGroup>
-  <PropertyGroup>  
+  <PropertyGroup>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_DLL|Win32'">TootleDLL_2015_d</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_DLL|Win32'">TootleDLL_2015</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MT|Win32'">TootleStatic_2015_MT_d</TargetName>
@@ -116,7 +116,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\src\TootleLib;..\..\src\TootleLib\RayTracer\JRT;..\..\src\TootleLib\RayTracer\Math;..\..\src\TootleLib\RayTracer;..\..\src\TootleLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -134,6 +134,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DLL|Win32'">
@@ -144,6 +145,7 @@
     <Link>
       <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MT|Win32'">
@@ -182,6 +184,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DLL|x64'">
@@ -192,6 +195,7 @@
     <Link>
       <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MT|x64'">
@@ -222,12 +226,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\TootleLib\clustering.cpp" />
-    <ClCompile Include="..\..\src\TootleLib\d3doverdrawwindow.cpp" />
-    <ClCompile Include="..\..\src\TootleLib\d3dwm.cpp" />
     <ClCompile Include="..\..\src\TootleLib\error.c" />
     <ClCompile Include="..\..\src\TootleLib\feedback.cpp" />
     <ClCompile Include="..\..\src\TootleLib\fit.cpp" />
-    <ClCompile Include="..\..\src\TootleLib\gdiwm.cpp" />
     <ClCompile Include="..\..\src\TootleLib\heap.c" />
     <ClCompile Include="..\..\src\TootleLib\overdraw.cpp" />
     <ClCompile Include="..\..\src\TootleLib\soup.cpp" />
@@ -257,7 +258,6 @@
     <ClInclude Include="..\..\src\TootleLib\cloud.h" />
     <ClInclude Include="..\..\src\TootleLib\clustering.h" />
     <ClInclude Include="..\..\src\TootleLib\color.h" />
-    <ClInclude Include="..\..\src\TootleLib\d3doverdrawwindow.h" />
     <ClInclude Include="..\..\src\TootleLib\d3dwindow.h" />
     <ClInclude Include="..\..\src\TootleLib\d3dwm.h" />
     <ClInclude Include="..\..\src\TootleLib\error.h" />

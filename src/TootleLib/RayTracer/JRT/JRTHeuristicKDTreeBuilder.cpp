@@ -158,7 +158,7 @@ void PartitionBBs(UINT eAxis,
 
 
 
-void PartitionSplits(float fValue, UINT eAxis,  const SplitVec& rSplits, const std::vector<TriangleBB>& rBBs, SplitVec& rBack, SplitVec& rFront)
+void PartitionSplits(float /*fValue*/, UINT /*eAxis*/,  const SplitVec& rSplits, const std::vector<TriangleBB>& rBBs, SplitVec& rBack, SplitVec& rFront)
 {
     rFront.reserve(rSplits.size());
     rBack.reserve(rSplits.size());
@@ -187,7 +187,7 @@ void PartitionSplits(float fValue, UINT eAxis,  const SplitVec& rSplits, const s
 }
 
 
-void JRTHeuristicKDTreeBuilder::LocateBestSplit(float fNodeBBInvArea, const JRTBoundingBox& rNodeBounds, const SplitVec splits[3], UINT axis, UINT nTriCount, float& fBestCost, bool& bSplit, UINT& eSplitAxis, float& fSplitValue)
+void JRTHeuristicKDTreeBuilder::LocateBestSplit(float /*fNodeBBInvArea*/, const JRTBoundingBox& rNodeBounds, const SplitVec splits[3], UINT axis, UINT nTriCount, float& fBestCost, bool& bSplit, UINT& eSplitAxis, float& fSplitValue)
 {
     JRTBoundingBox frontBounds = rNodeBounds, backBounds = rNodeBounds;
 
@@ -213,8 +213,6 @@ void JRTHeuristicKDTreeBuilder::LocateBestSplit(float fNodeBBInvArea, const JRTB
     UINT nTrisBehind = 0;
     UINT nTrisInFront = nTriCount;
     UINT i = 0;
-
-    Split* split = rSplitVec[i];
 
     // advance forwards past any splits which are before the bounding box start
     i = 0;
@@ -263,10 +261,10 @@ void JRTHeuristicKDTreeBuilder::LocateBestSplit(float fNodeBBInvArea, const JRTB
     // iterate over all of the splits that lie inside the node bounding box
     for (i = i; i < nSplits; i++)
     {
-        Split* split = rSplitVec[i];
+        Split* localSplit = rSplitVec[i];
 
-        nTrisInFront -= (split->bMaxSplit) ? 1 : 0;
-        nTrisBehind += (split->bMaxSplit) ? 0 : 1;
+        nTrisInFront -= (localSplit->bMaxSplit) ? 1 : 0;
+        nTrisBehind += (localSplit->bMaxSplit) ? 0 : 1;
 
         // evaluate the cost of this split using the surface area heuristic
 
@@ -277,8 +275,8 @@ void JRTHeuristicKDTreeBuilder::LocateBestSplit(float fNodeBBInvArea, const JRTB
 
         // compute surface area for each side of the box.  Note that we deliberately leave
         // off the multiply by two since it cancels out
-        float back_area = sa_const + (bbSizeU + bbSizeV) * (split->value - fNodeMin);
-        float front_area = sa_const + (bbSizeU + bbSizeV) * (fNodeMax - split->value);
+        float back_area = sa_const + (bbSizeU + bbSizeV) * (localSplit->value - fNodeMin);
+        float front_area = sa_const + (bbSizeU + bbSizeV) * (fNodeMax - localSplit->value);
         float cost = 1.0f + INTERSECT_COST * farea * ((back_area * nTrisBehind) + (front_area * nTrisInFront));
 
         //foo << cost <<","<<split->value << "," << nTrisInFront<< "," << nTrisBehind << std::endl;
@@ -286,7 +284,7 @@ void JRTHeuristicKDTreeBuilder::LocateBestSplit(float fNodeBBInvArea, const JRTB
         if (cost < fBestCost)
         {
             fBestCost = cost;
-            fSplitValue = split->value;
+            fSplitValue = localSplit->value;
             bHaveSplit = true;
             JRT_ASSERT(fSplitValue >= rNodeBounds.GetMin()[axis] &&
                        fSplitValue <= rNodeBounds.GetMax()[axis]);
@@ -355,7 +353,6 @@ void JRTHeuristicKDTreeBuilder::BuildTreeRecursive(UINT nDepthLimit,
 
 
     float fNodeBBInvArea = 1.0f / Max(0.0000001f, rNodeBounds.GetSurfaceArea());
-    float fNodeVolume = rNodeBounds.GetVolume();
 
     for (UINT axis = X_AXIS; axis <= Z_AXIS; axis++)
     {
