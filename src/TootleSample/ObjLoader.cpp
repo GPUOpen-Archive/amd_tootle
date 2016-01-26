@@ -274,7 +274,7 @@ void ObjLoader::ReadVertexIndices(const char* szLine, int numVertsInLine,
     while (((*szNext) < '0') || ((*szNext) > '9'))
     {
         // Skip any character that's not a number
-        assert(szNext != NULL);
+        assert(*szNext != '\0');
         szNext++;
     } // End while
 
