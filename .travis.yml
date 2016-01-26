@@ -2,7 +2,13 @@ language: cpp
 
 os:
   - linux
-  - osx
+
+before_install:
+    - sudo add-apt-repository ppa:george-edison55/precise-backports --yes
+    - sudo apt-get update
+
+install:
+    - sudo apt-get install cmake
 
 compiler:
   - gcc
