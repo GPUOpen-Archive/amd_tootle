@@ -14,7 +14,7 @@
 #include "error.h"
 
 // Arc array
-static int nVerts, nArcs;
+// static int nVerts, nArcs;
 typedef struct _ARC
 {
     int i, j, c;
@@ -174,7 +174,6 @@ void Output(int v)
         memset(InDegree, 0, sizeof(int) * nVerts);
 
         PARC pArc = Arc;
-        int i;
 
         for (int a = 0; a < nArcs; a++)
         {
@@ -199,7 +198,7 @@ void Output(int v)
         memset(ArcStart, 0, sizeof(PARC*) * nVerts);
         pArc = Arc;
 
-        for (i = 0; i < nVerts; i++)
+        for (int i = 0; i < nVerts; i++)
         {
             if (ArcCount[i] > 0)
             {
@@ -215,7 +214,7 @@ void Output(int v)
             return 1;
         }
 
-        for (i = 0; i < nVerts; i++)
+        for (int i = 0; i < nVerts; i++)
         {
             heap_insert(Heap, i, -abs(DeltaCost[i]));
         }
@@ -223,7 +222,7 @@ void Output(int v)
         //  initialize stack of zero degree vertices
         nZero = 0;
 
-        for (i = 0; i < nVerts; i++)
+        for (int i = 0; i < nVerts; i++)
         {
             if (InDegree[i] == 0 || OutDegree[i] == 0)
             {

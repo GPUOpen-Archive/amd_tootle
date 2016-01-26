@@ -103,16 +103,7 @@ bool JRTBoundingBox::RayHit(const Vec3f& rOrigin, const Vec3f& rDirection, float
     }
 
     // do the ranges overlap?
-    if (*tmin < *tmax)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
-    return false;
+	return *tmin < *tmax;
 }
 
 

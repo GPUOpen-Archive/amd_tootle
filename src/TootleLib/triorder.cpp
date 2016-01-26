@@ -221,7 +221,6 @@ float FanVertLinSort(int* piIndexBufferIn, int* piIndexBufferOut, int iNumFaces,
     while (lowi < iNumFaces3)
     {
         int bestemitted = -INT_MAX;
-        int tribest = -1;
 
         //set current vertex id
         id = piIndexBufferIn[piTriList[i]];
@@ -240,7 +239,6 @@ float FanVertLinSort(int* piIndexBufferIn, int* piIndexBufferOut, int iNumFaces,
             if (++piEmitted[tri] == 1)
             {
                 int* pin = &piIndexBufferIn[tri3];
-                int ord = 0;
 
                 for (int ii = 0; ii < 3; ii++, pin++)
                 {
@@ -352,7 +350,7 @@ void OverdrawOrder(int*              piIndexBufferIn,
                    int*              piIndexBufferOut,
                    int               iNumFaces,
                    float*            pfVertexPositionsIn,
-                   int               iNumVertices,
+                   int               /* iNumVertices */,
                    TootleFaceWinding eFrontWinding,
                    int*              piClustersIn, //should have piClustersIn[iNumClusters] == iNumFaces
                    int               iNumClusters,
@@ -489,7 +487,7 @@ void OverdrawOrderIntegral(int*              piIndexBufferIn,
                            int*              piIndexBufferOut,
                            int               iNumFaces,
                            float*            pfVertexPositionsIn,
-                           int               iNumVertices,
+                           int               /* iNumVertices */,
                            TootleFaceWinding eFrontWinding,
                            int*              piClustersIn, //should have piClustersIn[iNumClusters] == iNumFaces
                            int               iNumClusters,
@@ -604,18 +602,13 @@ void OverdrawOrderIntegral(int*              piIndexBufferIn,
             vec.normalize();
             float da = dot(vec, pvClusterNormals[j]);
             float db = dot(vec, pvClusterNormals[i]);
-            float dn = dot(pvClusterNormals[i], pvClusterNormals[j]);
 
             if (da > 0 && db > 0)
             {
                 cs[i].dp += da * db * pfClusterAreas[j];
             }
+		}
 
-            //if(da > 0 && db > 0 && dn > 0)
-            //   cs[i].dp += dn * pfClusterAreas[j];
-        }
-
-        //cs[i].dp /= fMArea - pfClusterAreas[i];
         cs[i].i = i;
     }
 

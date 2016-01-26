@@ -21,13 +21,6 @@ public:
     union
     {
         __m128 vec128;
-        struct
-        {
-            float x;
-            float y;
-            float z;
-            float w;
-        };
 #ifdef _LINUX
         float f32[4];
 #endif
@@ -261,7 +254,7 @@ inline SSEVec4 SSEVecSelect(const SSEVec4& condition, const SSEVec4& val, const 
 // stream output thingie for vectors
 inline std::ostream& operator<<(std::ostream& out, const SSEVec4& vec)
 {
-    out << "<" << vec.x << "," << vec.y << "," << vec.z << "," << vec.w << ">";
+    out << "<" << vec[0] << "," << vec[1] << "," << vec[2] << "," << vec[3] << ">";
     return out;
 };
 
