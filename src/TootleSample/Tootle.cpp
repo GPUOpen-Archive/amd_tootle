@@ -70,8 +70,7 @@ struct TootleSettings
     TootleFaceWinding     eWinding;
     TootleAlgorithm       algorithmChoice;         // five different types of algorithm to test Tootle
     TootleVCacheOptimizer eVCacheOptimizer;        // the choice for vertex cache optimization algorithm, it can be either
-    //  TOOTLE_VCACHE_AUTO, TOOTLE_VCACHE_LSTRIPS, TOOTLE_VCACHE_DIRECT3D or
-    //  TOOTLE_VCACHE_TIPSY.
+    //  TOOTLE_VCACHE_AUTO, TOOTLE_VCACHE_LSTRIPS or TOOTLE_VCACHE_TIPSY.
     bool                  bOptimizeVertexMemory;   // true if you want to optimize vertex memory location, false to skip
     bool                  bMeasureOverdraw;        // true if you want to measure overdraw, false to skip
 };
@@ -360,9 +359,8 @@ void ShowHelpAndExit(int nRet)
             "  If -m is specified, the algorithm to measure overdraw will be skipped.\n"
             "  If -o is specified, the argument that follows it will decide on the algorithm used for vertex cache optimization.\n"
             "     1 -> the choice of algorithm for vertex cache optimization will depend on the vertex cache size.\n"
-            "     2 -> use the D3DXOptimizeFaces to optimize vertex cache.\n"
-            "     3 -> use a list like triangle strips to optimize vertex cache (good for cache size <=6).\n"
-            "     4 -> use Tipsy algorithm from SIGGRAPH 2007 to optimize vertex cache.\n"
+            "     2 -> use a list like triangle strips to optimize vertex cache (good for cache size <=6).\n"
+            "     3 -> use Tipsy algorithm from SIGGRAPH 2007 to optimize vertex cache.\n"
             "   If -p is specified, the algorithm to optimize the vertex memory for prefetch cache will be skipped.\n");
 
     exit(nRet);
@@ -451,10 +449,7 @@ TootleVCacheOptimizer UIntToTootleVCacheOptimizer(unsigned int nArgument)
     {
         case 1:
             return TOOTLE_VCACHE_AUTO;
-
-        case 2:
-            return TOOTLE_VCACHE_DIRECT3D;
-
+			
         case 3:
             return TOOTLE_VCACHE_LSTRIPS;
 
@@ -483,7 +478,7 @@ void ParseCommandLine(int argc, char* argv[], TootleSettings* pSettings)
         { 'f', "Treat counter-clockwise faces as front facing (instead clockwise faces)." },
         { 'h', "Help" },
         { 'm', "Skip measuring overdraw" },
-        { 'o', "Algorithm to use to optimize vertex cache (1 to 4)." },
+        { 'o', "Algorithm to use to optimize vertex cache (1 to 3)." },
         { 'p', "Skip vertex prefetch cache optimization" },
         { 's', "Post TnL vcache size" },
         { 'v', "Viewpoint file" },
@@ -599,10 +594,6 @@ void PrintVCacheOptimizer(FILE* fp, TootleVCacheOptimizer eVCacheOptimizer, unsi
 
             break;
 
-        case TOOTLE_VCACHE_DIRECT3D:
-            fprintf(fp, "#Vertex Cache Optimizer: Direct3D\n");
-            break;
-
         case TOOTLE_VCACHE_LSTRIPS:
             fprintf(fp, "#Vertex Cache Optimizer: LStrips (a custom algorithm to create a list like triangle strips)\n");
             break;
@@ -633,12 +624,7 @@ void PrintOverdrawOptimizer(FILE* fp, TootleOverdrawOptimizer eOverdrawOptimizer
     {
         case TOOTLE_OVERDRAW_AUTO:
 			fprintf(fp, "#Overdraw Optimizer    : TOOTLE_OVERDRAW_AUTO (Software renderer)\n");
-
-            break;
-
-        case TOOTLE_OVERDRAW_DIRECT3D:
-            fprintf(fp, "#Overdraw Optimizer    : TOOTLE_OVERDRAW_DIRECT3D (Direct3D renderer)\n");
-            break;
+			break;
 
         case TOOTLE_OVERDRAW_RAYTRACE:
             fprintf(fp, "#Overdraw Optimizer    : TOOTLE_OVERDRAW_RAYTRACE (Software renderer)\n");

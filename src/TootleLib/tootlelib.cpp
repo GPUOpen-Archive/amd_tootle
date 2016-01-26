@@ -219,11 +219,6 @@ TootleResult TOOTLE_DLL TootleOptimizeVCache(const unsigned int*   pnIB,
 
             break;
 
-        case TOOTLE_VCACHE_DIRECT3D:
-            fprintf(stderr, "TootleOptimizeVCache: No Direct3D support for this version.\n");
-            result = TOOTLE_INTERNAL_ERROR;
-            break;
-
         case TOOTLE_VCACHE_LSTRIPS:
             result = TootleOptimizeVCacheLStrips(pnIB, nFaces, nVertices, nCacheSize, pnIBOutTmp, pnFaceRemapOut);
             break;
@@ -616,10 +611,6 @@ TootleResult TOOTLE_DLL TootleOptimizeOverdraw(const void*             pVB,
     // Select the overdraw optimization algorithm based on the input parameter.
     switch (eOverdrawOptimizer)
     {
-        case TOOTLE_OVERDRAW_DIRECT3D:
-            fprintf(stderr, "TootleOptimizeOverdraw: No Direct3D support for this version.\n");
-            return TOOTLE_INTERNAL_ERROR;
-
         case TOOTLE_OVERDRAW_AUTO:
         case TOOTLE_OVERDRAW_RAYTRACE:
             return TootleOptimizeOverdrawDirect3DAndRaytrace(pVB, pnIB, nVertices, nFaces, nVBStride, pfViewpoint, nViewpoints,
@@ -1210,7 +1201,6 @@ TootleResult TOOTLE_DLL TootleVCacheClusters(const unsigned int*   pnIB,
     }
 
     if (eVCacheOptimizer != TOOTLE_VCACHE_AUTO     &&
-        eVCacheOptimizer != TOOTLE_VCACHE_DIRECT3D &&
         eVCacheOptimizer != TOOTLE_VCACHE_LSTRIPS  &&
         eVCacheOptimizer != TOOTLE_VCACHE_TIPSY)
     {
@@ -1347,8 +1337,7 @@ TootleResult TOOTLE_DLL TootleMeasureOverdraw(const void*             pVB,
                                               unsigned int            nViewpoints,
                                               TootleFaceWinding       eFrontWinding,
                                               float*                  pfAvgODOut,
-                                              float*                  pfMaxODOut,
-                                              TootleOverdrawOptimizer /*eOverdrawOptimizer*/)
+                                              float*                  pfMaxODOut)
 {
     // sanity checks
     assert(pVB);
