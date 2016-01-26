@@ -127,7 +127,7 @@ void JRTH2KDTreeBuilder::DoBuildTree(UINT nMaxDepth,
 
 
 
-void JRTH2KDTreeBuilder::MakeLeaf(JRTKDNode* pNode, const std::vector<UINT>& rTrisThisNode, std::vector<JRTKDNode>& rNodesOut, std::vector<UINT>& rTriIndicesOut)
+void JRTH2KDTreeBuilder::MakeLeaf(JRTKDNode* pNode, const std::vector<UINT>& rTrisThisNode, std::vector<JRTKDNode>& /*rNodesOut*/, std::vector<UINT>& rTriIndicesOut)
 {
     pNode->leaf.is_leaf = true;
     pNode->leaf.triangle_count = (UINT) rTrisThisNode.size();
@@ -143,7 +143,7 @@ void JRTH2KDTreeBuilder::MakeLeaf(JRTKDNode* pNode, const std::vector<UINT>& rTr
 
 void JRTH2KDTreeBuilder::FindBestSplit(Axis eAxis,
                                        const JRTBoundingBox& rBounds,
-                                       const std::vector<const JRTTriangle*>& rTris,
+                                       const std::vector<const JRTTriangle*>& /*rTris*/,
                                        const std::vector<UINT>& rTrisThisNode,
                                        SplitInfo* pSplit)
 {
@@ -215,7 +215,7 @@ void JRTH2KDTreeBuilder::ClassifyTris(Axis eAxis,
                                       const std::vector<UINT>& rTrisThisNode)
 {
 
-    const FloatPair* pBB;
+    const FloatPair* pBB = nullptr;
 
     switch (eAxis)
     {

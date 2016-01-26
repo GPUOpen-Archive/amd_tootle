@@ -135,7 +135,7 @@ void JRTMesh::Transform(const Matrix4f& rXForm, const Matrix4f& rInverse)
 }
 
 
-void JRTMesh::GetInterpolants(UINT nTriIndex, const float barycentrics[], Vec3f* pNormal, Vec2f* pUV) const
+void JRTMesh::GetInterpolants(UINT nTriIndex, const float barycentrics[], Vec3f* pNormal, Vec2f* /*pUV*/) const
 {
     UINT nIndex1 = (UINT)(m_pTriangles[nTriIndex].m_pV1 - (const float*)m_pPositions) / 3;
     UINT nIndex2 = (UINT)(m_pTriangles[nTriIndex].m_pV2 - (const float*)m_pPositions) / 3;

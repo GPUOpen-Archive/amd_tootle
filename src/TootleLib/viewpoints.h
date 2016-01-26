@@ -654,4 +654,4 @@ float pDefaultViewpoint[] =
     -0.230504f, -0.753498f, -0.615718f
 };
 
-#endif VIEWPOINTS_H
+#endif

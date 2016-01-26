@@ -19,7 +19,8 @@ typedef struct llnode
 
 static node* s_addressList = NULL;
 static void PrintList();
-static unsigned int GetNextPowerOfTwo(unsigned int nValue);
+template <typename T> 
+static T GetNextPowerOfTwo(T nValue);
 
 //=================================================================================================================================
 /// Takes the size of the buffer you would like  to allocate with the return buffer starts on an alignment boundary (multiple of
@@ -48,7 +49,7 @@ void* aligned_malloc(size_t bytes, size_t alignment)
     {
         // alignment is not of power of 2, round it to the next power of 2.
         alignment = GetNextPowerOfTwo(alignment);
-        fprintf(stderr, "aligned_malloc: rounding the alignment to %u\n", alignment);
+        fprintf(stderr, "aligned_malloc: rounding the alignment to %zu\n", alignment);
     }
 
     // request memory larger than the input request size to
@@ -178,7 +179,8 @@ void aligned_free(void* p)
 //
 // \return the next power of two
 //=================================================================================================================================
-unsigned int GetNextPowerOfTwo(unsigned int nValue)
+template <typename T>
+T GetNextPowerOfTwo(T nValue)
 {
     if (nValue < 1)
     {
