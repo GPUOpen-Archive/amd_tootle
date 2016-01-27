@@ -265,7 +265,6 @@ bool ODIsInitialized()
 TootleResult ODSetSoup(Soup* pSoup, TootleFaceWinding eFrontWinding)
 {
 #ifndef _SOFTWARE_ONLY_VERSION
-
     if (!s_bInitialized)
     {
         // ODInit has not been called
@@ -285,6 +284,9 @@ TootleResult ODSetSoup(Soup* pSoup, TootleFaceWinding eFrontWinding)
     // set face winding for culling
 
     s_pOverdrawWindow->SetCulling(eFrontWinding != TOOTLE_CCW);    // cull CCW faces if they aren't front facing
+#else
+	// Unused parameter in this case
+	(void)eFrontWinding; 
 #endif
 
     return TOOTLE_OK;

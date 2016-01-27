@@ -139,7 +139,7 @@ void ISkipToToken(FILE* fp)
     while (!feof(fp) && !hit_token)
     {
         // skip to beginning of next token (width, height, or maxval)
-        char c = fgetc(fp);
+        int c = fgetc(fp);
 
         if (c == '#')
         {
@@ -213,7 +213,7 @@ bool JRTPPMImage::LoadFile(const char* filename)
         return false;
     }
 
-    UINT width, height, maxval;
+    UINT width = 0, height = 0, maxval = 0;
 
     // parse out the width, height, and maxval, ignoring whitespace and comments.
     bool at_bits = false, got_width = false, got_height = false, got_maxval = false;

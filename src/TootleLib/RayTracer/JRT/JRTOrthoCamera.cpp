@@ -33,7 +33,7 @@ void JRTOrthoCamera::GetRay(float s, float t, Vec3f* origin, Vec3f* delta) const
 }
 
 
-void JRTOrthoCamera::ProjectPoint(const Vec3f& pt, float* s, float* t) const
+void JRTOrthoCamera::ProjectPoint(const Vec3f& /*pt*/, float* /*s*/, float* /*t*/) const
 {
     // TODO
     JRT_ASSERT(false);

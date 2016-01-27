@@ -47,7 +47,7 @@ JRTKDTree::~JRTKDTree()
 ///     that we know, at all times during traversal, whether the ray is inside or outside each individual CSG node
 ///     This array is indexed by CSG node ID.  It should be initialized for the ray origin in advance
 
-bool JRTKDTree::FindFirstHit(const Vec3f& rOrigin, const Vec3f& rDirection, JRTHitInfo* pHit, const JRTMesh* pExcludeMesh, UINT nExcludeTri, bool* pNodeStateArray)
+bool JRTKDTree::FindFirstHit(const Vec3f& rOrigin, const Vec3f& rDirection, JRTHitInfo* pHit, const JRTMesh* pExcludeMesh, UINT nExcludeTri, bool* /*pNodeStateArray*/)
 {
 
     pHit->pMesh = NULL;
@@ -275,7 +275,6 @@ bool JRTKDTree::FindFirstHit(const Vec3f& rOrigin, const Vec3f& rDirection, JRTH
 
         if (node->leaf.triangle_count > 0)
         {
-            UINT nCSGTris = 0;
             float tval;
 
             int triangle_end = node->leaf.triangle_start + node->leaf.triangle_count;
@@ -416,7 +415,6 @@ UINT JRTKDTree::FindAllHits(const Vec3f& rOrigin, const Vec3f& rDirection, Tootl
 
 
     float GlobalTMax = tmax; // where the ray finally leaves the tree
-    bool have_hit = false;
 
     // compute ray direction inverse here to avoid a divide during traversal
     Vec3f inv_direction = Vec3f(1.0f / rDirection.x, 1.0f / rDirection.y, 1.0f / rDirection.z);
@@ -438,7 +436,6 @@ UINT JRTKDTree::FindAllHits(const Vec3f& rOrigin, const Vec3f& rDirection, Tootl
     static StackFrame traversal_stack [MAX_TREE_DEPTH];
 
     // set up the traversal stack
-    UINT    stack_offs = 1;
     //node_stack[0] = 0;
     //tmin_stack[0] = tmin;
     //tmax_stack[0] = tmax;
@@ -674,7 +671,6 @@ UINT JRTKDTree::FindAllHits(const Vec3f& rOrigin, const Vec3f& rDirection, Tootl
 
         if (node->leaf.triangle_count > 0)
         {
-            UINT nCSGTris = 0;
             float tval;
 
             int triangle_end = node->leaf.triangle_start + node->leaf.triangle_count;

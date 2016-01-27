@@ -47,8 +47,8 @@ inline void GetProjectedCoords(const float* P, unsigned int max_normal_comp, flo
 
 inline void GetProjectedCoords(const SSEVec4& phit, unsigned int max_normal_comp, SSEVec4& out)
 {
-    out.x = UCOMP(phit, max_normal_comp);
-    out.y = VCOMP(phit, max_normal_comp);
+    out[0] = UCOMP(phit, max_normal_comp);
+    out[1] = VCOMP(phit, max_normal_comp);
 }
 
 
@@ -273,7 +273,7 @@ RETURN_TRUE:
 }*/
 
 
-bool RayTriangleIntersect(const JRTCoreTriangle* pTri, const float* origin, const float* direction, float tmin, float tmax, float* tout, float* barycentrics_out)
+bool RayTriangleIntersect(const JRTCoreTriangle* pTri, const float* origin, const float* direction, float tmin, float tmax, float* tout, float* /*barycentrics_out*/)
 {
 #ifdef JRT_DETAILED_STATS
     JRTStats::Instance().nTotalTriTests++;

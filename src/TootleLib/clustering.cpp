@@ -51,7 +51,7 @@ static float EdgeCost(Vector3 cn, Vector3 fn)
 }
 
 static void AddNeibToQueue(priority_queue<QNode, vector<QNode>, greater<QNode> >& q,
-                           Mesh& mesh, std::vector<int>& fixed, std::vector<float>& cost,
+                           Mesh& /*mesh*/, std::vector<int>& fixed, std::vector<float>& cost,
                            std::vector<int>& cluster, std::vector<Vector3>& clusterNormal,
                            int f, int ff, std::vector<Vector3>& tn)
 {
@@ -88,7 +88,6 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
     float fMaxDist = 0.f;
     int distcnt = 0;
 
-    int i;
     priority_queue<QNode, vector<QNode>, greater<QNode> > q;
 
     std::vector<int> vis;
@@ -99,7 +98,7 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
     int nseeds = (int)seeds.size();
 
     //flood from seeds here
-    for (i = 0; i < mesh.t().GetSize(); i++)
+    for (int i = 0; i < mesh.t().GetSize(); i++)
     {
         cluster[i] = nseeds;
         fixed[i] = false;
@@ -109,7 +108,7 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
         vis.push_back(-1);
     }
 
-    for (i = 0; i < nseeds; i++)
+    for (int i = 0; i < nseeds; i++)
     {
         int f = seeds[i];
         cluster[f] = i;
@@ -119,7 +118,7 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
         clusterNormal.push_back(tn[f]);
     }
 
-    for (i = 0; i < nseeds; i++)
+    for (int i = 0; i < nseeds; i++)
     {
         int f = seeds[i];
 
@@ -302,8 +301,6 @@ static void MoveSeeds(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clu
     {
         seeddist.push_back(cost[seeds[i]]);
     }
-
-    int changed = 0;
 
     for (i = 0; i < mesh.t().GetSize(); i++)
     {
@@ -497,9 +494,10 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
             bHasUnassignedFaces = false;
             UINT nSeeds = (UINT) seeds.size();
 
-            for (UINT i = 0; i < cluster.size(); i++)
+			// @TODO Verify this code - previously, it used a local i
+            for (UINT j = 0; j < cluster.size(); j++)
             {
-                if (cluster[i] == nSeeds)
+                if (cluster[j] == static_cast<int> (nSeeds))
                 {
                     bHasUnassignedFaces = true;
                     break;
