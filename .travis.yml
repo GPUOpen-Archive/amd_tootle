@@ -1,0 +1,24 @@
+language: cpp
+
+os:
+  - linux
+
+before_install:
+    - sudo add-apt-repository ppa:george-edison55/precise-backports --yes
+    - sudo apt-get remove -qq cmake cmake-data
+    - sudo apt-get update -y -qq
+    - sudo apt-get install cmake cmake-data
+
+compiler:
+  - gcc
+  - clang
+
+env:
+  - CONFIGURATION=Debug
+  - CONFIGURATION=Release
+
+script:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=$CONFIGURATION ../src
+  - make
