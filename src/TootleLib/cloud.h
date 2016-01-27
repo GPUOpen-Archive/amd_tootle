@@ -91,8 +91,8 @@ protected:
     RCArray<float>* pvc;  // vertex confidence
 private:
     // prevent copy constructors and assignments
-    Cloud(const Cloud& other) { ; }
-    Cloud& operator=(Cloud& other) { return *this; }
+	Cloud (const Cloud& other);
+	Cloud& operator=(const Cloud& other);
 };
 
 #endif

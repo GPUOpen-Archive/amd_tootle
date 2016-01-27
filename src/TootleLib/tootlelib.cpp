@@ -1484,7 +1484,7 @@ TootleResult TOOTLE_DLL TootleMeasureOverdraw(const void*             pVB,
                                               TootleFaceWinding       eFrontWinding,
                                               float*                  pfAvgODOut,
                                               float*                  pfMaxODOut,
-                                              TootleOverdrawOptimizer eOverdrawOptimizer)
+                                              TootleOverdrawOptimizer /*eOverdrawOptimizer*/)
 {
     // sanity checks
     assert(pVB);

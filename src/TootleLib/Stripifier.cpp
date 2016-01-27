@@ -342,7 +342,7 @@ bool FaceManager::Stripify(void)
     Face* pNextFace = NULL;
     Face* pGateFace = NULL;
     UINT uGateEdge;
-    UINT uBackEdge;
+    UINT uBackEdge = 0;
     UINT uFirstEdge = 1;
 
     // make sure that the starting edge is in the 0-2 range
@@ -420,7 +420,6 @@ bool FaceManager::Stripify(void)
 
         if (uWalkMode == RIGHT)
         {
-
             UINT uEnterEdge = uBackEdge;
             pCurFace = pNextFace;
             pNextFace = NULL;
