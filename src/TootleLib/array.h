@@ -15,24 +15,24 @@ class Array: public std::vector<T>
 public:
     Array(void) { ; }
     Array(int size): std::vector<T>(size) { ; }
-    int GetSize(void) const { return (int)size(); }
+    int GetSize(void) const { return static_cast<int>(this->size()); }
     int PushBack(const T& value = T())
     {
-        try { push_back(value); }
+        try { this->push_back(value); }
         catch (...) { return 0; }
 
         return 1;
     }
     int Reserve(int size)
     {
-        try { reserve((size_t) size); }
+        try { this->reserve(static_cast<size_t> (size)); }
         catch (...) { return 0; }
 
         return 1;
     }
     int Resize(int size)
     {
-        try { resize((size_t) size); }
+        try { this->resize(static_cast<size_t> (size)); }
         catch (...) { return 0; }
 
         return 1;
