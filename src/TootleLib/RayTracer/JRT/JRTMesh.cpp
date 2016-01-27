@@ -27,50 +27,37 @@ JRTMesh* JRTMesh::CreateMesh(const Vec3f* pPositions,
                              UINT nTriangleCount,
                              const UINT* pIndices)
 {
-    JRTMesh* pMesh = NULL;
+    JRTMesh* pMesh = new JRTMesh();
 
-    try
+    pMesh->m_nVertexCount = nVertices;
+    pMesh->m_nTriangleCount = nTriangleCount;
+
+    // copy vertex positions
+    pMesh->m_pPositions = new Vec3f[ nVertices ];
+    memcpy(pMesh->m_pPositions, pPositions, sizeof(Vec3f)*nVertices);
+
+    // copy normals
+    pMesh->m_pFaceNormals = new Vec3f[ nTriangleCount ];
+    memcpy(pMesh->m_pFaceNormals, pNormals, nTriangleCount * sizeof(Vec3f));
+
+    // create triangles
+    pMesh->m_pTriangles = new JRTTriangle[ nTriangleCount ];
+
+    for (UINT i = 0; i < nTriangleCount; i++)
     {
-        pMesh = new JRTMesh();
+        pMesh->m_pTriangles[i].m_pMesh = pMesh;
 
-        pMesh->m_nVertexCount = nVertices;
-        pMesh->m_nTriangleCount = nTriangleCount;
+        JRT_ASSERT(pIndices[0] < nVertices);
+        JRT_ASSERT(pIndices[1] < nVertices);
+        JRT_ASSERT(pIndices[2] < nVertices);
 
-        // copy vertex positions
-        pMesh->m_pPositions = new Vec3f[ nVertices ];
-        memcpy(pMesh->m_pPositions, pPositions, sizeof(Vec3f)*nVertices);
-
-        // copy normals
-        pMesh->m_pFaceNormals = new Vec3f[ nTriangleCount ];
-        memcpy(pMesh->m_pFaceNormals, pNormals, nTriangleCount * sizeof(Vec3f));
-
-        // create triangles
-        pMesh->m_pTriangles = new JRTTriangle[ nTriangleCount ];
-
-        for (UINT i = 0; i < nTriangleCount; i++)
-        {
-            pMesh->m_pTriangles[i].m_pMesh = pMesh;
-
-            JRT_ASSERT(pIndices[0] < nVertices);
-            JRT_ASSERT(pIndices[1] < nVertices);
-            JRT_ASSERT(pIndices[2] < nVertices);
-
-            pMesh->m_pTriangles[i].m_pV1 = (const float*) &pMesh->m_pPositions[ pIndices[0] ];
-            pMesh->m_pTriangles[i].m_pV2 = (const float*) &pMesh->m_pPositions[ pIndices[1] ];
-            pMesh->m_pTriangles[i].m_pV3 = (const float*) &pMesh->m_pPositions[ pIndices[2] ];
+        pMesh->m_pTriangles[i].m_pV1 = (const float*) &pMesh->m_pPositions[ pIndices[0] ];
+        pMesh->m_pTriangles[i].m_pV2 = (const float*) &pMesh->m_pPositions[ pIndices[1] ];
+        pMesh->m_pTriangles[i].m_pV3 = (const float*) &pMesh->m_pPositions[ pIndices[2] ];
 
 
 
-            pIndices += 3;
-        }
-    }
-    catch (std::bad_alloc&)
-    {
-        // just clean up the mesh
-        // the mesh destructor should take care of freeing the mesh arrays
-        JRT_SAFE_DELETE(pMesh);
-
-        return NULL;
+        pIndices += 3;
     }
 
     return pMesh;

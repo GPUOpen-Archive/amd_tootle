@@ -216,14 +216,7 @@ TootleResult TOOTLE_DLL TootleOptimizeVCache(const unsigned int*   pnIB,
     {
         if (pnIB == pnIBOut)
         {
-            try
-            {
-                pnIBOutTmp = new unsigned int[ 3 * nFaces ];
-            }
-            catch (std::bad_alloc&)
-            {
-                return TOOTLE_OUT_OF_MEMORY;
-            }
+			pnIBOutTmp = new unsigned int[ 3 * nFaces ];
         }
     }
 
@@ -314,16 +307,7 @@ static TootleResult TootleOptimizeVCacheDirect3D(const unsigned int* pnIB,
         return TOOTLE_INVALID_ARGS;
     }
 
-    DWORD* pFaceRemap;
-
-    try
-    {
-        pFaceRemap = new DWORD[ nFaces ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    DWORD* pFaceRemap = new DWORD[ nFaces ];
 
     HRESULT hres = D3D_OK;
 
@@ -406,16 +390,7 @@ static TootleResult TootleOptimizeVCacheLStrips(const unsigned int* pnIB,
         return TOOTLE_INVALID_ARGS;
     }
 
-    unsigned int* pnStripResult;
-
-    try
-    {
-        pnStripResult = new unsigned int[ nFaces * 3 ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    unsigned int* pnStripResult = new unsigned int[ nFaces * 3 ];
 
     Stripifier::Process(pnIB, nFaces, pnStripResult, pnFaceRemapOut);
 
@@ -559,14 +534,7 @@ TootleResult TOOTLE_DLL TootleClusterMesh(const void*         pVB,
 
     if (!pnRemap)
     {
-        try
-        {
-            pnRemap = new UINT[ nFaces ];
-        }
-        catch (std::bad_alloc)
-        {
-            return TOOTLE_OUT_OF_MEMORY;
-        }
+		pnRemap = new UINT[ nFaces ];
     }
 
     if (!SortFacesByCluster(soup, clusterIDs, pnRemap))
@@ -637,14 +605,7 @@ TootleResult TOOTLE_DLL TootleFastOptimizeVCacheAndClusterMesh(const unsigned in
     {
         if (pnIB == pnIBOut)
         {
-            try
-            {
-                pnOutput = new unsigned int[ 3 * nFaces ];
-            }
-            catch (std::bad_alloc&)
-            {
-                return TOOTLE_OUT_OF_MEMORY;
-            }
+			pnOutput = new unsigned int[ 3 * nFaces ];
         }
     }
 
@@ -652,20 +613,7 @@ TootleResult TOOTLE_DLL TootleFastOptimizeVCacheAndClusterMesh(const unsigned in
     unsigned int* pnClustersOutTmp;
     unsigned int  pnNumClustersOutTmp;
 
-    try
-    {
-        pnClustersOutTmp = new unsigned int [ nFaces + 1 ];
-    }
-    catch (std::bad_alloc&)
-    {
-        // make sure we deallocate memory we created before.
-        if (pnIBOut && pnIB == pnIBOut)
-        {
-            delete[] pnOutput;
-        }
-
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    pnClustersOutTmp = new unsigned int [ nFaces + 1 ];
 
     // OPTIMIZE VERTEX CACHE
     fACMR = FanVertOptimizeVCacheOnly((int*) pnIB, (int*) pnOutput, nVertices, nFaces, nCacheSize, NULL,
@@ -1041,33 +989,11 @@ static TootleResult TootleOptimizeOverdrawFastApproximation(const void*         
     {
         if (pnIB == pnIBOut)
         {
-            try
-            {
-                pnOutput = new unsigned int[ 3 * nFaces ];
-            }
-            catch (std::bad_alloc&)
-            {
-                return TOOTLE_OUT_OF_MEMORY;
-            }
+            pnOutput = new unsigned int[ 3 * nFaces ];
         }
     }
 
-    float* pfVB;
-
-    try
-    {
-        pfVB = new float[ nVertices * 3 ];
-    }
-    catch (std::bad_alloc&)
-    {
-        // deallocate local copy
-        if (pnIBOut && pnOutput != pnIBOut)
-        {
-            delete[] pnOutput;
-        }
-
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    float* pfVB = new float[ nVertices * 3 ];
 
     // make a packed version of the vertex buffer.
     unsigned int nVertexPositionSize = 3 * sizeof(float);
@@ -1166,16 +1092,7 @@ TootleResult TOOTLE_DLL TootleOptimize(const void*             pVB,
     }
 
     // allocate an array to hold the cluster ID for each face
-    unsigned int* pnFaceClusters;
-
-    try
-    {
-        pnFaceClusters = new unsigned int[ nFaces + 1 ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    unsigned int* pnFaceClusters = new unsigned int[ nFaces + 1 ];
 
     TootleResult result;
     // cluster the mesh, and sort faces by cluster
@@ -1261,14 +1178,7 @@ TootleResult TOOTLE_DLL TootleFastOptimize(const void*         pVB,
     unsigned int* pnClustersTmp;
     unsigned int  pnNumClustersTmp;
 
-    try
-    {
-        pnClustersTmp = new unsigned int[ nFaces + 1 ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    pnClustersTmp = new unsigned int[ nFaces + 1 ];
 
     TootleResult result;
 
@@ -1394,16 +1304,7 @@ TootleResult TOOTLE_DLL TootleMeasureCacheEfficiency(const unsigned int* pnIB,
     }
 
     // allocate ourselves a vertex cache
-    unsigned int* pnCache = NULL;
-
-    try
-    {
-        pnCache = new unsigned int[nCacheSize];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    unsigned int* pnCache = new unsigned int[nCacheSize];
 
     // initialize cache to EMPTY
     UINT nEmpty = 0xffffffff;
@@ -1666,16 +1567,7 @@ TootleResult TootleMeasureOverdrawRaytrace(const void*         pVB,
     }
 
     // create a non-interleaved vertex buffer
-    float* pfVB;
-
-    try
-    {
-        pfVB = new float[ 3 * nVertices ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    float* pfVB = new float[ 3 * nVertices ];
 
     const char* pVBuffer = (const char*) pVB;
 
@@ -1849,16 +1741,7 @@ static TootleResult ConvertClusterArrayFromCompactToFull(unsigned int* pnID, uns
     }
 
     // Make a local copy of the compact form array
-    unsigned int* pnTmp;
-
-    try
-    {
-        pnTmp = new unsigned int[ nNumCluster + 1 ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    unsigned int* pnTmp = new unsigned int[ nNumCluster + 1 ];
 
     memcpy(pnTmp, pnID, (nNumCluster + 1) * sizeof(unsigned int));
 
@@ -1998,56 +1881,16 @@ TootleResult TOOTLE_DLL TootleOptimizeVertexMemory(const void*         pVB,
 
     if (pVBOut == NULL || pVB == pVBOut)
     {
-        try
-        {
-            pVBOutTmp = new char[ nVertices * nVBStride ];
-        }
-        catch (std::bad_alloc&)
-        {
-            return TOOTLE_OUT_OF_MEMORY;
-        }
+		pVBOutTmp = new char[ nVertices * nVBStride ];
     }
 
     if (pnIBOut == NULL || pnIB == pnIBOut)
     {
-        try
-        {
-            pnIBOutTmp = new unsigned int[ 3 * nFaces ];
-        }
-        catch (std::bad_alloc&)
-        {
-            // clean up
-            if (pVBOut != pVBOutTmp)
-            {
-                delete[] pVBOutTmp;
-            }
-
-            return TOOTLE_OUT_OF_MEMORY;
-        }
+        pnIBOutTmp = new unsigned int[ 3 * nFaces ];
     }
 
     // create an array of vertex id map.
-    unsigned int* pnVIDRemap;
-
-    try
-    {
-        pnVIDRemap = new unsigned int[ nVertices ];
-    }
-    catch (std::bad_alloc&)
-    {
-        // clean up
-        if (pVBOut != pVBOutTmp)
-        {
-            delete[] pVBOutTmp;
-        }
-
-        if (pnIBOut != pnIBOutTmp)
-        {
-            delete[] pnIBOutTmp;
-        }
-
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    unsigned int* pnVIDRemap = new unsigned int[ nVertices ];
 
     unsigned int i;
 

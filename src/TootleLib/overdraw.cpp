@@ -74,25 +74,16 @@ TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
     }
 
     // initialize per-cluster overdraw table
-    TootleOverdrawTable fullgraph;
+    TootleOverdrawTable fullgraph(nClusters);
 
-    try
+    for (int i = 0; i < (int) nClusters; i++)
     {
-        fullgraph.resize(nClusters);
+        fullgraph[i].resize(nClusters);
 
-        for (int i = 0; i < (int) nClusters; i++)
+        for (int j = 0; j < (int) nClusters; j++)
         {
-            fullgraph[i].resize(nClusters);
-
-            for (int j = 0; j < (int) nClusters; j++)
-            {
-                fullgraph[i][j] = 0;
-            }
+            fullgraph[i][j] = 0;
         }
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
     }
 
 
@@ -200,16 +191,7 @@ TootleResult ODInit()
         return TOOTLE_INTERNAL_ERROR;
     }
 
-    // allocate memory for the overdraw window and create viewpoint array
-    try
-    {
-        s_pOverdrawWindow = new D3DOverdrawWindow();
-    }
-    catch (std::bad_alloc&)
-    {
-        ODCleanup();
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    s_pOverdrawWindow = new D3DOverdrawWindow();
 
     // initialize overdraw window
     GDIWMOpen();
@@ -353,16 +335,7 @@ TootleResult ODObjectOverdrawRaytrace(const float*        pfVB,
     assert(pnIB);
 
     // compute face normals of the triangles
-    float* pFaceNormals;
-
-    try
-    {
-        pFaceNormals = new float [ 3 * nFaces ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    float* pFaceNormals = new float [ 3 * nFaces ];
 
     ComputeFaceNormals(pfVB, pnIB, nFaces, pFaceNormals);
 
