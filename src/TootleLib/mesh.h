@@ -10,7 +10,7 @@
 #include "Timer.h"
 #include "error.h"
 
-typedef Array< Array<UINT> > VTArray;
+typedef std::vector< std::vector<UINT> > VTArray;
 
 class Mesh: public Soup
 {
@@ -23,22 +23,22 @@ public:
 
 
     // across-edge information
-    Array<UINT>& ae(int i) { return ae_[i]; }
-    const Array<UINT>& ae(int i) const { return ae_[i]; }
-    Array< Array<UINT> >& ae(void) { return ae_; }
-    const Array< Array<UINT> >& ae(void) const { return ae_; }
+    std::vector<UINT>& ae(int i) { return ae_[i]; }
+    const std::vector<UINT>& ae(int i) const { return ae_[i]; }
+    std::vector< std::vector<UINT> >& ae(void) { return ae_; }
+    const std::vector< std::vector<UINT> >& ae(void) const { return ae_; }
 
     // neighbor vertex information
-    Array<UINT>& vv(int i) { return vv_[i]; }
-    const Array<UINT>& vv(int i) const { return vv_[i]; }
-    Array< Array<UINT> >& vv(void) { return vv_; }
-    const Array< Array<UINT> >& vv(void) const { return vv_; }
+    std::vector<UINT>& vv(int i) { return vv_[i]; }
+    const std::vector<UINT>& vv(int i) const { return vv_[i]; }
+    std::vector< std::vector<UINT> >& vv(void) { return vv_; }
+    const std::vector< std::vector<UINT> >& vv(void) const { return vv_; }
 
 protected:
     // across edge info (same as structure as a triangle)
-    Array< Array<UINT> > ae_;
+    std::vector< std::vector<UINT> > ae_;
     // vertex neighboring vertices
-    Array< Array<UINT> > vv_;
+    std::vector< std::vector<UINT> > vv_;
 private:
     // prevent catastrophic copies
 	Mesh (const Mesh&);
@@ -51,20 +51,16 @@ Mesh::ComputeVV(void)
     Timer time;
     debugf(("Finding vertex neighbors"));
 
-    if (!vv().Resize(v().GetSize()))
-    {
-        // out of memory
-        return 0;
-    }
+	vv ().resize (v ().size ());
 
-    for (int i = 0; i < t().GetSize(); i++)
+    for (int i = 0; i < t().size(); i++)
     {
-        vv(t(i)[0]).PushBack(t(i)[1]);
-        vv(t(i)[1]).PushBack(t(i)[0]);
-        vv(t(i)[1]).PushBack(t(i)[2]);
-        vv(t(i)[2]).PushBack(t(i)[1]);
-        vv(t(i)[2]).PushBack(t(i)[0]);
-        vv(t(i)[0]).PushBack(t(i)[2]);
+        vv(t(i)[0]).push_back (t(i)[1]);
+        vv(t(i)[1]).push_back (t(i)[0]);
+        vv(t(i)[1]).push_back (t(i)[2]);
+        vv(t(i)[2]).push_back (t(i)[1]);
+        vv(t(i)[2]).push_back (t(i)[0]);
+        vv(t(i)[0]).push_back (t(i)[2]);
     }
 
     debugf(("Done in %gs", time.GetElapsed()));
@@ -78,19 +74,15 @@ Mesh::ComputeVT(VTArray& vtOut)
     debugf(("Finding vertex faces"));
 
     // get all faces that use each vertex
-    if (!vtOut.Resize(v().GetSize()))
-    {
-        // out of memory
-        return 0;
-    }
+	vtOut.resize (v ().size ());
 
-    for (int f = 0; f < t().GetSize(); f++)
+    for (int f = 0; f < t().size(); f++)
     {
         Soup::Triangle& face = t(f);
 
         for (int i = 0; i < 3; i++)
         {
-            vtOut[face[i]].PushBack(f);
+            vtOut[face[i]].push_back (f);
         }
     }
 
@@ -105,10 +97,10 @@ Mesh::ComputeAE(const VTArray& vt)
     Timer time;
     debugf(("Finding across edge-info"));
     // clean across-edge info
-    ae().Resize(t().GetSize());
+    ae().resize(t().size());
 
     // find across-edge info
-    for (int f = 0; f < t().GetSize(); f++)
+    for (int f = 0; f < t().size(); f++)
     {
         for (int i = 0; i < 3; i++)
         {
@@ -118,7 +110,7 @@ Mesh::ComputeAE(const VTArray& vt)
             int vn = t(f)[in];
 
             // for each face that use v
-            for (int j = 0; j < vt[v].GetSize(); j++)
+            for (int j = 0; j < vt[v].size(); j++)
             {
                 // check if face has vn too and is not f
                 int af = vt[v][j];
@@ -128,13 +120,8 @@ Mesh::ComputeAE(const VTArray& vt)
                     for (int k = 0; k < 3; k++)
                     {
                         if (t(af)[k] == vn)
-                        {
-
-                            if (!ae(f).PushBack(af))
-                            {
-                                debugf(("Out of memory"));
-                                return 0;
-                            }
+						{
+							ae (f).push_back (af);
                         }
                     }
                 }

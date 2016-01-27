@@ -14,15 +14,12 @@ ComputeNormals(bool force)
 {
     debugf(("Computing normals"));
 
-    if (n().GetSize() == v().GetSize() && !force) { return 1; }
+    if (n().size() == v().size() && !force) { return 1; }
 
-    if (!n().Resize(v().GetSize()))
-    {
-        debugf(("Allocation failed"));
-        return 0;
-    }
+	n ().resize (v ().size ());
 
-    int nf = t().GetSize(), nv = v().GetSize();
+	const int nf = static_cast<int> (t ().size ());
+	const int nv = static_cast<int> (v ().size ());
 
     for (int i = 0; i < nv; i++)
     {
@@ -54,7 +51,7 @@ int
 Soup::
 ComputeResolution(float* resolution, bool force)
 {
-    int nf = t().GetSize();
+    const int nf = static_cast<int> (t().size());
 
     if (nf < 1 || r > 0.0 && !force)
     {
@@ -66,9 +63,9 @@ ComputeResolution(float* resolution, bool force)
 
     if (nsamp > 333) { nsamp = 333; }
 
-    Array<float> samples;
+    std::vector<float> samples;
 
-    if (!samples.Reserve(nsamp * 3)) { return 0; }
+	samples.reserve (nsamp * 3);
 
     for (int i = 0; i < nsamp; i++)
     {
@@ -93,17 +90,13 @@ ComputeResolution(float* resolution, bool force)
 
 int
 Soup::
-ComputeTriNormals(Array<Vector3>& tn)
+ComputeTriNormals(std::vector<Vector3>& tn)
 {
     debugf(("Computing tri normals"));
 
-    if (!tn.Resize(t().GetSize()))
-    {
-        debugf(("Allocation failed"));
-        return 0;
-    }
+	tn.resize (t ().size ());
 
-    int nf = t().GetSize();
+    const int nf = static_cast<int> (t().size());
 
     for (int i = 0; i < nf; i++)
     {
@@ -120,17 +113,13 @@ ComputeTriNormals(Array<Vector3>& tn)
 
 int
 Soup::
-ComputeTriCenters(Array<Vector3>& tc)
+ComputeTriCenters(std::vector<Vector3>& tc)
 {
     debugf(("Computing tri centers"));
 
-    if (!tc.Resize(t().GetSize()))
-    {
-        debugf(("Allocation failed"));
-        return 0;
-    }
+	tc.resize (t ().size ());
 
-    int nf = t().GetSize();
+    const int nf = static_cast<int> (t().size());
 
     for (int i = 0; i < nf; i++)
     {
@@ -157,15 +146,8 @@ ComputeTriCenters(Array<Vector3>& tc)
 
 bool MakeSoup(const void* pVB, const unsigned int* pIB, unsigned int nVertices, unsigned int nFaces, unsigned int nVBStride, Soup* pSoup)
 {
-    if (!pSoup->CreateArrays())
-    {
-        return false;
-    }
-
-    if (!pSoup->v().Resize(nVertices) || !pSoup->t().Resize(nFaces))
-    {
-        return false;
-    }
+	pSoup->v ().resize (nVertices);
+	pSoup->t ().resize (nFaces);
 
     // note that this code memcpy's from unsigned int to int.
     // This is ok since we have restricted the number of vertices and faces to be <= the largest signed integer

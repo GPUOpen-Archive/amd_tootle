@@ -898,20 +898,16 @@ static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*       
         return result;
     }
 
-    // build one of Array<> things for the cluster array
-    Array<int> cluster;
+    // build one of std::vector<> things for the cluster array
+    std::vector<int> cluster;
 
     for (UINT i = 0; i < nFaces; i++)
     {
-        if (!cluster.PushBack(pnFaceClusters[i]))
-        {
-            return TOOTLE_OUT_OF_MEMORY;
-        }
+		cluster.push_back (pnFaceClusters [i]);
     }
 
     //build array containing the index of the first face in each cluster
-    Array<int> ClusterStart;
-    ClusterStart.Resize(0);
+    std::vector<int> ClusterStart;
     UINT iLast = nClusters;
 
     for (UINT i = 0; i < nFaces; i++)
@@ -920,21 +916,15 @@ static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*       
         {
             iLast = pnFaceClusters[i];
 
-            if (!ClusterStart.PushBack(i))
-            {
-                return TOOTLE_OUT_OF_MEMORY;
-            }
+			ClusterStart.push_back (i);
         }
     }
 
     // last element needs to contain the number of faces in the mesh. Various pieces of code depend on this
-    if (!ClusterStart.PushBack(nFaces))
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+	ClusterStart.push_back (nFaces);
 
     //compute the overdraw graph
-    Array<t_edge> graph;
+    std::vector<t_edge> graph;
     result = ODOverdrawGraph(pfViewpoint, nViewpoints,
                              (eFrontWinding != TOOTLE_CCW),    // cull CCW faces if they aren't front facing
                              cluster, ClusterStart, graph, eOverdrawOptimizer);
@@ -945,16 +935,11 @@ static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*       
     }
 
     //reorder clusters
-    Array<int> order;
-
-    if (!order.Resize(nClusters))
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    std::vector<int> order (nClusters);
 
     if (graph.size() != 0)
     {
-        if (!feedback(nClusters, graph.GetSize(), &graph[0], &order[0]))
+        if (!feedback(nClusters, static_cast<int> (graph.size()), &graph[0], &order[0]))
         {
             return TOOTLE_OUT_OF_MEMORY;
         }
@@ -970,11 +955,11 @@ static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*       
     }
 
     //reorder triangles in soup based on cluster reordering
-    Array<Soup::Triangle> tt = soup.t();
+    std::vector<Soup::Triangle> tt = soup.t();
 
     int j = 0;
 
-    for (int i = 0; i < order.GetSize(); i++)
+    for (int i = 0; i < order.size(); i++)
     {
         for (int k = ClusterStart[order[i]]; k < ClusterStart[order[i] + 1]; k++)
         {

@@ -13,8 +13,6 @@
     #include "gdiwm.h"
 #endif
 
-#include "array.h"
-
 #include "TootleRaytracer.h"
 
 //=================================================================================================================================
@@ -64,11 +62,11 @@ static void ComputeFaceNormals(const float*        pfVB,
 TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
                                     unsigned int      nViewpoints,
                                     bool              bCullCCW,
-                                    const Array<int>& rClusters,
+                                    const std::vector<int>& rClusters,
                                     UINT              nClusters,
-                                    Array<t_edge>&    rGraphOut)
+                                    std::vector<t_edge>&    rGraphOut)
 {
-    Array<Vector3> tn;
+    std::vector<Vector3> tn;
 
     if (!s_pSoup->ComputeTriNormals(tn))
     {
@@ -132,10 +130,7 @@ TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
                 t.to = j;
                 t.cost = fullgraph[ i ][ j ] - fullgraph[ j ][ i ];
 
-                if (!rGraphOut.PushBack(t))
-                {
-                    return TOOTLE_OUT_OF_MEMORY;
-                }
+				rGraphOut.push_back (t);
             }
         }
     }
@@ -157,9 +152,9 @@ TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
 //=================================================================================================================================
 static TootleResult ODComputeGraphDirect3D(const float*      pViewpoints,
                                            unsigned int      nViewpoints,
-                                           const Array<int>& rClusters,
-                                           const Array<int>& rClusterStart,
-                                           Array<t_edge>&    rGraphOut)
+                                           const std::vector<int>& rClusters,
+                                           const std::vector<int>& rClusterStart,
+                                           std::vector<t_edge>&    rGraphOut)
 {
     s_pOverdrawWindow->SetViewpoint(pViewpoints, nViewpoints);
 
@@ -286,7 +281,7 @@ TootleResult ODSetSoup(Soup* pSoup, TootleFaceWinding eFrontWinding)
     s_pOverdrawWindow->SetCulling(eFrontWinding != TOOTLE_CCW);    // cull CCW faces if they aren't front facing
 #else
 	// Unused parameter in this case
-	(void)eFrontWinding; 
+	(void)eFrontWinding;
 #endif
 
     return TOOTLE_OK;
@@ -454,9 +449,9 @@ void ComputeFaceNormals(const float*        pfVB,
 TootleResult ODOverdrawGraph(const float*            pViewpoints,
                              unsigned int            nViewpoints,
                              bool                    bCullCCW,
-                             const Array<int>&       rClusters,
-                             const Array<int>&       rClusterStart,
-                             Array<t_edge>&          rGraphOut,
+                             const std::vector<int>&       rClusters,
+                             const std::vector<int>&       rClusterStart,
+                             std::vector<t_edge>&          rGraphOut,
                              TootleOverdrawOptimizer eOverdrawOptimizer)
 {
 #ifdef _SOFTWARE_ONLY_VERSION

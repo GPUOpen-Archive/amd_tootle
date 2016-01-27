@@ -14,35 +14,13 @@ class Soup: public Cloud
 {
 public:
 
-    Soup(void) : pt(NULL)
+    Soup(void)
     {
         r = -1;
     }
 
     virtual ~Soup()
     {
-        if (pt)
-        {
-            pt->RCDown();
-            pt = NULL;
-        }
-    }
-
-    /// Allocates the internal arrays used by the cloud.
-    // This has been moved out of the constructor because allocating memory inside of a constructor causes memory leaks
-    // and makes it harder to trap exceptions thrown by new
-    virtual bool CreateArrays()
-    {
-        try
-        {
-            pt = new RCArray<Triangle>;
-        }
-        catch (std::bad_alloc&)
-        {
-            return false;
-        }
-
-        return Cloud::CreateArrays();
     }
 
 
@@ -62,23 +40,23 @@ public:
         int vi[3];
     };
 
-    Triangle& t(size_t i) { return (*pt)[i]; }
-    const Triangle& t(size_t i) const { return (*pt)[i]; }
-    RCArray<Triangle>& t(void) { return *pt; }
-    const RCArray<Triangle>& t(void) const { return *pt; }
-    void t(RCArray<Triangle>& new_t)
+    Triangle& t(size_t i) { return pt[i]; }
+    const Triangle& t(size_t i) const { return pt[i]; }
+    std::vector<Triangle>& t(void) { return pt; }
+    const std::vector<Triangle>& t(void) const { return pt; }
+    void t(const std::vector<Triangle>& new_t)
     {
-        new_t.RCUp(); pt->RCDown(); pt = &new_t;
+		pt = new_t;
     }
 
     int ComputeNormals(bool force = false);
-    int ComputeTriNormals(Array<Vector3>& tn);
-    int ComputeTriCenters(Array<Vector3>& tc);
+    int ComputeTriNormals(std::vector<Vector3>& tn);
+    int ComputeTriCenters(std::vector<Vector3>& tc);
     int ComputeResolution(float* resolution, bool force = false);
 
 protected:
     float r;
-    RCArray<Triangle>* pt;
+    std::vector<Triangle> pt;
 
 private:
 	Soup (const Soup&);

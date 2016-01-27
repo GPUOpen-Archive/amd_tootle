@@ -98,7 +98,7 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
     int nseeds = (int)seeds.size();
 
     //flood from seeds here
-    for (int i = 0; i < mesh.t().GetSize(); i++)
+    for (int i = 0; i < mesh.t().size(); i++)
     {
         cluster[i] = nseeds;
         fixed[i] = false;
@@ -208,7 +208,7 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
 
     int lowvisf = -1;
 
-    for (int i = 0; i < mesh.t().GetSize(); i++)
+    for (int i = 0; i < mesh.t().size(); i++)
     {
         if (fixed[i] == false && vis[i] < lowvisi)
         {
@@ -233,7 +233,6 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
 static void MoveSeeds(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& cluster, std::vector<int>& fixed, std::vector<Vector3>& tc)
 {
     //flood from boundaries here
-    int i;
 
     int nseeds = (int)seeds.size();
     std::vector<float> cost;
@@ -241,12 +240,12 @@ static void MoveSeeds(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clu
 
     priority_queue<QNode, vector<QNode>, greater<QNode> > q;
 
-    for (i = 0; i < mesh.t().GetSize(); i++)
+    for (int i = 0; i < mesh.t().size(); i++)
     {
         cost.push_back(BIGFLOAT);
         visited.push_back(0);
 
-        for (int j = 0; j < mesh.ae(i).GetSize(); j++)
+        for (int j = 0; j < mesh.ae(i).size(); j++)
         {
             int ff = mesh.ae(i)[j];
 
@@ -297,12 +296,12 @@ static void MoveSeeds(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clu
 
     std::vector<float> seeddist;
 
-    for (i = 0; i < nseeds; i++)
+    for (int i = 0; i < nseeds; i++)
     {
         seeddist.push_back(cost[seeds[i]]);
     }
 
-    for (i = 0; i < mesh.t().GetSize(); i++)
+    for (int i = 0; i < mesh.t().size(); i++)
     {
         if (cost[i] > seeddist[cluster[i]])
         {
@@ -330,7 +329,7 @@ static int FingerPrint(Mesh& mesh, std::vector<int>& cluster)
 {
     int ret = 0;
 
-    for (int i = 0; i < mesh.t().GetSize(); i++)
+    for (int i = 0; i < mesh.t().size(); i++)
     {
         ret = (ret + i * cluster[i]) % 40923840;
     }
@@ -354,16 +353,9 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
         return CLUSTER_OUT_OF_MEMORY;
     }
 
-    int nFaces = soup->t().GetSize();
+    const int nFaces = static_cast<int> (soup->t().size());
 
-
-    // allocate arrays for the mesh so that ref-counting stuff doesn't break
     Mesh mesh;
-
-    if (!mesh.CreateArrays())
-    {
-        return CLUSTER_OUT_OF_MEMORY;
-    }
 
     SoupToMesh(soup, &mesh);
 
@@ -378,10 +370,7 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
 
     // compute per-face adjacency
     // allocate the AE array ahead of time so that we can detect out-of-memory conditions
-    if (!mesh.ae().Resize(mesh.t().GetSize()))
-    {
-        return CLUSTER_OUT_OF_MEMORY;
-    }
+	mesh.ae ().resize (mesh.t ().size ());
 
     // computeAE should now only fail if the mesh is non-manifold
     if (!mesh.ComputeAE(meshVT))
@@ -390,7 +379,7 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
     }
 
     // compute face normals
-    Array<Vector3> tn;
+    std::vector<Vector3> tn;
 
     if (!mesh.ComputeTriNormals(tn))
     {
@@ -398,7 +387,7 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
     }
 
     // compute face centers
-    Array<Vector3> tc;
+    std::vector<Vector3> tc;
 
     if (!mesh.ComputeTriCenters(tc))
     {
@@ -423,16 +412,16 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
         std::vector<int> seeds;
         std::vector<int> fixed;
         std::vector<int> fp;
-        fixed.resize(mesh.t().GetSize());
+        fixed.resize(mesh.t().size());
 
         // if cluster count is fixed, then clamp it
-        if ((int)nClusters > mesh.t().GetSize())
+        if ((int)nClusters > mesh.t().size())
         {
-            nClusters = (UINT)mesh.t().GetSize();
+            nClusters = (UINT)mesh.t().size();
         }
 
         srand(982748); //in order to get reproducible results
-        int last = rand() % mesh.t().GetSize();
+        int last = rand() % mesh.t().size();
 
         bool bHasUnassignedFaces = true;
 
@@ -564,7 +553,7 @@ bool SortFacesByCluster(Soup& soup, std::vector<int>& clusterIDs, UINT* pRemapAr
     std::vector<Soup::Triangle> t;
     std::vector<int> c;
 
-    for (int i = 0; i < soup.t().GetSize(); i++)
+    for (int i = 0; i < soup.t().size(); i++)
     {
         pRemapArray[i] = i;
     }
@@ -580,9 +569,9 @@ bool SortFacesByCluster(Soup& soup, std::vector<int>& clusterIDs, UINT* pRemapAr
     }
 
     g_pCluster = &clusterIDs[0];
-    qsort(pRemapArray, soup.t().GetSize(), sizeof(int), SortByClusterID);
+    qsort(pRemapArray, soup.t().size(), sizeof(int), SortByClusterID);
 
-    for (int i = 0; i < soup.t().GetSize(); i++)
+    for (int i = 0; i < soup.t().size(); i++)
     {
         soup.t(i) = t[pRemapArray[i]];
         clusterIDs[i] = c[pRemapArray[i]];

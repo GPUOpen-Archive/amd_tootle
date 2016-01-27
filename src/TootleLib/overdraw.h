@@ -8,7 +8,6 @@
 
 #include "tootlelib.h"
 #include "vector.h"
-#include "array.h"
 #include "feedback.h"
 #include <vector>
 
@@ -37,9 +36,9 @@ TootleResult ODObjectOverdrawRaytrace(const float*        pfVB,
 TootleResult ODOverdrawGraph(const float*            pViewpoints,
                              unsigned int            nViewpoints,
                              bool                    bCullCCW,
-                             const Array<int>&       rClusters,
-                             const Array<int>&       rClusterOut,
-                             Array<t_edge>&          rGraphOut,
+                             const std::vector<int>&       rClusters,
+                             const std::vector<int>&       rClusterOut,
+                             std::vector<t_edge>&          rGraphOut,
                              TootleOverdrawOptimizer eOverdrawOptimizer);
 
 void ODCleanup();

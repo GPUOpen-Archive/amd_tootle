@@ -143,9 +143,6 @@
     <ClInclude Include="..\..\src\TootleLib\quaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TootleLib\rcarray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\TootleLib\scalar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
