@@ -21,6 +21,17 @@
 #include "viewpoints.h"
 #include "Stripifier.h"
 
+
+#define AMD_TOOTLE_API_FUNCTION_BEGIN try {
+#define AMD_TOOTLE_API_FUNCTION_END		\
+    }									\
+    catch (const std::bad_alloc&) {		\
+        return TOOTLE_OUT_OF_MEMORY;	\
+    }									\
+    catch (const std::exception&) {		\
+        return TOOTLE_INTERNAL_ERROR;	\
+    }
+
 //=================================================================================================================================
 //
 //          Static functions
@@ -126,6 +137,8 @@ static bool IsClusterArrayCompactFormat(const unsigned int* pnID, unsigned int n
 
 TootleResult TOOTLE_DLL TootleInit()
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // initialize overdraw module
     if (!ODIsInitialized())
     {
@@ -133,6 +146,8 @@ TootleResult TOOTLE_DLL TootleInit()
     }
 
     return TOOTLE_OK;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 static TootleResult FindFaceMappingFromIndex(const unsigned int* pnIB,
@@ -185,6 +200,8 @@ TootleResult TOOTLE_DLL TootleOptimizeVCache(const unsigned int*   pnIB,
                                              unsigned int*         pnFaceRemapOut,
                                              TootleVCacheOptimizer eVCacheOptimizer)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks on the input parameters
     assert(pnIB);
 
@@ -273,6 +290,8 @@ TootleResult TOOTLE_DLL TootleOptimizeVCache(const unsigned int*   pnIB,
     }
 
     return result;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 #ifndef _SOFTWARE_ONLY_VERSION
@@ -477,6 +496,8 @@ TootleResult TOOTLE_DLL TootleClusterMesh(const void*         pVB,
                                           unsigned int*       pnFaceClustersOut,
                                           unsigned int*       pnFaceRemapOut)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -561,6 +582,8 @@ TootleResult TOOTLE_DLL TootleClusterMesh(const void*         pVB,
     pnFaceClustersOut[nFaces] = 1 + pnFaceClustersOut[nFaces - 1];
 
     return TOOTLE_OK;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 TootleResult TOOTLE_DLL TootleFastOptimizeVCacheAndClusterMesh(const unsigned int* pnIB,
@@ -572,6 +595,8 @@ TootleResult TOOTLE_DLL TootleFastOptimizeVCacheAndClusterMesh(const unsigned in
                                                                unsigned int*       pnNumClustersOut,
                                                                float               fAlpha)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pnIB);
     assert(pnIBOut);
@@ -638,6 +663,8 @@ TootleResult TOOTLE_DLL TootleFastOptimizeVCacheAndClusterMesh(const unsigned in
     delete[] pnClustersOutTmp;
 
     return TOOTLE_OK;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 TootleResult TOOTLE_DLL TootleOptimizeOverdraw(const void*             pVB,
@@ -653,6 +680,8 @@ TootleResult TOOTLE_DLL TootleOptimizeOverdraw(const void*             pVB,
                                                unsigned int*           pnClusterRemapOut,
                                                TootleOverdrawOptimizer eOverdrawOptimizer)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -713,6 +742,8 @@ TootleResult TOOTLE_DLL TootleOptimizeOverdraw(const void*             pVB,
 
             return TOOTLE_INVALID_ARGS;
     }
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*             pVB,
@@ -1029,10 +1060,15 @@ static TootleResult TootleOptimizeOverdrawFastApproximation(const void*         
 //=================================================================================================================================
 void TOOTLE_DLL TootleCleanup()
 {
-    // clean up overdraw module
-    if (ODIsInitialized())
+    try 
     {
-        ODCleanup();
+        // clean up overdraw module
+        if (ODIsInitialized ()) {
+            ODCleanup ();
+        }
+    }
+    catch (...) 		
+    {
     }
 }
 
@@ -1050,6 +1086,8 @@ TootleResult TOOTLE_DLL TootleOptimize(const void*             pVB,
                                        TootleVCacheOptimizer   eVCacheOptimizer,
                                        TootleOverdrawOptimizer eOverdrawOptimizer)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -1129,6 +1167,8 @@ TootleResult TOOTLE_DLL TootleOptimize(const void*             pVB,
     delete [] pnFaceClusters;
 
     return TOOTLE_OK;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 TootleResult TOOTLE_DLL TootleFastOptimize(const void*         pVB,
@@ -1142,6 +1182,8 @@ TootleResult TOOTLE_DLL TootleFastOptimize(const void*         pVB,
                                            unsigned int*       pnNumClustersOut,
                                            float               fAlpha)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -1205,6 +1247,8 @@ TootleResult TOOTLE_DLL TootleFastOptimize(const void*         pVB,
     }
 
     return result;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 TootleResult TOOTLE_DLL TootleVCacheClusters(const unsigned int*   pnIB,
@@ -1216,6 +1260,9 @@ TootleResult TOOTLE_DLL TootleVCacheClusters(const unsigned int*   pnIB,
                                              unsigned int*         pnFaceRemapOut,
                                              TootleVCacheOptimizer eVCacheOptimizer)
 {
+
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pnIB);
 
@@ -1277,6 +1324,8 @@ TootleResult TOOTLE_DLL TootleVCacheClusters(const unsigned int*   pnIB,
     }
 
     return TOOTLE_OK;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 TootleResult TOOTLE_DLL TootleMeasureCacheEfficiency(const unsigned int* pnIB,
@@ -1284,6 +1333,8 @@ TootleResult TOOTLE_DLL TootleMeasureCacheEfficiency(const unsigned int* pnIB,
                                                      unsigned int        nCacheSize,
                                                      float*              pfEfficiencyOut)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pnIB);
     assert(pfEfficiencyOut);
@@ -1358,6 +1409,8 @@ TootleResult TOOTLE_DLL TootleMeasureCacheEfficiency(const unsigned int* pnIB,
     }
 
     return TOOTLE_OK;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 TootleResult TOOTLE_DLL TootleMeasureOverdraw(const void*             pVB,
@@ -1372,6 +1425,8 @@ TootleResult TOOTLE_DLL TootleMeasureOverdraw(const void*             pVB,
                                               float*                  pfMaxODOut,
                                               TootleOverdrawOptimizer /*eOverdrawOptimizer*/)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -1418,6 +1473,8 @@ TootleResult TOOTLE_DLL TootleMeasureOverdraw(const void*             pVB,
     }
 
 #endif
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 #ifndef _SOFTWARE_ONLY_VERSION
@@ -1432,6 +1489,8 @@ TootleResult TootleMeasureOverdrawDirect3D(const void*         pVB,
                                            float*              pfAvgODOut,
                                            float*              pfMaxODOut)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -1512,6 +1571,8 @@ TootleResult TootleMeasureOverdrawDirect3D(const void*         pVB,
     }
 
     return result;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 #endif
 
@@ -1526,6 +1587,8 @@ TootleResult TootleMeasureOverdrawRaytrace(const void*         pVB,
                                            float*              pfAvgODOut,
                                            float*              pfMaxODOut)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -1599,6 +1662,8 @@ TootleResult TootleMeasureOverdrawRaytrace(const void*         pVB,
     delete[] pfVB;
 
     return result;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
 
 //=================================================================================================================================
@@ -1847,6 +1912,8 @@ TootleResult TOOTLE_DLL TootleOptimizeVertexMemory(const void*         pVB,
                                                    unsigned int*       pnIBOut,
                                                    unsigned int*       pnVertexRemapOut)
 {
+    AMD_TOOTLE_API_FUNCTION_BEGIN
+ 
     // sanity checks
     assert(pVB);
     assert(pnIB);
@@ -1998,4 +2065,6 @@ TootleResult TOOTLE_DLL TootleOptimizeVertexMemory(const void*         pVB,
     delete [] pnVIDRemap;
 
     return TOOTLE_OK;
+
+    AMD_TOOTLE_API_FUNCTION_END
 }
