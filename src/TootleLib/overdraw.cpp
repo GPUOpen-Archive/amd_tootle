@@ -13,8 +13,6 @@
     #include "gdiwm.h"
 #endif
 
-#include "array.h"
-
 #include "TootleRaytracer.h"
 
 //=================================================================================================================================
@@ -61,14 +59,14 @@ static void ComputeFaceNormals(const float*        pfVB,
 /// \param rGraphOut           An array of edges that will contain the overdraw graph
 /// \return TOOTLE_OK, or TOOTLE_OUT_OF_MEMORY
 //=================================================================================================================================
-TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
-                                    unsigned int      nViewpoints,
-                                    bool              bCullCCW,
-                                    const Array<int>& rClusters,
-                                    UINT              nClusters,
-                                    Array<t_edge>&    rGraphOut)
+TootleResult ODComputeGraphRaytrace(const float*            pViewpoints,
+                                    unsigned int            nViewpoints,
+                                    bool                    bCullCCW,
+                                    const std::vector<int>& rClusters,
+                                    UINT                    nClusters,
+                                    std::vector<t_edge>&    rGraphOut)
 {
-    Array<Vector3> tn;
+    std::vector<Vector3> tn;
 
     if (!s_pSoup->ComputeTriNormals(tn))
     {
@@ -76,25 +74,16 @@ TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
     }
 
     // initialize per-cluster overdraw table
-    TootleOverdrawTable fullgraph;
+    TootleOverdrawTable fullgraph(nClusters);
 
-    try
+    for (int i = 0; i < (int) nClusters; i++)
     {
-        fullgraph.resize(nClusters);
+        fullgraph[i].resize(nClusters);
 
-        for (int i = 0; i < (int) nClusters; i++)
+        for (int j = 0; j < (int) nClusters; j++)
         {
-            fullgraph[i].resize(nClusters);
-
-            for (int j = 0; j < (int) nClusters; j++)
-            {
-                fullgraph[i][j] = 0;
-            }
+            fullgraph[i][j] = 0;
         }
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
     }
 
 
@@ -132,10 +121,7 @@ TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
                 t.to = j;
                 t.cost = fullgraph[ i ][ j ] - fullgraph[ j ][ i ];
 
-                if (!rGraphOut.PushBack(t))
-                {
-                    return TOOTLE_OUT_OF_MEMORY;
-                }
+                rGraphOut.push_back (t);
             }
         }
     }
@@ -155,11 +141,11 @@ TootleResult ODComputeGraphRaytrace(const float*      pViewpoints,
 /// \param rGraphOut      An array of edges that will contain the overdraw graph
 /// \return TOOTLE_OK, or TOOTLE_OUT_OF_MEMORY
 //=================================================================================================================================
-static TootleResult ODComputeGraphDirect3D(const float*      pViewpoints,
-                                           unsigned int      nViewpoints,
-                                           const Array<int>& rClusters,
-                                           const Array<int>& rClusterStart,
-                                           Array<t_edge>&    rGraphOut)
+static TootleResult ODComputeGraphDirect3D(const float*            pViewpoints,
+                                           unsigned int            nViewpoints,
+                                           const std::vector<int>& rClusters,
+                                           const std::vector<int>& rClusterStart,
+                                           std::vector<t_edge>&    rGraphOut)
 {
     s_pOverdrawWindow->SetViewpoint(pViewpoints, nViewpoints);
 
@@ -205,16 +191,7 @@ TootleResult ODInit()
         return TOOTLE_INTERNAL_ERROR;
     }
 
-    // allocate memory for the overdraw window and create viewpoint array
-    try
-    {
-        s_pOverdrawWindow = new D3DOverdrawWindow();
-    }
-    catch (std::bad_alloc&)
-    {
-        ODCleanup();
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    s_pOverdrawWindow = new D3DOverdrawWindow();
 
     // initialize overdraw window
     GDIWMOpen();
@@ -285,8 +262,8 @@ TootleResult ODSetSoup(Soup* pSoup, TootleFaceWinding eFrontWinding)
 
     s_pOverdrawWindow->SetCulling(eFrontWinding != TOOTLE_CCW);    // cull CCW faces if they aren't front facing
 #else
-	// Unused parameter in this case
-	(void)eFrontWinding; 
+    // Unused parameter in this case
+    (void)eFrontWinding;
 #endif
 
     return TOOTLE_OK;
@@ -358,16 +335,7 @@ TootleResult ODObjectOverdrawRaytrace(const float*        pfVB,
     assert(pnIB);
 
     // compute face normals of the triangles
-    float* pFaceNormals;
-
-    try
-    {
-        pFaceNormals = new float [ 3 * nFaces ];
-    }
-    catch (std::bad_alloc&)
-    {
-        return TOOTLE_OUT_OF_MEMORY;
-    }
+    float* pFaceNormals = new float [ 3 * nFaces ];
 
     ComputeFaceNormals(pfVB, pnIB, nFaces, pFaceNormals);
 
@@ -454,9 +422,9 @@ void ComputeFaceNormals(const float*        pfVB,
 TootleResult ODOverdrawGraph(const float*            pViewpoints,
                              unsigned int            nViewpoints,
                              bool                    bCullCCW,
-                             const Array<int>&       rClusters,
-                             const Array<int>&       rClusterStart,
-                             Array<t_edge>&          rGraphOut,
+                             const std::vector<int>& rClusters,
+                             const std::vector<int>& rClusterStart,
+                             std::vector<t_edge>&    rGraphOut,
                              TootleOverdrawOptimizer eOverdrawOptimizer)
 {
 #ifdef _SOFTWARE_ONLY_VERSION

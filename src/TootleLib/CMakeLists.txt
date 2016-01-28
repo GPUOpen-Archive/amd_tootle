@@ -32,7 +32,6 @@ SET(SOURCES
 
 SET(HEADERS
     aligned_malloc.h
-    array.h
     bbox.h
     cloud.h
     clustering.h
@@ -46,7 +45,6 @@ SET(HEADERS
     option.h
     overdraw.h
     quaternion.h
-    rcarray.h
     scalar.h
     soup.h
     souptomesh.h
@@ -57,6 +55,8 @@ SET(HEADERS
     vector.h
     viewpoints.h
     window.h
+
+    include/tootlelib.h
 
     RayTracer/TootleRaytracer.h
     RayTracer/JRT/JRTBoundingBox.h
@@ -91,7 +91,7 @@ TARGET_INCLUDE_DIRECTORIES(TootleLib
 
 TARGET_COMPILE_DEFINITIONS(TootleLib
     PUBLIC _SOFTWARE_ONLY_VERSION)
-    
+
 IF(UNIX)
     TARGET_COMPILE_DEFINITIONS(TootleLib
         PUBLIC _LINUX)

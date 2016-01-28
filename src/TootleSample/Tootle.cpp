@@ -203,17 +203,7 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
     // Create a local copy of the vertex remapping array.
     //  Note that because the input vertices in the OBJ file might be larger than the vertex buffer
     //  in rVertices, vertexRemapping buffer might be larger than vertexRemap.
-    unsigned int* vertexRemapping;
-
-    try
-    {
-        vertexRemapping = new unsigned int[ nCount ];
-    }
-    catch (std::bad_alloc&)
-    {
-        std::cerr << "EmitModifiedObj: vertex remapping OUT OF MEMORY.\n";
-        return false;
-    }
+    unsigned int* vertexRemapping = new unsigned int[ nCount ];
 
     // if there is no vertex remapping, create a default one
     if (vertexRemap == NULL)
@@ -245,23 +235,7 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
     }
 
     // compute the inverse vertex mapping to output the remapped vertices
-    unsigned int* inverseVertexRemapping;
-
-    try
-    {
-        inverseVertexRemapping = new unsigned int[ nCount ];
-    }
-    catch (std::bad_alloc&)
-    {
-        std::cerr << "EmitModifiedObj: inverseVertexRemapping OUT OF MEMORY.\n";
-
-        if (vertexRemapping != vertexRemap)
-        {
-            delete[] vertexRemapping;
-        }
-
-        return false;
-    }
+    unsigned int* inverseVertexRemapping = new unsigned int[ nCount ];
 
     unsigned int nVID;
 

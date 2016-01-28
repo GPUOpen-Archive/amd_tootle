@@ -41,17 +41,7 @@ UINT* SortMaterials(const float* pfVB,
                     UINT         nMaterials)
 {
     // make an array to hold the material re-mapping
-    UINT* pnMaterialRemap;
-
-    try
-    {
-        pnMaterialRemap = new UINT [ nMaterials ];
-    }
-    catch (std::bad_alloc&)
-    {
-        fprintf(stderr, "SortMaterials: Error in allocating memory using new.\n");
-        return NULL;
-    }
+    UINT* pnMaterialRemap = new UINT [ nMaterials ];
 
     // optimize the draw order
     TootleResult result = TootleOptimizeOverdraw(pfVB, pnIB, nVertices, nFaces, nVBStride,

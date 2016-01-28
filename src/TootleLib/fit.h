@@ -7,15 +7,14 @@
 #define FIT_H
 
 #include "vector.h"
-#include "array.h"
 
 bool
-RobustFit(const Array<Vector3>& vertex, Vector3* ucenter, float* usize);
+RobustFit(const std::vector<Vector3>& vertex, Vector3* ucenter, float* usize);
 
 bool
-BBoxFit(const Array<Vector3>& vertex, Vector3* ucenter, float* usize);
+BBoxFit(const std::vector<Vector3>& vertex, Vector3* ucenter, float* usize);
 
 bool
-BBoxFit(const Array<Vector3>& vertex, const int* ind, int iStart, int nTris, Vector3* ucenter, Vector3* udiag, float* usize);
+BBoxFit(const std::vector<Vector3>& vertex, const int* ind, int iStart, int nTris, Vector3* ucenter, Vector3* udiag, float* usize);
 
 #endif

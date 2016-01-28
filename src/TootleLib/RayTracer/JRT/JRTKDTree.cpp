@@ -710,23 +710,12 @@ UINT JRTKDTree::FindAllHits(const Vec3f& rOrigin, const Vec3f& rDirection, Tootl
                         // grow array
                         UINT nOldArraySize = *pnArraySize;
                         *pnArraySize = 2 * (*pnArraySize);
-                        TootleRayHit* pTemp = NULL;
-
-                        try
-                        {
-                            pTemp = new TootleRayHit[ *pnArraySize ];
-                        }
-                        catch (std::bad_alloc&)
-                        {
-                            return JRTKDTree::OUT_OF_MEMORY;
-                        }
+                        TootleRayHit* pTemp = new TootleRayHit[ *pnArraySize ];
 
                         memcpy(pTemp, *ppHitArray, nOldArraySize * sizeof(TootleRayHit));
                         delete[] *ppHitArray;
                         *ppHitArray = pTemp;
                     }
-
-
                 }
             }
 
