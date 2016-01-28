@@ -46,7 +46,7 @@ public:
     const std::vector<Triangle>& t(void) const { return pt; }
     void t(const std::vector<Triangle>& new_t)
     {
-		pt = new_t;
+        pt = new_t;
     }
 
     int ComputeNormals(bool force = false);
@@ -59,8 +59,8 @@ protected:
     std::vector<Triangle> pt;
 
 private:
-	Soup (const Soup&);
-	Soup& operator=(const Soup&);
+    Soup (const Soup&);
+    Soup& operator=(const Soup&);
 
 };
 

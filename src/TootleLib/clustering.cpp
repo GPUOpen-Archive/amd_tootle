@@ -370,7 +370,7 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
 
     // compute per-face adjacency
     // allocate the AE array ahead of time so that we can detect out-of-memory conditions
-	mesh.ae ().resize (mesh.t ().size ());
+    mesh.ae ().resize (mesh.t ().size ());
 
     // computeAE should now only fail if the mesh is non-manifold
     if (!mesh.ComputeAE(meshVT))
@@ -481,7 +481,7 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
         bHasUnassignedFaces = false;
         UINT nSeeds = (UINT) seeds.size();
 
-		// @TODO Verify this code - previously, it used a local i
+        // @TODO Verify this code - previously, it used a local i
         for (UINT j = 0; j < cluster.size(); j++)
         {
             if (cluster[j] == static_cast<int> (nSeeds))

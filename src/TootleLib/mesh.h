@@ -41,8 +41,8 @@ protected:
     std::vector< std::vector<UINT> > vv_;
 private:
     // prevent catastrophic copies
-	Mesh (const Mesh&);
-	Mesh& operator=(const Mesh&);
+    Mesh (const Mesh&);
+    Mesh& operator=(const Mesh&);
 };
 
 inline int
@@ -51,7 +51,7 @@ Mesh::ComputeVV(void)
     Timer time;
     debugf(("Finding vertex neighbors"));
 
-	vv ().resize (v ().size ());
+    vv ().resize (v ().size ());
 
     for (int i = 0; i < t().size(); i++)
     {
@@ -74,7 +74,7 @@ Mesh::ComputeVT(VTArray& vtOut)
     debugf(("Finding vertex faces"));
 
     // get all faces that use each vertex
-	vtOut.resize (v ().size ());
+    vtOut.resize (v ().size ());
 
     for (int f = 0; f < t().size(); f++)
     {
@@ -120,8 +120,8 @@ Mesh::ComputeAE(const VTArray& vt)
                     for (int k = 0; k < 3; k++)
                     {
                         if (t(af)[k] == vn)
-						{
-							ae (f).push_back (af);
+                        {
+                            ae (f).push_back (af);
                         }
                     }
                 }

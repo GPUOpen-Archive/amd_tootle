@@ -23,7 +23,7 @@ RobustFit(const std::vector<Vector3>& vertex, Vector3* ucenter, float* usize)
     // solve for x, y and z independently
     std::vector<float> a, b, c;
 
-	a.resize (nvertex); b.resize (nvertex); c.resize (nvertex);
+    a.resize (nvertex); b.resize (nvertex); c.resize (nvertex);
 
     // copy coordinates to temp buffers
     for (int i = 0; i < nvertex; i++)

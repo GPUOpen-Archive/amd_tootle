@@ -101,9 +101,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\TootleLib\array.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\TootleLib\bbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>

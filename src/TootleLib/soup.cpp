@@ -16,10 +16,10 @@ ComputeNormals(bool force)
 
     if (n().size() == v().size() && !force) { return 1; }
 
-	n ().resize (v ().size ());
+    n ().resize (v ().size ());
 
-	const int nf = static_cast<int> (t ().size ());
-	const int nv = static_cast<int> (v ().size ());
+    const int nf = static_cast<int> (t ().size ());
+    const int nv = static_cast<int> (v ().size ());
 
     for (int i = 0; i < nv; i++)
     {
@@ -65,7 +65,7 @@ ComputeResolution(float* resolution, bool force)
 
     std::vector<float> samples;
 
-	samples.reserve (nsamp * 3);
+    samples.reserve (nsamp * 3);
 
     for (int i = 0; i < nsamp; i++)
     {
@@ -94,7 +94,7 @@ ComputeTriNormals(std::vector<Vector3>& tn)
 {
     debugf(("Computing tri normals"));
 
-	tn.resize (t ().size ());
+    tn.resize (t ().size ());
 
     const int nf = static_cast<int> (t().size());
 
@@ -117,7 +117,7 @@ ComputeTriCenters(std::vector<Vector3>& tc)
 {
     debugf(("Computing tri centers"));
 
-	tc.resize (t ().size ());
+    tc.resize (t ().size ());
 
     const int nf = static_cast<int> (t().size());
 
@@ -146,8 +146,8 @@ ComputeTriCenters(std::vector<Vector3>& tc)
 
 bool MakeSoup(const void* pVB, const unsigned int* pIB, unsigned int nVertices, unsigned int nFaces, unsigned int nVBStride, Soup* pSoup)
 {
-	pSoup->v ().resize (nVertices);
-	pSoup->t ().resize (nFaces);
+    pSoup->v ().resize (nVertices);
+    pSoup->t ().resize (nFaces);
 
     // note that this code memcpy's from unsigned int to int.
     // This is ok since we have restricted the number of vertices and faces to be <= the largest signed integer

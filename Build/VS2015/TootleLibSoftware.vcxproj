@@ -248,7 +248,6 @@
     <ClCompile Include="..\..\src\TootleLib\RayTracer\TootleRaytracer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\TootleLib\array.h" />
     <ClInclude Include="..\..\src\TootleLib\bbox.h" />
     <ClInclude Include="..\..\src\TootleLib\cloud.h" />
     <ClInclude Include="..\..\src\TootleLib\clustering.h" />

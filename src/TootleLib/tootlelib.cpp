@@ -216,7 +216,7 @@ TootleResult TOOTLE_DLL TootleOptimizeVCache(const unsigned int*   pnIB,
     {
         if (pnIB == pnIBOut)
         {
-			pnIBOutTmp = new unsigned int[ 3 * nFaces ];
+            pnIBOutTmp = new unsigned int[ 3 * nFaces ];
         }
     }
 
@@ -534,7 +534,7 @@ TootleResult TOOTLE_DLL TootleClusterMesh(const void*         pVB,
 
     if (!pnRemap)
     {
-		pnRemap = new UINT[ nFaces ];
+        pnRemap = new UINT[ nFaces ];
     }
 
     if (!SortFacesByCluster(soup, clusterIDs, pnRemap))
@@ -605,7 +605,7 @@ TootleResult TOOTLE_DLL TootleFastOptimizeVCacheAndClusterMesh(const unsigned in
     {
         if (pnIB == pnIBOut)
         {
-			pnOutput = new unsigned int[ 3 * nFaces ];
+            pnOutput = new unsigned int[ 3 * nFaces ];
         }
     }
 
@@ -851,7 +851,7 @@ static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*       
 
     for (UINT i = 0; i < nFaces; i++)
     {
-		cluster.push_back (pnFaceClusters [i]);
+        cluster.push_back (pnFaceClusters [i]);
     }
 
     //build array containing the index of the first face in each cluster
@@ -864,12 +864,12 @@ static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*       
         {
             iLast = pnFaceClusters[i];
 
-			ClusterStart.push_back (i);
+            ClusterStart.push_back (i);
         }
     }
 
     // last element needs to contain the number of faces in the mesh. Various pieces of code depend on this
-	ClusterStart.push_back (nFaces);
+    ClusterStart.push_back (nFaces);
 
     //compute the overdraw graph
     std::vector<t_edge> graph;
@@ -1881,7 +1881,7 @@ TootleResult TOOTLE_DLL TootleOptimizeVertexMemory(const void*         pVB,
 
     if (pVBOut == NULL || pVB == pVBOut)
     {
-		pVBOutTmp = new char[ nVertices * nVBStride ];
+        pVBOutTmp = new char[ nVertices * nVBStride ];
     }
 
     if (pnIBOut == NULL || pnIB == pnIBOut)
