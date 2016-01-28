@@ -23,19 +23,19 @@
 
 
 #define AMD_TOOTLE_API_FUNCTION_BEGIN try {
-#define AMD_TOOTLE_API_FUNCTION_END		\
-    }									\
-    catch (const std::bad_alloc&)		\
-    {									\
-        return TOOTLE_OUT_OF_MEMORY;	\
-    }									\
-    catch (const std::exception&)		\
-    {									\
-        return TOOTLE_INTERNAL_ERROR;	\
-    }									\
-    catch (...)							\
-    {									\
-        return TOOTLE_INTERNAL_ERROR;	\
+#define AMD_TOOTLE_API_FUNCTION_END     \
+    }                                   \
+    catch (const std::bad_alloc&)       \
+    {                                   \
+        return TOOTLE_OUT_OF_MEMORY;    \
+    }                                   \
+    catch (const std::exception&)       \
+    {                                   \
+        return TOOTLE_INTERNAL_ERROR;   \
+    }                                   \
+    catch (...)                         \
+    {                                   \
+        return TOOTLE_INTERNAL_ERROR;   \
     }
 
 //=================================================================================================================================
