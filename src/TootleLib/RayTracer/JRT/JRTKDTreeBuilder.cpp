@@ -154,51 +154,42 @@ JRTKDTree* JRTKDTreeBuilder::BuildTree(const std::vector<JRTMesh*>& rMeshes)
     std::vector<const JRTTriangle*> triArray;
     JRTBoundingBox scene_bounds(Vec3f(FLT_MAX), Vec3f(-FLT_MAX));
 
-    try
+    // build an array over all of the triangles
+    for (UINT i = 0; i < rMeshes.size();  i++)
     {
-        // build an array over all of the triangles
-        for (UINT i = 0; i < rMeshes.size();  i++)
+        const JRTTriangle* pTri = rMeshes[i]->GetTriangles();
+
+        for (UINT j = 0; j < rMeshes[i]->GetTriangleCount(); j++)
         {
-            const JRTTriangle* pTri = rMeshes[i]->GetTriangles();
-
-            for (UINT j = 0; j < rMeshes[i]->GetTriangleCount(); j++)
-            {
-                triArray.push_back(pTri);
-                pTri++;
-            }
+            triArray.push_back(pTri);
+            pTri++;
         }
-
-        JRT_ASSERT(triArray.size() > 0);
-
-        // compute scene bounding box
-        for (UINT i = 0; i < triArray.size(); i++)
-        {
-            // this will cause the fourth component of each point
-            // passed to Expand() to be junk.  This is ok
-
-            scene_bounds.Expand(triArray[i]->GetV1());
-            scene_bounds.Expand(triArray[i]->GetV2());
-            scene_bounds.Expand(triArray[i]->GetV3());
-        }
-
-        // slight hack:  Expand bounding box a little bit.  This fixes some precision issues with flat polygons on the edge of the model
-        scene_bounds.GetMin() += Vec3f(-0.001f, -0.001f, -0.001f);
-        scene_bounds.GetMax() += Vec3f(0.001f, 0.001f, 0.001f);
-
-        // construct the tree
-        BuildTreeImpl(scene_bounds, triArray, nodes, indices);
-
-        pTree = new JRTKDTree;
-        pTree->m_pIndexArray = new UINT[ indices.size() ];
-        pTree->m_pMailboxes = new UINT[ triArray.size() ];
-        pTree->m_bBackFacing = new bool [ triArray.size() ];
     }
-    catch (std::bad_alloc&)
+
+    JRT_ASSERT(triArray.size() > 0);
+
+    // compute scene bounding box
+    for (UINT i = 0; i < triArray.size(); i++)
     {
-        // this should clean up everything
-        JRT_SAFE_DELETE(pTree);
-        return NULL;
+        // this will cause the fourth component of each point
+        // passed to Expand() to be junk.  This is ok
+
+        scene_bounds.Expand(triArray[i]->GetV1());
+        scene_bounds.Expand(triArray[i]->GetV2());
+        scene_bounds.Expand(triArray[i]->GetV3());
     }
+
+    // slight hack:  Expand bounding box a little bit.  This fixes some precision issues with flat polygons on the edge of the model
+    scene_bounds.GetMin() += Vec3f(-0.001f, -0.001f, -0.001f);
+    scene_bounds.GetMax() += Vec3f(0.001f, 0.001f, 0.001f);
+
+    // construct the tree
+    BuildTreeImpl(scene_bounds, triArray, nodes, indices);
+
+    pTree = new JRTKDTree;
+    pTree->m_pIndexArray = new UINT[ indices.size() ];
+    pTree->m_pMailboxes = new UINT[ triArray.size() ];
+    pTree->m_bBackFacing = new bool [ triArray.size() ];
 
     // initialize the tree structure
     pTree->m_pNodeArray = (JRTKDNode*)_aligned_malloc(sizeof(JRTKDNode) * nodes.size(), 16);

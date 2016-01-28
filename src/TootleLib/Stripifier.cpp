@@ -244,17 +244,7 @@ bool FaceManager::MakeFace(UINT uVertexIndex1, UINT uVertexIndex2, UINT uVertexI
 
     tMNStart = GetTime();
 #endif
-    Face* pFace;
-
-    try
-    {
-        pFace = new Face(uVertexIndex1, uVertexIndex2, uVertexIndex3);
-    }
-    catch (std::bad_alloc&)
-    {
-        // ran out of memory
-        return false;
-    }
+    Face* pFace = new Face(uVertexIndex1, uVertexIndex2, uVertexIndex3);
 
 #ifdef _TIMING
     m_tMakeNeighbors += GetTime() - tMNStart;

@@ -28,17 +28,7 @@ JRTCore::~JRTCore()
 
 JRTCore* JRTCore::Build(const std::vector<JRTMesh*>& rMeshes)
 {
-
-    JRTCore* pCaster = NULL;
-
-    try
-    {
-        pCaster = new JRTCore();
-    }
-    catch (std::bad_alloc&)
-    {
-        return NULL;
-    }
+    JRTCore* pCaster = new JRTCore();
 
     if (rMeshes.size() == 0)
     {
@@ -57,8 +47,6 @@ JRTCore* JRTCore::Build(const std::vector<JRTMesh*>& rMeshes)
     }
 
     pCaster->m_pTree = pTree;
-
-
 
     return pCaster;
 }

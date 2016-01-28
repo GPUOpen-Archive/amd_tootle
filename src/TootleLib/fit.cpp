@@ -12,22 +12,18 @@
 #include "fit.h"
 
 bool
-RobustFit(const Array<Vector3>& vertex, Vector3* ucenter, float* usize)
+RobustFit(const std::vector<Vector3>& vertex, Vector3* ucenter, float* usize)
 {
     Vector3 center;
     float size;
     int nvertex;
 
-    if ((nvertex = vertex.GetSize()) <= 0) { return false; }
+    if ((nvertex = static_cast<int> (vertex.size())) == 0) { return false; }
 
     // solve for x, y and z independently
-    Array<float> a, b, c;
+    std::vector<float> a, b, c;
 
-    if (!a.Resize(nvertex) || !b.Resize(nvertex) || !c.Resize(nvertex))
-    {
-        errorf(("Unable to allocate vectors"));
-        return false;
-    }
+    a.resize (nvertex); b.resize (nvertex); c.resize (nvertex);
 
     // copy coordinates to temp buffers
     for (int i = 0; i < nvertex; i++)
@@ -85,13 +81,13 @@ RobustFit(const Array<Vector3>& vertex, Vector3* ucenter, float* usize)
 }
 
 bool
-BBoxFit(const Array<Vector3>& vertex, Vector3* ucenter, float* usize)
+BBoxFit(const std::vector<Vector3>& vertex, Vector3* ucenter, float* usize)
 {
     Vector3 center;
     float size;
     int nvertex;
 
-    if ((nvertex = vertex.GetSize()) <= 0) { return false; }
+    if ((nvertex = static_cast<int> (vertex.size())) == 0) { return false; }
 
     BBox3 box;
 
@@ -112,7 +108,7 @@ BBoxFit(const Array<Vector3>& vertex, Vector3* ucenter, float* usize)
 }
 
 bool
-BBoxFit(const Array<Vector3>& vertex, const int* ind, int iStart, int nTris,
+BBoxFit(const std::vector<Vector3>& vertex, const int* ind, int iStart, int nTris,
         Vector3* ucenter, Vector3* udiag, float* usize)
 {
     Vector3 center;
@@ -120,7 +116,7 @@ BBoxFit(const Array<Vector3>& vertex, const int* ind, int iStart, int nTris,
     float size;
     int nvertex;
 
-    if ((nvertex = vertex.GetSize()) <= 0) { return false; }
+    if ((nvertex = static_cast<int> (vertex.size())) == 0) { return false; }
 
     BBox3 box;
 
