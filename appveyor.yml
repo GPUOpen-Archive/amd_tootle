@@ -1,0 +1,43 @@
+environment:
+  matrix:
+    - GENERATOR: "Visual Studio 11 2012"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 11 2012"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 11 2012 Win64"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 11 2012 Win64"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 12 2013"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 12 2013"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 12 2013 Win64"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 12 2013 Win64"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 14 2015"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 14 2015"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 14 2015 Win64"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 14 2015 Win64"
+      CONFIG: Release
+
+build_script:
+  - mkdir _cibuild
+  - cd _cibuild
+  - cmake "-G%GENERATOR%" ../src
+  - cmake --build . --config "%CONFIG%"
