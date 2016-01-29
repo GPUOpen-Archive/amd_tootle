@@ -1,0 +1,41 @@
+environment:
+  matrix:
+    - GENERATOR: "Visual Studio 11 2012"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 11 2012"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 11 2012 Win64"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 11 2012 Win64"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 12 2013"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 12 2013"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 12 2013 Win64"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 12 2013 Win64"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 14"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 14"
+      CONFIG: Release
+
+    - GENERATOR: "Visual Studio 14 Win64"
+      CONFIG: Debug
+
+    - GENERATOR: "Visual Studio 14 Win64"
+      CONFIG: Release
+
+build_script:
+  - cmake "-G%GENERATOR%"
+  - cmake --build . --config "%CONFIG%"
