@@ -37,5 +37,5 @@ environment:
       CONFIG: Release
 
 build_script:
-  - cmake "-G%GENERATOR%"
+  - cmake "-G%GENERATOR%" .
   - cmake --build . --config "%CONFIG%"
