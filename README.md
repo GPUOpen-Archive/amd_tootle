@@ -1,4 +1,4 @@
-# amd-tootle [![Build Status](https://travis-ci.org/GPUOpen-Tools/amd-tootle.svg?branch=master)](https://travis-ci.org/GPUOpen-Tools/amd-tootle)
+# amd-tootle [![Build status](https://ci.appveyor.com/api/projects/status/t9kao41or7eqp1dg?svg=true)](https://ci.appveyor.com/project/bpurnomo/amd-tootle) [![Build Status](https://travis-ci.org/GPUOpen-Tools/amd-tootle.svg?branch=master)](https://travis-ci.org/GPUOpen-Tools/amd-tootle)
 The amd-tootle repository includes the source code of the AMD Tootle library and an application command line tool.  
 
 AMD Tootle (Triangle Order Optimization Tool) is a 3D triangle mesh optimization library that improves on existing mesh preprocessing techniques. By using AMD Tootle, developers can optimize their models for pixel overdraw as well as vertex cache performance. This can provide significant performance improvements in pixel limited situations, with no penalty in vertex-limited scenarios, and no runtime cost.
