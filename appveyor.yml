@@ -37,5 +37,7 @@ environment:
       CONFIG: Release
 
 build_script:
-  - cmake "-G%GENERATOR%" .
+  - mkdir _cibuild
+  - cd _cibuild
+  - cmake "-G%GENERATOR%" ../src
   - cmake --build . --config "%CONFIG%"
