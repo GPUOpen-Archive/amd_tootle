@@ -44,8 +44,8 @@ const UINT RAYTRACE_CLUSTER_THRESHOLD = 225;
 //=================================================================================================================================
 // compute face normals for the mesh.
 static std::vector<float> ComputeFaceNormals(const float*        pfVB,
-                                               const unsigned int* pnIB,
-                                               unsigned int        nFaces);
+                                             const unsigned int* pnIB,
+                                             unsigned int        nFaces);
 
 //=================================================================================================================================
 /// Computes the overdraw graph using the ray tracing implementation
