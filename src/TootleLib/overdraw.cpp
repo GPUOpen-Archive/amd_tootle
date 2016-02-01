@@ -43,10 +43,9 @@ const UINT RAYTRACE_CLUSTER_THRESHOLD = 225;
 //
 //=================================================================================================================================
 // compute face normals for the mesh.
-static void ComputeFaceNormals(const float*        pfVB,
-                               const unsigned int* pnIB,
-                               unsigned int        nFaces,
-                               float*              pFaceNormals);
+static std::vector<float> ComputeFaceNormals(const float*        pfVB,
+                                               const unsigned int* pnIB,
+                                               unsigned int        nFaces);
 
 //=================================================================================================================================
 /// Computes the overdraw graph using the ray tracing implementation
@@ -334,31 +333,24 @@ TootleResult ODObjectOverdrawRaytrace(const float*        pfVB,
     assert(pfVB);
     assert(pnIB);
 
-    // compute face normals of the triangles
-    float* pFaceNormals = new float [ 3 * nFaces ];
-
-    ComputeFaceNormals(pfVB, pnIB, nFaces, pFaceNormals);
+    const std::vector<float> faceNormals = ComputeFaceNormals(pfVB, pnIB, nFaces);
 
     TootleRaytracer tr;
 
-    if (!tr.Init(pfVB, pnIB, pFaceNormals, nVertices, nFaces, NULL))
+    if (!tr.Init (pfVB, pnIB, faceNormals.data (), nVertices, nFaces, NULL))
     {
-        delete[] pFaceNormals;
-
         return TOOTLE_OUT_OF_MEMORY;
     }
+
 
     // generate the per-cluster overdraw table
     if (!tr.MeasureOverdraw(pViewpoints, nViewpoints, TOOTLE_RAYTRACE_IMAGE_SIZE, bCullCCW, fAvgOD, fMaxOD))
     {
-        delete[] pFaceNormals;
         return TOOTLE_OUT_OF_MEMORY;
     }
 
     // clean up the mess
     tr.Cleanup();
-
-    delete[] pFaceNormals;
 
     return TOOTLE_OK;
 }
@@ -375,19 +367,18 @@ TootleResult ODObjectOverdrawRaytrace(const float*        pfVB,
 ///
 /// \return void
 //=================================================================================================================================
-void ComputeFaceNormals(const float*        pfVB,
-                        const unsigned int* pnIB,
-                        unsigned int        nFaces,
-                        float*              pFaceNormals)
+std::vector<float> ComputeFaceNormals(const float*        pfVB,
+                                      const unsigned int* pnIB,
+                                      unsigned int        nFaces)
 {
     assert(pnIB);
-    assert(pFaceNormals);
 
     // triangle index
     unsigned int nFirst;
     unsigned int nSecond;
     unsigned int nThird;
-    Vector3 vNormal;
+
+    std::vector<float> result (nFaces * 3);
 
     for (unsigned int i = 0; i < nFaces; i++)
     {
@@ -399,14 +390,15 @@ void ComputeFaceNormals(const float*        pfVB,
         const Vector3 p1(pfVB[ 3 * nSecond ], pfVB[ 3 * nSecond + 1 ], pfVB[ 3 * nSecond + 2 ]);
         const Vector3 p2(pfVB[ 3 * nThird  ], pfVB[ 3 * nThird  + 1 ], pfVB[ 3 * nThird  + 2 ]);
 
-        Vector3 a = p0 - p1, b = p1 - p2;
+        const Vector3 a = p0 - p1, b = p1 - p2;
+        const Vector3 vNormal = Normalize(Cross(a, b));
 
-        vNormal = Normalize(Cross(a, b));
-
-        pFaceNormals[ 3 * i     ] = vNormal[ 0 ];
-        pFaceNormals[ 3 * i + 1 ] = vNormal[ 1 ];
-        pFaceNormals[ 3 * i + 2 ] = vNormal[ 2 ];
+        result [ 3 * i     ] = vNormal[ 0 ];
+        result [ 3 * i + 1 ] = vNormal[ 1 ];
+        result [ 3 * i + 2 ] = vNormal[ 2 ];
     }
+
+    return result;
 }
 
 //=================================================================================================================================
