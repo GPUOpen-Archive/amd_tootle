@@ -53,7 +53,7 @@ public:
     UINT GetTriangleCount() const { return m_nTriangleCount; };
 
     /// Accessor for the array of triangles
-    inline const JRTTriangle* GetTriangles() const { return m_pTriangles; };
+    inline const JRTTriangle* GetTriangles() const { return m_Triangles.data (); };
 
 
     void GetInterpolants(UINT nTriIndex, const float barycentrics[3], Vec3f* pNormal, Vec2f* pUV) const;
@@ -67,27 +67,31 @@ public:
 
     JRTBoundingBox ComputeBoundingBox() const;
 
-    const Vec3f& GetFaceNormal(UINT nTri) const { return m_pFaceNormals[nTri]; };
+    const Vec3f& GetFaceNormal(UINT nTri) const { return m_FaceNormals[nTri]; };
 
-    const Vec3f& GetVertex(UINT i) const { return m_pPositions[i]; };
-    void SetVertex(UINT i, const Vec3f& v) { m_pPositions[i] = v; };
+    const Vec3f& GetVertex(UINT i) const { return m_Positions[i]; };
+    void SetVertex(UINT i, const Vec3f& v) { m_Positions[i] = v; };
 
 private:
 
-    Vec3f* m_pPositions;
-    Vec3f* m_pNormals;
-    Vec2f* m_pUVs;
+    std::vector<Vec3f> m_Positions;
+    std::vector<Vec3f> m_Normals;
+    std::vector<Vec2f> m_UVs;
 
     /// Pre-computed array of face normals.  This is used only if no vertex normals are provided
-    Vec3f* m_pFaceNormals;
+    std::vector<Vec3f> m_FaceNormals;
 
-    JRTTriangle* m_pTriangles;
+    std::vector<JRTTriangle> m_Triangles;
 
     UINT m_nTriangleCount;
     UINT m_nVertexCount;
 
     JRTMeshAttributes m_attributes;
 
+    // Disallow copy constructor, as m_Triangles contains pointers into the
+    // other data structures
+    JRTMesh (const JRTMesh&);
+    JRTMesh& operator=(const JRTMesh&);
 };
 
 

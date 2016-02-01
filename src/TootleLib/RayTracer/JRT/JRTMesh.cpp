@@ -33,30 +33,26 @@ JRTMesh* JRTMesh::CreateMesh(const Vec3f* pPositions,
     pMesh->m_nTriangleCount = nTriangleCount;
 
     // copy vertex positions
-    pMesh->m_pPositions = new Vec3f[ nVertices ];
-    memcpy(pMesh->m_pPositions, pPositions, sizeof(Vec3f)*nVertices);
+    pMesh->m_Positions.assign (pPositions, pPositions + nVertices);
 
     // copy normals
-    pMesh->m_pFaceNormals = new Vec3f[ nTriangleCount ];
-    memcpy(pMesh->m_pFaceNormals, pNormals, nTriangleCount * sizeof(Vec3f));
+    pMesh->m_FaceNormals.assign (pNormals, pNormals + nTriangleCount);
 
     // create triangles
-    pMesh->m_pTriangles = new JRTTriangle[ nTriangleCount ];
+    pMesh->m_Triangles.resize (nTriangleCount);
 
     for (UINT i = 0; i < nTriangleCount; i++)
     {
-        pMesh->m_pTriangles[i].m_pMesh = pMesh;
+        pMesh->m_Triangles[i].m_pMesh = pMesh;
 
         JRT_ASSERT(pIndices[0] < nVertices);
         JRT_ASSERT(pIndices[1] < nVertices);
         JRT_ASSERT(pIndices[2] < nVertices);
 
-        pMesh->m_pTriangles[i].m_pV1 = (const float*) &pMesh->m_pPositions[ pIndices[0] ];
-        pMesh->m_pTriangles[i].m_pV2 = (const float*) &pMesh->m_pPositions[ pIndices[1] ];
-        pMesh->m_pTriangles[i].m_pV3 = (const float*) &pMesh->m_pPositions[ pIndices[2] ];
-
-
-
+        pMesh->m_Triangles[i].m_pV1 = reinterpret_cast<const float*> (&pMesh->m_Positions[ pIndices[0] ]);
+        pMesh->m_Triangles[i].m_pV2 = reinterpret_cast<const float*> (&pMesh->m_Positions[ pIndices[1] ]);
+        pMesh->m_Triangles[i].m_pV3 = reinterpret_cast<const float*> (&pMesh->m_Positions[ pIndices[2] ]);
+        
         pIndices += 3;
     }
 
@@ -66,24 +62,13 @@ JRTMesh* JRTMesh::CreateMesh(const Vec3f* pPositions,
 
 JRTMesh::JRTMesh() :
     m_nTriangleCount(0),
-    m_nVertexCount(0),
-    m_pFaceNormals(NULL),
-    m_pNormals(NULL),
-    m_pPositions(NULL),
-    m_pTriangles(NULL),
-    m_pUVs(NULL)
+    m_nVertexCount(0)
 {
-
-
 }
 
 
 JRTMesh::~JRTMesh()
 {
-    JRT_SAFE_DELETE_ARRAY(m_pPositions);
-    JRT_SAFE_DELETE_ARRAY(m_pTriangles);
-    JRT_SAFE_DELETE_ARRAY(m_pNormals);
-    JRT_SAFE_DELETE_ARRAY(m_pFaceNormals);
 }
 
 void JRTMesh::Transform(const Matrix4f& rXForm, const Matrix4f& rInverse)
@@ -91,19 +76,19 @@ void JRTMesh::Transform(const Matrix4f& rXForm, const Matrix4f& rInverse)
     // transform positions
     for (UINT i = 0; i < m_nVertexCount; i++)
     {
-        TransformPoint(&m_pPositions[i], &rXForm, &m_pPositions[i]);
+        TransformPoint(&m_Positions[i], &rXForm, &m_Positions[i]);
     }
 
     Matrix4f inverseTranspose = rInverse.Transpose();
 
     // transform normals
-    if (m_pNormals)
+    if (! m_Normals.empty ())
     {
         for (UINT i = 0; i < m_nVertexCount; i++)
         {
-            ALIGN16 Vec3f tmp = m_pNormals[i];
-            TransformVector(&tmp, &inverseTranspose, &m_pNormals[i]);
-            m_pNormals[i] = Normalize(m_pNormals[i]);
+            ALIGN16 Vec3f tmp = m_Normals[i];
+            TransformVector(&tmp, &inverseTranspose, &m_Normals[i]);
+            m_Normals[i] = Normalize(m_Normals[i]);
         }
     }
     else
@@ -111,30 +96,27 @@ void JRTMesh::Transform(const Matrix4f& rXForm, const Matrix4f& rInverse)
         // transform face normals
         for (UINT i = 0; i < m_nTriangleCount; i++)
         {
-            ALIGN16 Vec3f tmp = m_pFaceNormals[i];
-            TransformVector(&tmp, &inverseTranspose, &m_pFaceNormals[i]);
-            m_pFaceNormals[i] = tmp;
+            ALIGN16 Vec3f tmp = m_FaceNormals[i];
+            TransformVector(&tmp, &inverseTranspose, &m_FaceNormals[i]);
+            m_FaceNormals[i] = tmp;
         }
     }
-
-
-
 }
 
 
 void JRTMesh::GetInterpolants(UINT nTriIndex, const float barycentrics[], Vec3f* pNormal, Vec2f* /*pUV*/) const
 {
-    UINT nIndex1 = (UINT)(m_pTriangles[nTriIndex].m_pV1 - (const float*)m_pPositions) / 3;
-    UINT nIndex2 = (UINT)(m_pTriangles[nTriIndex].m_pV2 - (const float*)m_pPositions) / 3;
-    UINT nIndex3 = (UINT)(m_pTriangles[nTriIndex].m_pV3 - (const float*)m_pPositions) / 3;
+    const UINT nIndex1 = (UINT)(m_Triangles[nTriIndex].m_pV1 - (const float*)m_Positions.data ()) / 3;
+    const UINT nIndex2 = (UINT)(m_Triangles[nTriIndex].m_pV2 - (const float*)m_Positions.data ()) / 3;
+    const UINT nIndex3 = (UINT)(m_Triangles[nTriIndex].m_pV3 - (const float*)m_Positions.data ()) / 3;
 
-    if (m_pNormals)
+    if (!m_Normals.empty ())
     {
-        *pNormal = Normalize(BarycentricLerp3f(m_pNormals[nIndex1], m_pNormals[nIndex2], m_pNormals[nIndex3], barycentrics));
+        *pNormal = Normalize(BarycentricLerp3f(m_Normals[nIndex1], m_Normals[nIndex2], m_Normals[nIndex3], barycentrics));
     }
     else
     {
-        *pNormal = Normalize(m_pFaceNormals[ nTriIndex ]);
+        *pNormal = Normalize(m_FaceNormals[ nTriIndex ]);
     }
 }
 
@@ -145,16 +127,16 @@ void JRTMesh::RemoveTriangle(UINT nTri)
     if (nTri <= m_nTriangleCount)
     {
         // swap this triangle with the last one in the mesh
-        JRTTriangle tmpTri = m_pTriangles[m_nTriangleCount - 1];
-        m_pTriangles[m_nTriangleCount - 1] = m_pTriangles[nTri];
-        m_pTriangles[nTri] = tmpTri;
+        JRTTriangle tmpTri = m_Triangles[m_nTriangleCount - 1];
+        m_Triangles[m_nTriangleCount - 1] = m_Triangles[nTri];
+        m_Triangles[nTri] = tmpTri;
 
         // swap face normals if there are any
-        if (!m_pNormals)
+        if (m_Normals.empty ())
         {
-            Vec3f tmpNorm = m_pFaceNormals[ m_nTriangleCount - 1 ];
-            m_pFaceNormals[m_nTriangleCount - 1] = m_pFaceNormals[nTri];
-            m_pFaceNormals[ nTri ] = tmpNorm;
+            Vec3f tmpNorm = m_FaceNormals[ m_nTriangleCount - 1 ];
+            m_FaceNormals[m_nTriangleCount - 1] = m_FaceNormals[nTri];
+            m_FaceNormals[ nTri ] = tmpNorm;
         }
 
         m_nTriangleCount--;
@@ -164,5 +146,5 @@ void JRTMesh::RemoveTriangle(UINT nTri)
 
 JRTBoundingBox JRTMesh::ComputeBoundingBox() const
 {
-    return JRTBoundingBox((const float*)this->m_pPositions, m_nVertexCount);
+    return JRTBoundingBox((const float*)this->m_Positions.data (), m_nVertexCount);
 }
