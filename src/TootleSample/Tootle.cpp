@@ -203,11 +203,13 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
     // Create a local copy of the vertex remapping array.
     //  Note that because the input vertices in the OBJ file might be larger than the vertex buffer
     //  in rVertices, vertexRemapping buffer might be larger than vertexRemap.
-    unsigned int* vertexRemapping = new unsigned int[ nCount ];
+    std::vector<unsigned int> vertexRemapping;
 
     // if there is no vertex remapping, create a default one
     if (vertexRemap == NULL)
     {
+        vertexRemapping.resize (nCount);
+
         for (unsigned int i = 0; i < nCount; i++)
         {
             vertexRemapping[ i ] = i;
@@ -215,13 +217,14 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
     }
     else
     {
+        vertexRemapping.reserve (nCount);
         if (nVertices >= nCount)
         {
-            memcpy(vertexRemapping, vertexRemap, nCount * sizeof(unsigned int));
+            vertexRemapping.assign (vertexRemap, vertexRemap + nCount);
         }
         else
         {
-            memcpy(vertexRemapping, vertexRemap, rVertices.size() * sizeof(unsigned int));
+            vertexRemapping.assign (vertexRemap, vertexRemap + rVertices.size ());
         }
 
         // It is possible for the input list of vertices to be larger than the one in rVertices, thus,
@@ -230,12 +233,12 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
 
         for (unsigned int i = nVertices; i < nCount; i++)
         {
-            vertexRemapping[ i ] = i;
+            vertexRemapping.push_back (i);
         }
     }
 
     // compute the inverse vertex mapping to output the remapped vertices
-    unsigned int* inverseVertexRemapping = new unsigned int[ nCount ];
+    std::vector<unsigned int> inverseVertexRemapping (nCount);
 
     unsigned int nVID;
 
@@ -251,16 +254,6 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
         if (inverseVertexRemapping[ vertexRemapping[ i ] ] != i)
         {
             std::cerr << "EmitModifiedObj: inverseVertexRemapping and vertexRemapping is not consistent.\n";
-
-            if (vertexRemapping != vertexRemap)
-            {
-                delete[] vertexRemapping;
-            }
-
-            if (inverseVertexRemapping)
-            {
-                delete[] inverseVertexRemapping;
-            }
 
             return false;
         }
@@ -306,11 +299,6 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
 
         rOutput << std::endl;
     }
-
-    // delete the array we allocated
-    delete[] vertexRemapping;
-
-    delete[] inverseVertexRemapping;
 
     return true;
 }
