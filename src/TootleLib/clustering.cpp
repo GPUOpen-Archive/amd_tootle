@@ -98,7 +98,7 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
     int nseeds = (int)seeds.size();
 
     //flood from seeds here
-    for (int i = 0; i < mesh.t().size(); i++)
+    for (int i = 0; i < static_cast<int>(mesh.t().size()); i++)
     {
         cluster[i] = nseeds;
         fixed[i] = false;
@@ -208,7 +208,7 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
 
     int lowvisf = -1;
 
-    for (int i = 0; i < mesh.t().size(); i++)
+    for (int i = 0; i < static_cast<int>(mesh.t().size()); i++)
     {
         if (fixed[i] == false && vis[i] < lowvisi)
         {
@@ -240,12 +240,12 @@ static void MoveSeeds(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clu
 
     priority_queue<QNode, vector<QNode>, greater<QNode> > q;
 
-    for (int i = 0; i < mesh.t().size(); i++)
+    for (int i = 0; i < static_cast<int>(mesh.t().size()); i++)
     {
         cost.push_back(BIGFLOAT);
         visited.push_back(0);
 
-        for (int j = 0; j < mesh.ae(i).size(); j++)
+        for (int j = 0; j < static_cast<int>(mesh.ae(i).size()); j++)
         {
             int ff = mesh.ae(i)[j];
 
@@ -301,7 +301,7 @@ static void MoveSeeds(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clu
         seeddist.push_back(cost[seeds[i]]);
     }
 
-    for (int i = 0; i < mesh.t().size(); i++)
+    for (int i = 0; i < static_cast<int>(mesh.t().size()); i++)
     {
         if (cost[i] > seeddist[cluster[i]])
         {
@@ -329,7 +329,7 @@ static int FingerPrint(Mesh& mesh, std::vector<int>& cluster)
 {
     int ret = 0;
 
-    for (int i = 0; i < mesh.t().size(); i++)
+    for (int i = 0; i < static_cast<int>(mesh.t().size()); i++)
     {
         ret = (ret + i * cluster[i]) % 40923840;
     }
@@ -545,7 +545,7 @@ bool SortFacesByCluster(Soup& soup, std::vector<int>& clusterIDs, UINT* pRemapAr
     std::vector<Soup::Triangle> t;
     std::vector<int> c;
 
-    for (int i = 0; i < soup.t().size(); i++)
+    for (int i = 0; i < static_cast<int>(soup.t().size()); i++)
     {
         pRemapArray[i] = i;
     }
@@ -556,7 +556,7 @@ bool SortFacesByCluster(Soup& soup, std::vector<int>& clusterIDs, UINT* pRemapAr
     g_pCluster = &clusterIDs[0];
     qsort(pRemapArray, soup.t().size(), sizeof(int), SortByClusterID);
 
-    for (int i = 0; i < soup.t().size(); i++)
+    for (int i = 0; i < static_cast<int>(soup.t().size()); i++)
     {
         soup.t(i) = t[pRemapArray[i]];
         clusterIDs[i] = c[pRemapArray[i]];

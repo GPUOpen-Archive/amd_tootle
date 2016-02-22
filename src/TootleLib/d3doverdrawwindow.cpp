@@ -161,7 +161,7 @@ SetupViewport(void)
 
 void
 D3DOverdrawWindow::
-SetCluster(const Array<int>* pCluster, const Array<int>* pClusterStart)
+SetCluster(const std::vector<int>* pCluster, const std::vector<int>* pClusterStart)
 {
     m_pCluster = pCluster;
     m_pClusterStart = pClusterStart;
@@ -194,15 +194,15 @@ SetupUniforms(void)
 
 int
 D3DOverdrawWindow::
-Graph(Array<t_edge>& Edge)
+Graph(std::vector<t_edge>& Edge)
 {
     m_iTested = 0;
     m_iRendered = 0;
     d3d->BeginScene();
 
-    for (int i = 0; i < m_pClusterStart->GetSize() - 1; i++)
+    for (int i = 0; i < static_cast<int>(m_pClusterStart->size()) - 1; i++)
     {
-        for (int j = i + 1; j < m_pClusterStart->GetSize() - 1 ; j++)
+        for (int j = i + 1; j < static_cast<int>(m_pClusterStart->size()) - 1 ; j++)
         {
             int cij = Loop(i, j);
             //debugf(("%d %d -> %d", i, j, cij));
@@ -213,22 +213,13 @@ Graph(Array<t_edge>& Edge)
             {
                 t_edge e = {j, i, cij - cji};
 
-                if (!Edge.PushBack(e))
-                {
-                    // out of memory
-                    return 0;
-                }
-
+                Edge.push_back(e);
             }
             else if (cij < cji)
             {
                 t_edge e = {i, j, cji - cij};
 
-                if (!Edge.PushBack(e))
-                {
-                    // out of memory
-                    return 0;
-                }
+                Edge.push_back(e);
             }
         }
     }
@@ -586,7 +577,7 @@ SetIB(void)
 
     // create index buffer with triangles
     void* p = NULL;
-    m_nTris = m_pSoup->t().GetSize();
+    m_nTris = static_cast<int>(m_pSoup->t().size());
 
     if (m_IB)
     {
@@ -620,7 +611,7 @@ SetVB(void)
         return 1;
     }
 
-    m_nVerts = m_pSoup->v().GetSize();
+    m_nVerts = static_cast<int>(m_pSoup->v().size());
 
     if (m_VB)
     {
@@ -852,7 +843,7 @@ D3DOverdrawWindow::
 FitClusters(void)
 {
 
-    for (int i = 0; i < m_pClusterStart->GetSize() - 1; i++)
+    for (int i = 0; i < static_cast<int>(m_pClusterStart->size()) - 1; i++)
     {
         Vector3 vCenter;
         Vector3 vDiag;
@@ -864,8 +855,8 @@ FitClusters(void)
                 (*m_pClusterStart)[i] * 3,
                 (*m_pClusterStart)[i + 1] - (*m_pClusterStart)[i],
                 &vCenter, &vDiag, &fSize);
-        m_vClusterCenter.PushBack(vCenter);
-        m_vClusterDiag.PushBack(vDiag);
-        m_fClusterSize.PushBack(fSize);
+        m_vClusterCenter.push_back(vCenter);
+        m_vClusterDiag.push_back(vDiag);
+        m_fClusterSize.push_back(fSize);
     }
 }

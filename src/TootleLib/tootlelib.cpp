@@ -944,7 +944,7 @@ static TootleResult TootleOptimizeOverdrawDirect3DAndRaytrace(const void*       
 
     int j = 0;
 
-    for (int i = 0; i < order.size(); i++)
+    for (int i = 0; i < static_cast<int>(order.size()); i++)
     {
         for (int k = ClusterStart[order[i]]; k < ClusterStart[order[i] + 1]; k++)
         {
@@ -1429,7 +1429,7 @@ TootleResult TOOTLE_DLL TootleMeasureOverdraw(const void*             pVB,
                                               TootleFaceWinding       eFrontWinding,
                                               float*                  pfAvgODOut,
                                               float*                  pfMaxODOut,
-                                              TootleOverdrawOptimizer /*eOverdrawOptimizer*/)
+                                              TootleOverdrawOptimizer eOverdrawOptimizer)
 {
     AMD_TOOTLE_API_FUNCTION_BEGIN
 
@@ -1460,6 +1460,7 @@ TootleResult TOOTLE_DLL TootleMeasureOverdraw(const void*             pVB,
     }
 
 #ifdef _SOFTWARE_ONLY_VERSION
+    eOverdrawOptimizer;  // satisfy unused parameter warning message
     return TootleMeasureOverdrawRaytrace(pVB, pnIB, nVertices, nFaces, nVBStride, pfViewpoint, nViewpoints,
                                          eFrontWinding, pfAvgODOut, pfMaxODOut);
 #else

@@ -53,7 +53,7 @@ Mesh::ComputeVV(void)
 
     vv ().resize (v ().size ());
 
-    for (int i = 0; i < t().size(); i++)
+    for (int i = 0; i < static_cast<int>(t().size()); i++)
     {
         vv(t(i)[0]).push_back (t(i)[1]);
         vv(t(i)[1]).push_back (t(i)[0]);
@@ -76,7 +76,7 @@ Mesh::ComputeVT(VTArray& vtOut)
     // get all faces that use each vertex
     vtOut.resize (v ().size ());
 
-    for (int f = 0; f < t().size(); f++)
+    for (int f = 0; f < static_cast<int>(t().size()); f++)
     {
         Soup::Triangle& face = t(f);
 
@@ -100,7 +100,7 @@ Mesh::ComputeAE(const VTArray& vt)
     ae().resize(t().size());
 
     // find across-edge info
-    for (int f = 0; f < t().size(); f++)
+    for (int f = 0; f < static_cast<int>(t().size()); f++)
     {
         for (int i = 0; i < 3; i++)
         {
@@ -110,7 +110,7 @@ Mesh::ComputeAE(const VTArray& vt)
             int vn = t(f)[in];
 
             // for each face that use v
-            for (int j = 0; j < vt[v].size(); j++)
+            for (int j = 0; j < static_cast<int>(vt[v].size()); j++)
             {
                 // check if face has vn too and is not f
                 int af = vt[v][j];

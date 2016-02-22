@@ -20,7 +20,7 @@ public:
 
     int SetSoup(Soup* pSoup);
     void SetViewpoint(const float* pViewpoint, UINT nViewpoints);
-    void SetCluster(const Array<int>* pCluster, const Array<int>* pClusterStart);
+    void SetCluster(const std::vector<int>* pCluster, const std::vector<int>* pClusterStart);
 
     void SetCulling(bool bCullCCW);
 
@@ -47,7 +47,7 @@ public:
     virtual void Fit(void);
     virtual void FitClusters(void);
 
-    virtual int Graph(Array<t_edge>& graph);
+    virtual int Graph(std::vector<t_edge>& graph);
     virtual int Object(float& fOverdraw, float& fOverdrawMax);
     virtual int Loop(int iClusterA, int iClusterB);
     virtual int Loop(void);
@@ -72,8 +72,8 @@ private:
     const Vector3* m_pViewpoint;
     UINT m_nViewpointCount;
 
-    const Array<int>* m_pCluster;
-    const Array<int>* m_pClusterStart;
+    const std::vector<int>* m_pCluster;
+    const std::vector<int>* m_pClusterStart;
     IDirect3DQuery9* m_pOcclusionQuery[NUM_QUERIES];
     IDirect3DQuery9* m_pOcclusionQueryPix[NUM_QUERIES];
 
@@ -84,9 +84,9 @@ private:
     D3DXMATRIXA16 m_mViewing, m_mProjection, m_mWorld;
     Vector3 m_vCenter;
     float m_fSize;
-    Array<Vector3> m_vClusterCenter;
-    Array<Vector3> m_vClusterDiag;
-    Array<float> m_fClusterSize;
+    std::vector<Vector3> m_vClusterCenter;
+    std::vector<Vector3> m_vClusterDiag;
+    std::vector<float> m_fClusterSize;
     int m_iTested;
     int m_iRendered;
 
