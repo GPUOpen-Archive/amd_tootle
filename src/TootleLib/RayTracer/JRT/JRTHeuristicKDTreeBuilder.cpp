@@ -28,7 +28,7 @@ bool SplitLess(const Split& s1, const Split& s2)
     // if we have a degenerate bounding box, force splits to be ordered min, then max
     if (s1.value == s2.value && s1.nTriBB == s2.nTriBB)
     {
-        return (!s1.bMaxSplit);
+        return (!s1.bMaxSplit && s2.bMaxSplit);
     }
     else
     {
