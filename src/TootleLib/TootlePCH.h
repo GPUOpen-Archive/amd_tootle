@@ -25,6 +25,7 @@
     #include <cstdio>
     #include <cstdlib>
     #include <cstring>
+    #include <cmath>
     #include <functional>
     #include <list>
     #include <map>
@@ -32,7 +33,6 @@
     #include <set>
     #include <string>
     #include <vector>
-
 #else
 
     #include <stdio.h>
