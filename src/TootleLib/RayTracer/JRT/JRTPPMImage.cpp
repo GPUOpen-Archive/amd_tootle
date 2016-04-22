@@ -260,7 +260,7 @@ bool JRTPPMImage::LoadFile(const char* filename)
 
     // verify that we got all the header information we needed
     // if we're EOF, it means we did not
-    if (feof(fp) && !got_width || !got_height || !got_maxval)
+    if (feof(fp) && (!got_width || !got_height || !got_maxval))
     {
         fclose(fp);
         return false;
