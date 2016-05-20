@@ -99,7 +99,7 @@ void JRTPerspectiveCamera::ProjectPoint(const Vec3f& pt, float* s, float* t) con
     splat.x /= m_plane_width;
     splat.y /= -m_plane_width;
 
-    if (abs(splat.x) > 0.5 || abs(splat.y) > 0.5)
+    if (std::abs(splat.x) > 0.5 || std::abs(splat.y) > 0.5)
     {
         *s = -1;
         *t = -1;
