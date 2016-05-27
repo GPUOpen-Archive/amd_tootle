@@ -235,6 +235,19 @@ bool EmitModifiedObj(std::istream& rInput, std::ostream& rOutput, const std::vec
         {
             vertexRemapping.push_back (i);
         }
+
+        // print out the vertex mapping indexes in the output obj
+        const unsigned int NUM_ITEMS_PER_LINE = 50;
+        rOutput << "#vertexRemap = ";
+        for (unsigned int i = 0; i < nCount; ++i)
+        {
+            rOutput << vertexRemapping[i] << " ";
+            if ((i+1) % NUM_ITEMS_PER_LINE == 0)
+            {
+                rOutput << std::endl << "#vertexRemap = ";
+            }
+        }
+        rOutput << std::endl;
     }
 
     // compute the inverse vertex mapping to output the remapped vertices
