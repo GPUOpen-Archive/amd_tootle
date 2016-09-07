@@ -731,9 +731,9 @@ int OverdrawOrderPartition(int* piIndexBufferIn,
 }
 
 //function that computes size of scratch memory
-int FanVertScratchSize(int iNumVertices, int iNumFaces)
+size_t FanVertScratchSize(int iNumVertices, int iNumFaces)
 {
-    return (iNumFaces * 22 + iNumVertices + 3) * sizeof(int);
+    return (size_t)(iNumFaces * 22 + iNumVertices + 3) * (size_t)sizeof(int);
 }
 
 //main optimization function
@@ -759,7 +759,7 @@ void FanVertOptimize(float* pfVertexPositionsIn,    //vertex buffer positions, 3
 
     if (piScratch == NULL)
     {
-        int iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
+        size_t iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
         piScratch = (int*)malloc(iScratchSize);
         memset(piScratch, 0, iScratchSize);
         bMalloc = true;
@@ -860,7 +860,7 @@ float FanVertOptimizeVCacheOnly(int* piIndexBufferIn,
 
     if (piScratch == NULL)
     {
-        int iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
+        size_t iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
         piScratch = (int*)malloc(iScratchSize);
         memset(piScratch, 0, iScratchSize);
         bMalloc = true;
@@ -914,7 +914,7 @@ void FanVertOptimizeClusterOnly(int* piIndexBufferIn,
 
     if (piScratch == NULL)
     {
-        int iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
+        size_t iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
         piScratch = (int*)malloc(iScratchSize);
         memset(piScratch, 0, iScratchSize);
         bMalloc = true;
@@ -945,7 +945,7 @@ void FanVertOptimizeOverdrawOnly(float*            pfVertexPositionsIn,
 
     if (piScratch == NULL)
     {
-        int iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
+        size_t iScratchSize = FanVertScratchSize(iNumVertices, iNumFaces);
         piScratch        = (int*) malloc(iScratchSize);
         memset(piScratch, 0, iScratchSize);
         bMalloc = true;
