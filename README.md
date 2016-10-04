@@ -17,6 +17,7 @@ The amd-tootle package has the following directory structure.
   - *VS2012*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2012
   - *VS2013*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2013
   - *VS2015*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2015
+  - *VS2015 - Win 8.1*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2015 without DirectX SDK June 2010 dependency
   - *DirectX.props*: the Visual Studio property file that points to the location of Microsoft DirectX SDK in the system
     * Update this file to point to the location of the Microsoft DirectX SDK in your system (the current support is for Microsoft DirectX SDK June 2010)
 - *docs*: contains tootle papers and presentations
@@ -29,12 +30,12 @@ The amd-tootle package has the following directory structure.
 
 # Build and Run Steps
 1. Set up Microsoft DirectX SDK dependency (the current support is for Microsoft DirectX SDK June 2010)
-  * [Install DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
+  * [Install DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812) . **Also you can use this version without DirectX SDK June 2010 dependency, if you want to build it for Windows 8.1 or laters versions.** 
 2. Clone the amd-tootle repository
   * `git clone https://github.com/GPUOpen-Tools/amd-tootle.git`
 3. Build the AMD Tootle library and command line tool
   * On Windows
-    * Open *Build/VS2015/Tootle.sln* if working with Microsoft Visual Studio 2015
+    * Open *Build/VS2015/Tootle.sln* if working with Microsoft Visual Studio 2015. If you want to build without DirectX SDK June 2010, then just open *Build/VS2015 - Win 8.1/Tootle.sln*
 	  * Select the appropriate build target for AMD Tootle within Microsoft Visual Studio
 	  * Build all the projects
 	  * The output files will be generated in the *bin* and *lib* folder
