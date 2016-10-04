@@ -30,7 +30,7 @@ The amd-tootle package has the following directory structure.
 
 # Build and Run Steps
 1. Set up Microsoft DirectX SDK dependency (the current support is for Microsoft DirectX SDK June 2010)
-  * [Install DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812) . **Also you can use this version without DirectX SDK June 2010 dependency, if you want to build it for Windows 8.1 or laters versions.** 
+  * [Install DirectX SDK June 2010](https://www.microsoft.com/en-us/download/details.aspx?id=6812) . **Please note that starting with Windows 8, the DirectX SDK is included as part of the Windows SDK and you don't need to setup DirectX SDK June 2010, so this branch has been integrated AMD tootle with DirectX SDK of Windows 8.1 or laters Windows versions.** 
 2. Clone the amd-tootle repository
   * `git clone https://github.com/GPUOpen-Tools/amd-tootle.git`
 3. Build the AMD Tootle library and command line tool
