@@ -81,7 +81,14 @@ private:
     LPDIRECT3DINDEXBUFFER9 m_IB;
     LPDIRECT3DVERTEXDECLARATION9 m_VD;
     int m_nVerts, m_nTris;
-    D3DXMATRIXA16 m_mViewing, m_mProjection, m_mWorld;
+
+#ifdef _WIN_8_1_SDK
+	DirectX::XMMATRIX
+#else
+    D3DXMATRIXA16 
+#endif
+	m_mViewing, m_mProjection, m_mWorld;
+
     Vector3 m_vCenter;
     float m_fSize;
     std::vector<Vector3> m_vClusterCenter;

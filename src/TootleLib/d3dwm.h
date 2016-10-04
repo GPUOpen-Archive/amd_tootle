@@ -7,7 +7,12 @@
 #define D3DWM_H
 
 #include <d3d9.h>
+
+#ifndef _WIN_8_1_SDK
+
 #include <d3dx9.h>
+
+#endif
 
 class D3DWindow;
 

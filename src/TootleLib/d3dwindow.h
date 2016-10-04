@@ -26,7 +26,7 @@ public:
 
             if (nRef != 0)
             {
-                debugf(("D3D RESOURCE LEAK FOUND"));
+				debugf(("D3D RESOURCE LEAK FOUND"));
             }
 
             d3d = NULL;

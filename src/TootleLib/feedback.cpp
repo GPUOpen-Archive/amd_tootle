@@ -209,7 +209,7 @@ void Output(int v)
         // Allocate and initialize heap
         if (!heap_create(Heap, nVerts))
         {
-            errorf(("Out of memory."));
+			errorf(("Out of memory."));
             return 1;
         }
 

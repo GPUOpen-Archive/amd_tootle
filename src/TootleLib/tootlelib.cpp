@@ -21,6 +21,9 @@
 #include "viewpoints.h"
 #include "Stripifier.h"
 
+#ifdef _WIN_8_1_SDK
+#include "directxmesh.h"
+#endif
 
 #define AMD_TOOTLE_API_FUNCTION_BEGIN try {
 #define AMD_TOOTLE_API_FUNCTION_END     \
@@ -213,21 +216,21 @@ TootleResult TOOTLE_DLL TootleOptimizeVCache(const unsigned int*   pnIB,
 
     if (nFaces == 0 || nFaces > TOOTLE_MAX_FACES)
     {
-        errorf(("TootleOptimizeVCache: Invalid value of nFaces"));
+		errorf(("TootleOptimizeVCache: Invalid value of nFaces"));
 
         return TOOTLE_INVALID_ARGS;
     }
 
     if (nVertices == 0 || nVertices > TOOTLE_MAX_VERTICES)
     {
-        errorf(("TootleOptimizeVCache: Invalid value of nVertices"));
+		errorf(("TootleOptimizeVCache: Invalid value of nVertices"));
 
         return TOOTLE_INVALID_ARGS;
     }
 
     if (nCacheSize == 0)
     {
-        errorf(("TootleOptimizeVCache: nCacheSize = 0"));
+		errorf(("TootleOptimizeVCache: nCacheSize = 0"));
 
         return TOOTLE_INVALID_ARGS;
     }
@@ -332,8 +335,12 @@ static TootleResult TootleOptimizeVCacheDirect3D(const unsigned int* pnIB,
         return TOOTLE_INVALID_ARGS;
     }
 
-    DWORD* pFaceRemap = new DWORD[ nFaces ];
-
+	auto pFaceRemap = 
+#ifdef _WIN_8_1_SDK
+					new uint32_t[nFaces];
+#else
+					new DWORD[ nFaces ];
+#endif
     HRESULT hres = D3D_OK;
 
     if (nFaces == 1)
@@ -343,8 +350,13 @@ static TootleResult TootleOptimizeVCacheDirect3D(const unsigned int* pnIB,
     }
     else
     {
+#ifdef _WIN_8_1_SDK
+
+		hres = DirectX::OptimizeFaces(pnIB, nFaces, nullptr, pFaceRemap);
+#else
         // use D3DX for optimization
         hres = D3DXOptimizeFaces(pnIB, nFaces, nVertices, true, pFaceRemap);
+#endif
     }
 
     if (hres == D3D_OK)
@@ -1010,6 +1022,7 @@ static TootleResult TootleOptimizeOverdrawFastApproximation(const void*         
     if (eFrontWinding != TOOTLE_CCW && eFrontWinding != TOOTLE_CW)
     {
         errorf(("TootleOptimizeOverdrawFastApproximation: Invalid face winding."));
+
         return TOOTLE_INVALID_ARGS;
     }
 
@@ -1356,7 +1369,6 @@ TootleResult TOOTLE_DLL TootleMeasureCacheEfficiency(const unsigned int* pnIB,
     {
         errorf(("TootleMeasureCacheEfficiency: nCacheSize = 0"));
 
-
         return TOOTLE_INVALID_ARGS;
     }
 
@@ -1506,7 +1518,6 @@ TootleResult TootleMeasureOverdrawDirect3D(const void*         pVB,
     {
         errorf(("TootleMeasureOverdraw: nCacheSize = 0"));
 
-
         return TOOTLE_INVALID_ARGS;
     }
 
@@ -1533,6 +1544,7 @@ TootleResult TootleMeasureOverdrawDirect3D(const void*         pVB,
     if (eFrontWinding != TOOTLE_CCW && eFrontWinding != TOOTLE_CW)
     {
         errorf(("Invalid face winding."));
+
         return TOOTLE_INVALID_ARGS;
     }
 
@@ -1604,7 +1616,6 @@ TootleResult TootleMeasureOverdrawRaytrace(const void*         pVB,
     {
         errorf(("TootleMeasureOverdraw: nCacheSize = 0"));
 
-
         return TOOTLE_INVALID_ARGS;
     }
 
@@ -1626,7 +1637,8 @@ TootleResult TootleMeasureOverdrawRaytrace(const void*         pVB,
     if (eFrontWinding != TOOTLE_CCW && eFrontWinding != TOOTLE_CW)
     {
         errorf(("Invalid face winding."));
-        return TOOTLE_INVALID_ARGS;
+     
+		return TOOTLE_INVALID_ARGS;
     }
 
     // use default viewpoints if they were omitted
@@ -1704,7 +1716,8 @@ static TootleResult ConvertClusterArrayFromFullToCompact(unsigned int* pnID, uns
     if (!IsClusterArrayFullFormat(pnID, nFaces))
     {
         errorf(("ConvertClusterIDFromFullToCompact: pnID is not a full format"));
-        return TOOTLE_INTERNAL_ERROR;
+        
+		return TOOTLE_INTERNAL_ERROR;
     }
 
     unsigned int nNumCluster;
@@ -1715,13 +1728,15 @@ static TootleResult ConvertClusterArrayFromFullToCompact(unsigned int* pnID, uns
     if (nNumCluster > nFaces)
     {
         errorf(("ConvertClusterArrayFromFullToCompact: nNumCluster > nFaces"));
-        return TOOTLE_INTERNAL_ERROR;
+        
+		return TOOTLE_INTERNAL_ERROR;
     }
 
     if (nNumCluster >= TOOTLE_NONE)
     {
         errorf(("ConvertClusterIDFromFullToCompact: nNumCluster >= TOOTLE_NONE (max int)"));
-        return TOOTLE_INTERNAL_ERROR;
+        
+		return TOOTLE_INTERNAL_ERROR;
     }
 
     unsigned int nStart;
@@ -1731,7 +1746,8 @@ static TootleResult ConvertClusterArrayFromFullToCompact(unsigned int* pnID, uns
     if (pnID[ 0 ] != 0)
     {
         errorf(("ConvertClusterIDFromFullToCompact: pnID[0] != 0"));
-        return TOOTLE_INTERNAL_ERROR;
+        
+		return TOOTLE_INTERNAL_ERROR;
     }
 
     // Compacting the cluster array
@@ -1798,7 +1814,8 @@ static TootleResult ConvertClusterArrayFromCompactToFull(unsigned int* pnID, uns
     if (!IsClusterArrayCompactFormat(pnID, nFaces))
     {
         errorf(("ConvertClusterArrayFromCompactToFull: pnID is not a compact format"));
-        return TOOTLE_INTERNAL_ERROR;
+        
+		return TOOTLE_INTERNAL_ERROR;
     }
 
     unsigned int nNumCluster;
@@ -1809,7 +1826,8 @@ static TootleResult ConvertClusterArrayFromCompactToFull(unsigned int* pnID, uns
     if (nNumCluster > nFaces)
     {
         errorf(("ConvertClusterArrayFromCompactToFull: nNumCluster > nLength"));
-        return TOOTLE_INTERNAL_ERROR;
+        
+		return TOOTLE_INTERNAL_ERROR;
     }
 
     // Make a local copy of the compact form array
@@ -1829,7 +1847,8 @@ static TootleResult ConvertClusterArrayFromCompactToFull(unsigned int* pnID, uns
         if (pnTmp[i] > nFaces)
         {
             errorf(("ConvertClusterArrayFromCompactToFull: pnTmp[i] > nLength"));
-            return TOOTLE_INTERNAL_ERROR;
+            
+			return TOOTLE_INTERNAL_ERROR;
         }
 
         for (j = nStart; j < pnTmp[i]; j++)

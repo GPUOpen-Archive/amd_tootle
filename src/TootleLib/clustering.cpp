@@ -202,8 +202,12 @@ static int MoveFaces(Mesh& mesh, std::vector<int>& seeds, std::vector<int>& clus
     }
 
     fMaxDist = cost[f];
-    debugf(("Max: %.6f, Avg: %.6f", fMaxDist, fAvgDist));
-
+    
+#ifdef _WIN_8_1_SDK
+	debugf("Max: %.6f, Avg: %.6f", fMaxDist, fAvgDist);
+#else
+	debugf(("Max: %.6f, Avg: %.6f", fMaxDist, fAvgDist));
+#endif
     int lowvisi = nvis;
 
     int lowvisf = -1;
@@ -512,7 +516,11 @@ ClusterResult Cluster(Soup* soup, UINT& nClusters, std::vector<int>& cluster)
         }
     }
 
-    debugf(("Final # of clusters: %i", nClusters));
+#ifdef _WIN_8_1_SDK
+	debugf("Final # of clusters: %i", nClusters);
+#else
+	debugf(("Final # of clusters: %i", nClusters));
+#endif
     return CLUSTER_OK;
 }
 
