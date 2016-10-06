@@ -18,7 +18,7 @@ typedef struct _ARC
 {
     int i, j, c;
 } ARC, *PARC;
-PARC Arc;
+PARC arc;//renamed to arc, because of function redefinition error. Conflicts with name of function "Arc" in windows.h
 
 // Per-vertex number of arcs
 static int* ArcCount;
@@ -148,7 +148,7 @@ void Output(int v)
 
     int feedback(int nVerts, int nArcs, t_edge* graph, int* order)
     {
-        Arc = (PARC) malloc(sizeof(ARC) * 2 * nArcs) ;
+		arc = (PARC) malloc(sizeof(ARC) * 2 * nArcs) ;
         DeltaCost = (int*) malloc(sizeof(int) * nVerts);
         ArcStart = (PARC*) malloc(sizeof(PARC*) * nVerts);
         Zero = (int*) malloc(sizeof(int) * nVerts);
@@ -157,7 +157,7 @@ void Output(int v)
         OutDegree = (int*) malloc(sizeof(int) * nVerts);
         InDegree = (int*) malloc(sizeof(int) * nVerts);
 
-        CHECK_OUT_OF_MEMORY(Arc);
+        CHECK_OUT_OF_MEMORY(arc);
         CHECK_OUT_OF_MEMORY(DeltaCost);
         CHECK_OUT_OF_MEMORY(ArcStart);
         CHECK_OUT_OF_MEMORY(Zero);
@@ -166,13 +166,13 @@ void Output(int v)
         CHECK_OUT_OF_MEMORY(OutDegree);
         CHECK_OUT_OF_MEMORY(InDegree);
 
-        memset(Arc, 0, sizeof(int) * 2 * nArcs);
+        memset(arc, 0, sizeof(int) * 2 * nArcs);
         memset(DeltaCost, 0, sizeof(int) * nVerts);
         memset(ArcCount, 0, sizeof(int) * nVerts);
         memset(OutDegree, 0, sizeof(int) * nVerts);
         memset(InDegree, 0, sizeof(int) * nVerts);
 
-        PARC pArc = Arc;
+        PARC pArc = arc;
 
         for (int a = 0; a < nArcs; a++)
         {
@@ -191,11 +191,11 @@ void Output(int v)
         }
 
         // Make sure edges are sorted by vertex index
-        qsort(Arc, 2 * nArcs, sizeof(ARC), cmp);
+        qsort(arc, 2 * nArcs, sizeof(ARC), cmp);
 
         // Find start of each vertex's section in edge list
         memset(ArcStart, 0, sizeof(PARC*) * nVerts);
-        pArc = Arc;
+        pArc = arc;
 
         for (int i = 0; i < nVerts; i++)
         {
@@ -257,7 +257,7 @@ void Output(int v)
         memcpy(order, Ordered, sizeof(int) * nVerts);
 
         // clean up
-        free(Arc);
+        free(arc);
         free(DeltaCost);
         free(ArcCount);
         free(OutDegree);

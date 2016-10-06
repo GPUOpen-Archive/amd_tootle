@@ -793,8 +793,8 @@ int main(int argc, char* argv[])
     settings.bMeasureOverdraw      = true;                           // default is to measure overdraw
 	
     // parse the command line
-    ParseCommandLine(argc, argv, &settings);
-
+    //ParseCommandLine(argc, argv, &settings);
+	settings.pMeshName = "E:\\Source Code\\GitHub\\PooyaEimandar\\amd-tootle\\meshes\\c.obj";
     // ***************************************************
     //   Load the mesh
     // ***************************************************
