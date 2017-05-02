@@ -52,8 +52,8 @@
 #ifdef _WIN_8_1_SDK
 
 /*
-	Starting with Windows 8, the DirectX SDK is included as part of the Windows SDK.
-	more information at https://msdn.microsoft.com/en-us/library/windows/desktop/ee663275(v=vs.85).aspx
+    Starting with Windows 8, the DirectX SDK is included as part of the Windows SDK.
+    more information at https://msdn.microsoft.com/en-us/library/windows/desktop/ee663275(v=vs.85).aspx
 */
 
 #include <DirectXMath.h>

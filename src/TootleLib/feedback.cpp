@@ -148,7 +148,7 @@ void Output(int v)
 
     int feedback(int nVerts, int nArcs, t_edge* graph, int* order)
     {
-		arc = (PARC) malloc(sizeof(ARC) * 2 * nArcs) ;
+        arc = (PARC) malloc(sizeof(ARC) * 2 * nArcs) ;
         DeltaCost = (int*) malloc(sizeof(int) * nVerts);
         ArcStart = (PARC*) malloc(sizeof(PARC*) * nVerts);
         Zero = (int*) malloc(sizeof(int) * nVerts);
@@ -209,7 +209,7 @@ void Output(int v)
         // Allocate and initialize heap
         if (!heap_create(Heap, nVerts))
         {
-			errorf(("Out of memory."));
+            errorf(("Out of memory."));
             return 1;
         }
 

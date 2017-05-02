@@ -63,8 +63,8 @@ Mesh::ComputeVV(void)
         vv(t(i)[0]).push_back (t(i)[2]);
     }
 
-#ifdef _WIN_8_1_SDK
-	debugf("Done in %gs", time.GetElapsed());
+#ifdef _DX11_1_
+    debugf("Done in %gs", time.GetElapsed());
 #else
     debugf(("Done in %gs", time.GetElapsed()));
 #endif
@@ -90,10 +90,10 @@ Mesh::ComputeVT(VTArray& vtOut)
         }
     }
 
-#ifdef _WIN_8_1_SDK
+#ifdef _DX11_1_
     debugf("Done in %gs", time.GetElapsed());
 #else
-	debugf(("Done in %gs", time.GetElapsed()));
+    debugf(("Done in %gs", time.GetElapsed()));
 #endif
     return 1;
 }
@@ -129,7 +129,7 @@ Mesh::ComputeAE(const VTArray& vt)
                     {
                         if (t(af)[k] == vn)
                         {
-                            ae (f).push_back (af);
+                            ae(f).push_back(af);
                         }
                     }
                 }
@@ -137,10 +137,10 @@ Mesh::ComputeAE(const VTArray& vt)
         }
     }
 
-#ifdef _WIN_8_1_SDK
-	debugf("Done in %gs", time.GetElapsed());
+#ifdef _DX11_1_
+    debugf("Done in %gs", time.GetElapsed());
 #else
-	debugf(("Done in %gs", time.GetElapsed()));
+    debugf(("Done in %gs", time.GetElapsed()));
 #endif
 
     return 1;

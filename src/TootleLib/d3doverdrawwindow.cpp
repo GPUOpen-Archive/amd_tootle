@@ -86,18 +86,18 @@ void
 D3DOverdrawWindow::
 SetupWorld(void)
 {
-#ifdef _WIN_8_1_SDK
-	using namespace DirectX;
-	DirectX::XMMATRIX T, R, S;
-	// make world matrix
-	// start with identity
-	m_mWorld = XMMatrixIdentity();
-	// translate object's center to origin
-	T = XMMatrixTranslation(-m_vCenter[0], -m_vCenter[1], -m_vCenter[2]);
-	m_mWorld = XMMatrixMultiply(m_mWorld, T);
-	// scale so that size is 1
-	S = XMMatrixScaling(1 / m_fSize, 1 / m_fSize, 1 / m_fSize);
-	m_mWorld = XMMatrixMultiply(m_mWorld, S);
+#ifdef _DX11_1_
+    using namespace DirectX;
+    DirectX::XMMATRIX T, R, S;
+    // make world matrix
+    // start with identity
+    m_mWorld = XMMatrixIdentity();
+    // translate object's center to origin
+    T = XMMatrixTranslation(-m_vCenter[0], -m_vCenter[1], -m_vCenter[2]);
+    m_mWorld = XMMatrixMultiply(m_mWorld, T);
+    // scale so that size is 1
+    S = XMMatrixScaling(1 / m_fSize, 1 / m_fSize, 1 / m_fSize);
+    m_mWorld = XMMatrixMultiply(m_mWorld, S);
 #else
     D3DXMATRIXA16 T, R, S;
     // make world matrix
@@ -140,11 +140,11 @@ SetupView(int iViewpoint)
         u = Normalize(Vector3(0, e[2], -e[1]));
     }
 
-#ifdef _WIN_8_1_SDK
-	auto eye = DirectX::XMVectorSet(e[0], e[1], e[2], 0);
-	auto at = DirectX::XMVectorZero();
-	auto up = DirectX::XMVectorSet(u[0], u[1], u[2], 0);
-	m_mViewing = DirectX::XMMatrixLookAtRH(eye, at, up);
+#ifdef _DX11_1_
+    auto eye = DirectX::XMVectorSet(e[0], e[1], e[2], 0);
+    auto at = DirectX::XMVectorZero();
+    auto up = DirectX::XMVectorSet(u[0], u[1], u[2], 0);
+    m_mViewing = DirectX::XMMatrixLookAtRH(eye, at, up);
 #else
     D3DXVECTOR3 eye(e[0], e[1], e[2]);
     D3DXVECTOR3 at(0, 0, 0);
@@ -157,34 +157,34 @@ void
 D3DOverdrawWindow::
 SetupTransforms(void)
 {
-#ifdef _WIN_8_1_SDK
+#ifdef _DX11_1_
 
-	D3DMATRIX d3d_mat;
+    D3DMATRIX d3d_mat;
 
-	//convert XMMatrix to XMFLOAT4X4
-	DirectX::XMFLOAT4X4 _float_4x4;
-	DirectX::XMStoreFloat4x4(&_float_4x4, m_mViewing);
+    //convert XMMatrix to XMFLOAT4X4
+    DirectX::XMFLOAT4X4 _float_4x4;
+    DirectX::XMStoreFloat4x4(&_float_4x4, m_mViewing);
 
-	//copy DirectX::XMFLOAT4X4 to D3DMATRIX
-	std::memcpy(&d3d_mat, &_float_4x4, sizeof(_float_4x4));
-	//Set view
-	d3d->SetTransform(D3DTS_VIEW, &d3d_mat);
+    //copy DirectX::XMFLOAT4X4 to D3DMATRIX
+    std::memcpy(&d3d_mat, &_float_4x4, sizeof(_float_4x4));
+    //Set view
+    d3d->SetTransform(D3DTS_VIEW, &d3d_mat);
 
 
-	//convert XMMatrix to XMFLOAT4X4
-	DirectX::XMStoreFloat4x4(&_float_4x4, m_mWorld);
+    //convert XMMatrix to XMFLOAT4X4
+    DirectX::XMStoreFloat4x4(&_float_4x4, m_mWorld);
 
-	//copy DirectX::XMFLOAT4X4 to D3DMATRIX
-	std::memcpy(&d3d_mat, &_float_4x4, sizeof(_float_4x4));
-	//set world
-	d3d->SetTransform(D3DTS_WORLD, &d3d_mat);
+    //copy DirectX::XMFLOAT4X4 to D3DMATRIX
+    std::memcpy(&d3d_mat, &_float_4x4, sizeof(_float_4x4));
+    //set world
+    d3d->SetTransform(D3DTS_WORLD, &d3d_mat);
 
-	//convert XMMatrix to XMFLOAT4X4
-	DirectX::XMStoreFloat4x4(&_float_4x4, m_mProjection);
-	//copy DirectX::XMFLOAT4X4 to D3DMATRIX
-	std::memcpy(&d3d_mat, &_float_4x4, sizeof(_float_4x4));
-	//set projection
-	d3d->SetTransform(D3DTS_PROJECTION, &d3d_mat);
+    //convert XMMatrix to XMFLOAT4X4
+    DirectX::XMStoreFloat4x4(&_float_4x4, m_mProjection);
+    //copy DirectX::XMFLOAT4X4 to D3DMATRIX
+    std::memcpy(&d3d_mat, &_float_4x4, sizeof(_float_4x4));
+    //set projection
+    d3d->SetTransform(D3DTS_PROJECTION, &d3d_mat);
 
 #else
 
@@ -259,15 +259,15 @@ Graph(std::vector<t_edge>& Edge)
         for (int j = i + 1; j < static_cast<int>(m_pClusterStart->size()) - 1 ; j++)
         {
             int cij = Loop(i, j);
-#ifdef _WIN_8_1_SDK
-			debugf("%d %d -> %d", i, j, cij);
+#ifdef _DX11_1_
+            debugf("%d %d -> %d", i, j, cij);
 #else
             debugf(("%d %d -> %d", i, j, cij));
 #endif
             int cji = Loop(j, i);
 
-#ifdef _WIN_8_1_SDK
-			debugf("%d %d -> %d", j, i, cji);
+#ifdef _DX11_1_
+            debugf("%d %d -> %d", j, i, cji);
 #else
             debugf(("%d %d -> %d", j, i, cji));
 #endif
@@ -286,10 +286,10 @@ Graph(std::vector<t_edge>& Edge)
         }
     }
 
-#ifdef _WIN_8_1_SDK
+#ifdef _DX11_1_
     debugf("Fraction rendered: %f ", m_iRendered / (float)m_iTested);
 #else
-	debugf(("Fraction rendered: %f ", m_iRendered / (float)m_iTested));
+    debugf(("Fraction rendered: %f ", m_iRendered / (float)m_iTested));
 #endif
 
     /*
@@ -819,13 +819,13 @@ SetupProjection(void)
 {
     int w = GetWidth(), h = GetHeight();
 
-#ifdef _WIN_8_1_SDK
-	if (w < h)
-		m_mProjection = DirectX::XMMatrixOrthographicOffCenterRH(
-			-0.5f, 0.5f, -0.5f * h / w, 0.5f * h / w, 0, 2);
-	else
-		m_mProjection = DirectX::XMMatrixOrthographicOffCenterRH(
-			-0.5f * w / h, 0.5f * w / h, -0.5f, 0.5f, 0, 2);
+#ifdef _DX11_1_
+    if (w < h)
+        m_mProjection = DirectX::XMMatrixOrthographicOffCenterRH(
+            -0.5f, 0.5f, -0.5f * h / w, 0.5f * h / w, 0, 2);
+    else
+        m_mProjection = DirectX::XMMatrixOrthographicOffCenterRH(
+            -0.5f * w / h, 0.5f * w / h, -0.5f, 0.5f, 0, 2);
 #else
     if (w < h)
         D3DXMatrixOrthoOffCenterRH(&m_mProjection,
@@ -848,11 +848,11 @@ int
 D3DOverdrawWindow::
 CheckIsect(int iClusterA, int iClusterB)
 {
-#ifdef _WIN_8_1_SDK
-	DirectX::XMMATRIX mWorldView;
-	mWorldView = DirectX::XMMatrixMultiply(m_mWorld, m_mViewing);
+#ifdef _DX11_1_
+    DirectX::XMMATRIX mWorldView;
+    mWorldView = DirectX::XMMatrixMultiply(m_mWorld, m_mViewing);
 #else
-	D3DXMATRIXA16 mWorldView;
+    D3DXMATRIXA16 mWorldView;
     D3DXMatrixMultiply(&mWorldView, &m_mWorld, &m_mViewing);
 #endif
 
@@ -877,12 +877,12 @@ CheckIsect(int iClusterA, int iClusterB)
     }
 
 #else
-#ifdef _WIN_8_1_SDK
-	DirectX::XMVECTOR
+#ifdef _DX11_1_
+    DirectX::XMVECTOR
 #else
-	D3DXVECTOR4
-#endif //_WIN_8_1_SDK
-	vTransA, vTransB;
+    D3DXVECTOR4
+#endif //_DX11_1_
+    vTransA, vTransB;
     float xminA = 2e30f, yminA = 2e30f, xmaxA = -2e30f, ymaxA = -2e30f;
     float xminB = 2e30f, yminB = 2e30f, xmaxB = -2e30f, ymaxB = -2e30f;
 
@@ -895,72 +895,72 @@ CheckIsect(int iClusterA, int iClusterB)
                                       m_vClusterDiag[iClusterA][1] / 2.f * j,
                                       m_vClusterDiag[iClusterA][2] / 2.f * k);
 
-#ifdef _WIN_8_1_SDK
-				//vTransA
-				auto _xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
-				vTransA = DirectX::XMVector3Transform(_xmv, mWorldView);
-				
-				auto _w = DirectX::XMVectorGetW(vTransA);
-				auto _x = DirectX::XMVectorGetX(vTransA);
-				auto _y = DirectX::XMVectorGetY(vTransA);
-				auto _z = DirectX::XMVectorGetZ(vTransA);
-				
-				vTransA = DirectX::XMVectorSet(_x / _w, _y / _w, _z / _w, 1);
+#ifdef _DX11_1_
+                //vTransA
+                auto _xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
+                vTransA = DirectX::XMVector3Transform(_xmv, mWorldView);
+                
+                auto _w = DirectX::XMVectorGetW(vTransA);
+                auto _x = DirectX::XMVectorGetX(vTransA);
+                auto _y = DirectX::XMVectorGetY(vTransA);
+                auto _z = DirectX::XMVectorGetZ(vTransA);
+                
+                vTransA = DirectX::XMVectorSet(_x / _w, _y / _w, _z / _w, 1);
 
-				_x = DirectX::XMVectorGetX(vTransA);
-				_y = DirectX::XMVectorGetY(vTransA);
-				
-				xminA = min(xminA, _x);
-				yminA = min(yminA, _y);
-				xmaxA = max(xmaxA, _x);
-				ymaxA = max(ymaxA, _y);
+                _x = DirectX::XMVectorGetX(vTransA);
+                _y = DirectX::XMVectorGetY(vTransA);
+                
+                xminA = min(xminA, _x);
+                yminA = min(yminA, _y);
+                xmaxA = max(xmaxA, _x);
+                ymaxA = max(ymaxA, _y);
 
-				v = m_vClusterCenter[iClusterB]
-					+ Vector3(m_vClusterDiag[iClusterB][0] / 2.f * i,
-						m_vClusterDiag[iClusterB][1] / 2.f * j,
-						m_vClusterDiag[iClusterB][2] / 2.f * k);
+                v = m_vClusterCenter[iClusterB]
+                    + Vector3(m_vClusterDiag[iClusterB][0] / 2.f * i,
+                        m_vClusterDiag[iClusterB][1] / 2.f * j,
+                        m_vClusterDiag[iClusterB][2] / 2.f * k);
 
-				//vTransB
-				_xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
-				vTransB = DirectX::XMVector3Transform(_xmv, mWorldView);
+                //vTransB
+                _xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
+                vTransB = DirectX::XMVector3Transform(_xmv, mWorldView);
 
-				_w = DirectX::XMVectorGetW(vTransB);
-				_x = DirectX::XMVectorGetX(vTransB);
-				_y = DirectX::XMVectorGetY(vTransB);
-				_z = DirectX::XMVectorGetZ(vTransB);
+                _w = DirectX::XMVectorGetW(vTransB);
+                _x = DirectX::XMVectorGetX(vTransB);
+                _y = DirectX::XMVectorGetY(vTransB);
+                _z = DirectX::XMVectorGetZ(vTransB);
 
-				vTransB = DirectX::XMVectorSet(_x / _w, _y / _w, _z / _w, 1);
+                vTransB = DirectX::XMVectorSet(_x / _w, _y / _w, _z / _w, 1);
 
-				_x = DirectX::XMVectorGetX(vTransB);
-				_y = DirectX::XMVectorGetY(vTransB);
+                _x = DirectX::XMVectorGetX(vTransB);
+                _y = DirectX::XMVectorGetY(vTransB);
 
-				xminB = min(xminB, _x);
-				yminB = min(yminB, _y);
-				xmaxB = max(xmaxB, _x);
-				ymaxB = max(ymaxB, _y);
+                xminB = min(xminB, _x);
+                yminB = min(yminB, _y);
+                xmaxB = max(xmaxB, _x);
+                ymaxB = max(ymaxB, _y);
 
 #else
-				D3DXVec3Transform(&vTransA, (D3DXVECTOR3*)&v[0], &mWorldView);
-				vTransA /= vTransA.w;
+                D3DXVec3Transform(&vTransA, (D3DXVECTOR3*)&v[0], &mWorldView);
+                vTransA /= vTransA.w;
 
-				xminA = min(xminA, vTransA.x);
-				yminA = min(yminA, vTransA.y);
-				xmaxA = max(xmaxA, vTransA.x);
-				ymaxA = max(ymaxA, vTransA.y);
+                xminA = min(xminA, vTransA.x);
+                yminA = min(yminA, vTransA.y);
+                xmaxA = max(xmaxA, vTransA.x);
+                ymaxA = max(ymaxA, vTransA.y);
 
-				v = m_vClusterCenter[iClusterB]
-					+ Vector3(m_vClusterDiag[iClusterB][0] / 2.f * i,
-						m_vClusterDiag[iClusterB][1] / 2.f * j,
-						m_vClusterDiag[iClusterB][2] / 2.f * k);
+                v = m_vClusterCenter[iClusterB]
+                    + Vector3(m_vClusterDiag[iClusterB][0] / 2.f * i,
+                        m_vClusterDiag[iClusterB][1] / 2.f * j,
+                        m_vClusterDiag[iClusterB][2] / 2.f * k);
 
-				D3DXVec3Transform(&vTransB, (D3DXVECTOR3*)&v[0], &mWorldView);
-				vTransB /= vTransB.w;
-				xminB = min(xminB, vTransB.x);
-				yminB = min(yminB, vTransB.y);
-				xmaxB = max(xmaxB, vTransB.x);
-				ymaxB = max(ymaxB, vTransB.y);
+                D3DXVec3Transform(&vTransB, (D3DXVECTOR3*)&v[0], &mWorldView);
+                vTransB /= vTransB.w;
+                xminB = min(xminB, vTransB.x);
+                yminB = min(yminB, vTransB.y);
+                xmaxB = max(xmaxB, vTransB.x);
+                ymaxB = max(ymaxB, vTransB.y);
 
-#endif //_WIN_8_1_SDK
+#endif //_DX11_1_
 
             }
 

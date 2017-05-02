@@ -179,7 +179,7 @@ bool JRTPPMImage::LoadFile(const char* filename)
 
     /*
         For reference, here is the PPM image format description, direct from the ppm man page.
-		
+        
         A "magic number" for identifying the file type. A ppm file's magic number is the two characters "P3".
         Whitespace (blanks, TABs, CRs, LFs).
         A width, formatted as ASCII characters in decimal.

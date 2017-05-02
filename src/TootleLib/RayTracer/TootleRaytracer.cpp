@@ -47,7 +47,7 @@ bool TootleRaytracer::Init(const float* pVertexPositions, const UINT* pIndices, 
 {
     m_pFaceClusters = pFaceClusters;
 
-	std::vector<JRTMesh*> meshes (1);
+    std::vector<JRTMesh*> meshes (1);
 
 
     m_pMesh = JRTMesh::CreateMesh((const Vec3f*) pVertexPositions, (const Vec3f*) pFaceNormals, nVertices, nFaces, pIndices);

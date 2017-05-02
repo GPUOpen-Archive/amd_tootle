@@ -8,10 +8,10 @@
 
 #include <d3d9.h>
 
-#ifndef _WIN_8_1_SDK
-
-#include <d3dx9.h>
-
+#ifdef _DX11_1_
+    #include <DirectXMath.h>
+#else
+    #include <d3dx9.h>
 #endif
 
 class D3DWindow;

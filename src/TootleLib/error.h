@@ -6,18 +6,18 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-#ifdef _WIN_8_1_SDK
+#ifdef _DX11_1_
 
 #define warnf(args) do { \
         printf(args); \
     } while(0)
 
 #define errorf(args) do { \
-		printf(args); \
+        printf(args); \
     } while(0)
 
 #define debugf(args) do { \
-		printf(args); \
+        printf(args); \
     } while(0)
 
 #else

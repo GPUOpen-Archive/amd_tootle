@@ -791,10 +791,10 @@ int main(int argc, char* argv[])
     settings.eVCacheOptimizer      = TOOTLE_VCACHE_AUTO;             // the auto selection as the default to optimize vertex cache
     settings.bOptimizeVertexMemory = true;                           // default value is to optimize the vertex memory
     settings.bMeasureOverdraw      = true;                           // default is to measure overdraw
-	
+    
     // parse the command line
     //ParseCommandLine(argc, argv, &settings);
-	settings.pMeshName = "E:\\Source Code\\GitHub\\PooyaEimandar\\amd-tootle\\meshes\\c.obj";
+    settings.pMeshName = "E:\\Source Code\\GitHub\\PooyaEimandar\\amd-tootle\\meshes\\c.obj";
     // ***************************************************
     //   Load the mesh
     // ***************************************************
@@ -805,7 +805,7 @@ int main(int argc, char* argv[])
 
     ObjLoader loader;
 
-	if (!loader.LoadGeometry(settings.pMeshName, objVertices, objFaces))
+    if (!loader.LoadGeometry(settings.pMeshName, objVertices, objFaces))
     {
         std::cerr << "Error loading mesh file: " << settings.pMeshName << std::endl;
         return 1;

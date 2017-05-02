@@ -21,7 +21,7 @@
 #include "viewpoints.h"
 #include "Stripifier.h"
 
-#ifdef _WIN_8_1_SDK
+#ifdef _DX11_1_
 #include "directxmesh.h"
 #endif
 
@@ -216,21 +216,21 @@ TootleResult TOOTLE_DLL TootleOptimizeVCache(const unsigned int*   pnIB,
 
     if (nFaces == 0 || nFaces > TOOTLE_MAX_FACES)
     {
-		errorf(("TootleOptimizeVCache: Invalid value of nFaces"));
+        errorf(("TootleOptimizeVCache: Invalid value of nFaces"));
 
         return TOOTLE_INVALID_ARGS;
     }
 
     if (nVertices == 0 || nVertices > TOOTLE_MAX_VERTICES)
     {
-		errorf(("TootleOptimizeVCache: Invalid value of nVertices"));
+        errorf(("TootleOptimizeVCache: Invalid value of nVertices"));
 
         return TOOTLE_INVALID_ARGS;
     }
 
     if (nCacheSize == 0)
     {
-		errorf(("TootleOptimizeVCache: nCacheSize = 0"));
+        errorf(("TootleOptimizeVCache: nCacheSize = 0"));
 
         return TOOTLE_INVALID_ARGS;
     }
@@ -335,11 +335,11 @@ static TootleResult TootleOptimizeVCacheDirect3D(const unsigned int* pnIB,
         return TOOTLE_INVALID_ARGS;
     }
 
-	auto pFaceRemap = 
-#ifdef _WIN_8_1_SDK
-					new uint32_t[nFaces];
+    auto pFaceRemap = 
+#ifdef _DX11_1_
+                    new uint32_t[nFaces];
 #else
-					new DWORD[ nFaces ];
+                    new DWORD[ nFaces ];
 #endif
     HRESULT hres = D3D_OK;
 
@@ -350,9 +350,9 @@ static TootleResult TootleOptimizeVCacheDirect3D(const unsigned int* pnIB,
     }
     else
     {
-#ifdef _WIN_8_1_SDK
+#ifdef _DX11_1_
 
-		hres = DirectX::OptimizeFaces(pnIB, nFaces, nullptr, pFaceRemap);
+        hres = DirectX::OptimizeFaces(pnIB, nFaces, nullptr, pFaceRemap);
 #else
         // use D3DX for optimization
         hres = D3DXOptimizeFaces(pnIB, nFaces, nVertices, true, pFaceRemap);
@@ -1086,7 +1086,7 @@ void TOOTLE_DLL TootleCleanup()
             ODCleanup ();
         }
     }
-    catch (...) 		
+    catch (...)         
     {
     }
 }
@@ -1638,7 +1638,7 @@ TootleResult TootleMeasureOverdrawRaytrace(const void*         pVB,
     {
         errorf(("Invalid face winding."));
      
-		return TOOTLE_INVALID_ARGS;
+        return TOOTLE_INVALID_ARGS;
     }
 
     // use default viewpoints if they were omitted
@@ -1717,7 +1717,7 @@ static TootleResult ConvertClusterArrayFromFullToCompact(unsigned int* pnID, uns
     {
         errorf(("ConvertClusterIDFromFullToCompact: pnID is not a full format"));
         
-		return TOOTLE_INTERNAL_ERROR;
+        return TOOTLE_INTERNAL_ERROR;
     }
 
     unsigned int nNumCluster;
@@ -1729,14 +1729,14 @@ static TootleResult ConvertClusterArrayFromFullToCompact(unsigned int* pnID, uns
     {
         errorf(("ConvertClusterArrayFromFullToCompact: nNumCluster > nFaces"));
         
-		return TOOTLE_INTERNAL_ERROR;
+        return TOOTLE_INTERNAL_ERROR;
     }
 
     if (nNumCluster >= TOOTLE_NONE)
     {
         errorf(("ConvertClusterIDFromFullToCompact: nNumCluster >= TOOTLE_NONE (max int)"));
         
-		return TOOTLE_INTERNAL_ERROR;
+        return TOOTLE_INTERNAL_ERROR;
     }
 
     unsigned int nStart;
@@ -1747,7 +1747,7 @@ static TootleResult ConvertClusterArrayFromFullToCompact(unsigned int* pnID, uns
     {
         errorf(("ConvertClusterIDFromFullToCompact: pnID[0] != 0"));
         
-		return TOOTLE_INTERNAL_ERROR;
+        return TOOTLE_INTERNAL_ERROR;
     }
 
     // Compacting the cluster array
@@ -1815,7 +1815,7 @@ static TootleResult ConvertClusterArrayFromCompactToFull(unsigned int* pnID, uns
     {
         errorf(("ConvertClusterArrayFromCompactToFull: pnID is not a compact format"));
         
-		return TOOTLE_INTERNAL_ERROR;
+        return TOOTLE_INTERNAL_ERROR;
     }
 
     unsigned int nNumCluster;
@@ -1827,7 +1827,7 @@ static TootleResult ConvertClusterArrayFromCompactToFull(unsigned int* pnID, uns
     {
         errorf(("ConvertClusterArrayFromCompactToFull: nNumCluster > nLength"));
         
-		return TOOTLE_INTERNAL_ERROR;
+        return TOOTLE_INTERNAL_ERROR;
     }
 
     // Make a local copy of the compact form array
@@ -1848,7 +1848,7 @@ static TootleResult ConvertClusterArrayFromCompactToFull(unsigned int* pnID, uns
         {
             errorf(("ConvertClusterArrayFromCompactToFull: pnTmp[i] > nLength"));
             
-			return TOOTLE_INTERNAL_ERROR;
+            return TOOTLE_INTERNAL_ERROR;
         }
 
         for (j = nStart; j < pnTmp[i]; j++)
