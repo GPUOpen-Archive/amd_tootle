@@ -787,14 +787,14 @@ int main(int argc, char* argv[])
     settings.nClustering           = 0;
     settings.nCacheSize            = TOOTLE_DEFAULT_VCACHE_SIZE;
     settings.eWinding              = TOOTLE_CW;
-    settings.algorithmChoice       = TOOTLE_FAST_OPTIMIZE;
+    settings.algorithmChoice       = TOOTLE_OPTIMIZE;
     settings.eVCacheOptimizer      = TOOTLE_VCACHE_AUTO;             // the auto selection as the default to optimize vertex cache
     settings.bOptimizeVertexMemory = true;                           // default value is to optimize the vertex memory
     settings.bMeasureOverdraw      = true;                           // default is to measure overdraw
     
     // parse the command line
-    //ParseCommandLine(argc, argv, &settings);
-    settings.pMeshName = "E:\\Source Code\\GitHub\\PooyaEimandar\\amd-tootle\\meshes\\c.obj";
+    ParseCommandLine(argc, argv, &settings);
+
     // ***************************************************
     //   Load the mesh
     // ***************************************************

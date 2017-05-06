@@ -49,7 +49,7 @@
 #include <assert.h>
 #include <float.h>
 
-#ifdef _WIN_8_1_SDK
+#ifdef _DX11_1_
 
 /*
     Starting with Windows 8, the DirectX SDK is included as part of the Windows SDK.

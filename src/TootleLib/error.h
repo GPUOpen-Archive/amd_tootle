@@ -6,22 +6,6 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-#ifdef _DX11_1_
-
-#define warnf(args) do { \
-        printf(args); \
-    } while(0)
-
-#define errorf(args) do { \
-        printf(args); \
-    } while(0)
-
-#define debugf(args) do { \
-        printf(args); \
-    } while(0)
-
-#else
-
 #ifdef __cplusplus
     extern "C"
 #endif
@@ -74,8 +58,6 @@ void error_output(const char* fmt, ...);
 #endif
 #else
 #define debugf
-#endif
-
 #endif
 
 #endif

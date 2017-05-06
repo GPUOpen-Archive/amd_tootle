@@ -259,18 +259,11 @@ Graph(std::vector<t_edge>& Edge)
         for (int j = i + 1; j < static_cast<int>(m_pClusterStart->size()) - 1 ; j++)
         {
             int cij = Loop(i, j);
-#ifdef _DX11_1_
-            debugf("%d %d -> %d", i, j, cij);
-#else
-            debugf(("%d %d -> %d", i, j, cij));
-#endif
+            //debugf("%d %d -> %d", i, j, cij);
+
             int cji = Loop(j, i);
 
-#ifdef _DX11_1_
-            debugf("%d %d -> %d", j, i, cji);
-#else
-            debugf(("%d %d -> %d", j, i, cji));
-#endif
+            //debugf(("%d %d -> %d", j, i, cji));
             if (cij > cji)
             {
                 t_edge e = {j, i, cij - cji};
@@ -285,12 +278,6 @@ Graph(std::vector<t_edge>& Edge)
             }
         }
     }
-
-#ifdef _DX11_1_
-    debugf("Fraction rendered: %f ", m_iRendered / (float)m_iTested);
-#else
-    debugf(("Fraction rendered: %f ", m_iRendered / (float)m_iTested));
-#endif
 
     /*
     printf("p %d %d\n", m_pClusterStart->GetSize()-1, Edge.GetSize());
@@ -897,23 +884,23 @@ CheckIsect(int iClusterA, int iClusterB)
 
 #ifdef _DX11_1_
                 //vTransA
-                auto _xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
-                vTransA = DirectX::XMVector3Transform(_xmv, mWorldView);
+                auto xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
+                vTransA = DirectX::XMVector3Transform(xmv, mWorldView);
                 
-                auto _w = DirectX::XMVectorGetW(vTransA);
-                auto _x = DirectX::XMVectorGetX(vTransA);
-                auto _y = DirectX::XMVectorGetY(vTransA);
-                auto _z = DirectX::XMVectorGetZ(vTransA);
+                auto w = DirectX::XMVectorGetW(vTransA);
+                auto x = DirectX::XMVectorGetX(vTransA);
+                auto y = DirectX::XMVectorGetY(vTransA);
+                auto z = DirectX::XMVectorGetZ(vTransA);
                 
-                vTransA = DirectX::XMVectorSet(_x / _w, _y / _w, _z / _w, 1);
+                vTransA = DirectX::XMVectorSet(x / w, y / w, z / w, 1);
 
-                _x = DirectX::XMVectorGetX(vTransA);
-                _y = DirectX::XMVectorGetY(vTransA);
+                x = DirectX::XMVectorGetX(vTransA);
+                y = DirectX::XMVectorGetY(vTransA);
                 
-                xminA = min(xminA, _x);
-                yminA = min(yminA, _y);
-                xmaxA = max(xmaxA, _x);
-                ymaxA = max(ymaxA, _y);
+                xminA = min(xminA, x);
+                yminA = min(yminA, y);
+                xmaxA = max(xmaxA, x);
+                ymaxA = max(ymaxA, y);
 
                 v = m_vClusterCenter[iClusterB]
                     + Vector3(m_vClusterDiag[iClusterB][0] / 2.f * i,
@@ -921,23 +908,23 @@ CheckIsect(int iClusterA, int iClusterB)
                         m_vClusterDiag[iClusterB][2] / 2.f * k);
 
                 //vTransB
-                _xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
-                vTransB = DirectX::XMVector3Transform(_xmv, mWorldView);
+                xmv = DirectX::XMVectorSet(v[0], v[1], v[2], 0);
+                vTransB = DirectX::XMVector3Transform(xmv, mWorldView);
 
-                _w = DirectX::XMVectorGetW(vTransB);
-                _x = DirectX::XMVectorGetX(vTransB);
-                _y = DirectX::XMVectorGetY(vTransB);
-                _z = DirectX::XMVectorGetZ(vTransB);
+                w = DirectX::XMVectorGetW(vTransB);
+                x = DirectX::XMVectorGetX(vTransB);
+                y = DirectX::XMVectorGetY(vTransB);
+                z = DirectX::XMVectorGetZ(vTransB);
 
-                vTransB = DirectX::XMVectorSet(_x / _w, _y / _w, _z / _w, 1);
+                vTransB = DirectX::XMVectorSet(x / w, y / w, z / w, 1);
 
-                _x = DirectX::XMVectorGetX(vTransB);
-                _y = DirectX::XMVectorGetY(vTransB);
+                x = DirectX::XMVectorGetX(vTransB);
+                y = DirectX::XMVectorGetY(vTransB);
 
-                xminB = min(xminB, _x);
-                yminB = min(yminB, _y);
-                xmaxB = max(xmaxB, _x);
-                ymaxB = max(ymaxB, _y);
+                xminB = min(xminB, x);
+                yminB = min(yminB, y);
+                xmaxB = max(xmaxB, x);
+                ymaxB = max(ymaxB, y);
 
 #else
                 D3DXVec3Transform(&vTransA, (D3DXVECTOR3*)&v[0], &mWorldView);
