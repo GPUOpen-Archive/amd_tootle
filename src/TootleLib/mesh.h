@@ -63,7 +63,7 @@ Mesh::ComputeVV(void)
         vv(t(i)[0]).push_back (t(i)[2]);
     }
 
-    debugf("Done in %gs", time.GetElapsed());
+    debugf(("Done in %gs", time.GetElapsed()));
     return 1;
 }
 
@@ -86,7 +86,7 @@ Mesh::ComputeVT(VTArray& vtOut)
         }
     }
 
-    debugf("Done in %gs", time.GetElapsed());
+    debugf(("Done in %gs", time.GetElapsed()));
     return 1;
 }
 
@@ -129,7 +129,7 @@ Mesh::ComputeAE(const VTArray& vt)
         }
     }
 
-    debugf("Done in %gs", time.GetElapsed());
+    debugf(("Done in %gs", time.GetElapsed()));
     return 1;
 }
 
