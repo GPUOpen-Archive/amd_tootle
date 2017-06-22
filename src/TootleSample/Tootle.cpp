@@ -791,7 +791,7 @@ int main(int argc, char* argv[])
     settings.eVCacheOptimizer      = TOOTLE_VCACHE_AUTO;             // the auto selection as the default to optimize vertex cache
     settings.bOptimizeVertexMemory = true;                           // default value is to optimize the vertex memory
     settings.bMeasureOverdraw      = true;                           // default is to measure overdraw
-
+    
     // parse the command line
     ParseCommandLine(argc, argv, &settings);
 

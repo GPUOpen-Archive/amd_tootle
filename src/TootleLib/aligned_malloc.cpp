@@ -51,9 +51,9 @@ void* aligned_malloc(size_t bytes, size_t alignment)
         alignment = GetNextPowerOfTwo(alignment);
 
 #if defined(_MSC_VER) && _MSC_VER < 1900
-		fprintf (stderr, "aligned_malloc: rounding the alignment to %Iu\n", alignment);
+        fprintf (stderr, "aligned_malloc: rounding the alignment to %Iu\n", alignment);
 #else
-		fprintf (stderr, "aligned_malloc: rounding the alignment to %zu\n", alignment);
+        fprintf (stderr, "aligned_malloc: rounding the alignment to %zu\n", alignment);
 #endif
     }
 

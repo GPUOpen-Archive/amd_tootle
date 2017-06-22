@@ -267,7 +267,7 @@ void JRTHeuristicKDTreeBuilder::LocateBestSplit(float /*fNodeBBInvArea*/, const 
         nTrisBehind += (localSplit->bMaxSplit) ? 0 : 1;
 
         // evaluate the cost of this split using the surface area heuristic
-		
+        
         // compute surface area for each side of the box.  Note that we deliberately leave
         // off the multiply by two since it cancels out
         float back_area = sa_const + (bbSizeU + bbSizeV) * (localSplit->value - fNodeMin);

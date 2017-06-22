@@ -16,6 +16,6 @@ void error_output(const char *fmt, ...)
     vfprintf(stderr, fmt, ap);
     va_end(ap);
 #else
-	(void)fmt;
+    (void)fmt;
 #endif
 }

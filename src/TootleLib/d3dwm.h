@@ -7,7 +7,12 @@
 #define D3DWM_H
 
 #include <d3d9.h>
-#include <d3dx9.h>
+
+#ifdef _DX11_1_
+    #include <DirectXMath.h>
+#else
+    #include <d3dx9.h>
+#endif
 
 class D3DWindow;
 

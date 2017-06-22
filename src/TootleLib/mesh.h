@@ -121,7 +121,7 @@ Mesh::ComputeAE(const VTArray& vt)
                     {
                         if (t(af)[k] == vn)
                         {
-                            ae (f).push_back (af);
+                            ae(f).push_back(af);
                         }
                     }
                 }
