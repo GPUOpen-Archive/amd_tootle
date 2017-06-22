@@ -27,6 +27,7 @@ lib/*
 
 # Visual Studo 2015 cache/options directory
 .vs/
+*.VC.db
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

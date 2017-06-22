@@ -35,7 +35,10 @@ The amd-tootle package has the following directory structure.
   * `git clone https://github.com/GPUOpen-Tools/amd-tootle.git`
 3. Build the AMD Tootle library and command line tool
   * On Windows
-    * Open *Build/VS2015/Tootle.sln* if working with Microsoft Visual Studio 2015. If you want to build without DirectX SDK June 2010, then just open *Build/VS2015 - Win 8.1/Tootle.sln*
+    * Open *Build/VS2015/Tootle.sln* if working with Microsoft Visual Studio 2015. 
+	  * If you want to build without DirectX SDK June 2010, then
+	    * Run `python Scripts\FetchDependencies.py`
+	    * Open *Build/VS2015 - DX11_1/Tootle.sln* instead
 	  * Select the appropriate build target for AMD Tootle within Microsoft Visual Studio
 	  * Build all the projects
 	  * The output files will be generated in the *bin* and *lib* folder

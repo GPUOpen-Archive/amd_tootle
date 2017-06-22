@@ -1,22 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug_DLL|Win32">
-      <Configuration>Debug_DLL</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_DLL|Win32">
-      <Configuration>Release_DLL</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_Static_MT|Win32">
-      <Configuration>Debug_Static_MT</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_Static_MT|Win32">
-      <Configuration>Release_Static_MT</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug_Static_MTDLL|Win32">
       <Configuration>Debug_Static_MTDLL</Configuration>
       <Platform>Win32</Platform>
@@ -24,22 +8,6 @@
     <ProjectConfiguration Include="Release_Static_MTDLL|Win32">
       <Configuration>Release_Static_MTDLL</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_DLL|x64">
-      <Configuration>Debug_DLL</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_DLL|x64">
-      <Configuration>Release_DLL</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_Static_MT|x64">
-      <Configuration>Debug_Static_MT</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_Static_MT|x64">
-      <Configuration>Release_Static_MT</Configuration>
-      <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug_Static_MTDLL|x64">
       <Configuration>Debug_Static_MTDLL</Configuration>
@@ -55,32 +23,11 @@
     <ProjectGuid>{F211DAFB-4BD4-4E13-B4FD-9D431D84F4C8}</ProjectGuid>
     <RootNamespace>TootleLib</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Debug_DLL'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <OutDir>..\..\bin\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release_DLL'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <OutDir>..\..\bin\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Debug_Static_MT'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <OutDir>..\..\lib\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release_Static_MT'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <OutDir>..\..\lib\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug_Static_MTDLL'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -95,123 +42,42 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\DirectXMesh.props" />
   </ImportGroup>
   <PropertyGroup>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_DLL|Win32'">TootleDLL_2015_d</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_DLL|Win32'">TootleDLL_2015</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MT|Win32'">TootleStatic_2015_MT_d</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_Static_MT|Win32'">TootleStatic_2015_MT</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MTDLL|Win32'">TootleStatic_2015_MTDLL_d</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_Static_MTDLL|Win32'">TootleStatic_2015_MTDLL</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_DLL|x64'">TootleDLL_2015_DX11_1_d64</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_DLL|x64'">TootleDLL_2015_DX11_1_64</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MT|x64'">TootleStatic_2015_DX11_1_MT_d64</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_Static_MT|x64'">TootleStatic_2015_DX11_1_MT_64</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MTDLL|Win32'">TootleStatic_2015_DX11_1_MTDLL_d</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_Static_MTDLL|Win32'">TootleStatic_2015_DX11_1_MTDLL</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MTDLL|x64'">TootleStatic_2015_DX11_1_MTDLL_d64</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_Static_MTDLL|x64'">TootleStatic_2015_DX11_1_MTDLL_64</TargetName>
     <IntDir>obj\$(ProjectName)\$(Configuration)-$(Platform)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)'=='Debug_DLL'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)'=='Release_DLL'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\src\TootleLib;..\..\src\TootleLib\RayTracer\JRT;..\..\src\TootleLib\RayTracer\Math;..\..\src\TootleLib\RayTracer;..\..\src\TootleLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
+    <Lib>
+      <AdditionalDependencies>d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DLL|Win32'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DLL|Win32'">
-    <ClCompile>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MT|Win32'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static_MT|Win32'">
-    <ClCompile>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MTDLL|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static_MTDLL|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DLL|x64'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <SDLCheck>
-      </SDLCheck>
       <CompileAs>CompileAsCpp</CompileAs>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d9.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_DLL|x64'">
-    <ClCompile>
-      <PreprocessorDefinitions>NDEBUG;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <ImportLibrary>..\..\lib\$(TargetName).lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>d3d9.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MT|x64'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_LIB;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static_MT|x64'">
-    <ClCompile>
-      <PreprocessorDefinitions>NDEBUG;_LIB;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Static_MTDLL|x64'">
@@ -219,18 +85,21 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static_MTDLL|x64'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;_LIB;_DX11_1_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\TootleLib\clustering.cpp" />
     <ClCompile Include="..\..\src\TootleLib\d3doverdrawwindow.cpp" />
     <ClCompile Include="..\..\src\TootleLib\d3dwm.cpp" />
+    <ClCompile Include="..\..\src\TootleLib\error.c" />
     <ClCompile Include="..\..\src\TootleLib\feedback.cpp" />
     <ClCompile Include="..\..\src\TootleLib\fit.cpp" />
     <ClCompile Include="..\..\src\TootleLib\gdiwm.cpp" />

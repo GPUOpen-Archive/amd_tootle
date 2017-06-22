@@ -6,8 +6,10 @@
 #ifndef ERROR_H
 #define ERROR_H
 
+#ifndef _DX11_1_
 #ifdef __cplusplus
     extern "C"
+#endif
 #endif
 
 void error_output(const char* fmt, ...);

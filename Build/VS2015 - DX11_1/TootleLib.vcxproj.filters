@@ -26,6 +26,9 @@
     <ClCompile Include="..\..\src\TootleLib\d3dwm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\TootleLib\error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\TootleLib\feedback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,6 +36,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TootleLib\gdiwm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TootleLib\heap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TootleLib\overdraw.cpp">
@@ -98,9 +104,6 @@
     <ClCompile Include="..\..\src\TootleLib\RayTracer\TootleRaytracer.cpp">
       <Filter>RayTracer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TootleLib\heap.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\TootleLib\bbox.h">
@@ -122,6 +125,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TootleLib\d3dwm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TootleLib\error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TootleLib\feedback.h">
@@ -246,9 +252,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\TootleLib\include\tootlelib.h">
       <Filter>Public Header</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\TootleLib\error.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
