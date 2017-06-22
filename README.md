@@ -17,7 +17,7 @@ The amd-tootle package has the following directory structure.
   - *VS2012*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2012
   - *VS2013*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2013
   - *VS2015*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2015
-  - *VS2015 - Win 8.1*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2015 without DirectX SDK June 2010 dependency
+  - *VS2015 - DX 11.1*: contains the AMD Tootle solution and project files for Microsoft Visual Studio 2015 without DirectX SDK June 2010 dependency (requires DirectXMesh project)
   - *DirectX.props*: the Visual Studio property file that points to the location of Microsoft DirectX SDK in the system
     * Update this file to point to the location of the Microsoft DirectX SDK in your system (the current support is for Microsoft DirectX SDK June 2010)
 - *docs*: contains tootle papers and presentations
