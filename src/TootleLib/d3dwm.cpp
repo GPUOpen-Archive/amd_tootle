@@ -52,7 +52,7 @@ HWND D3DWMCreateWindow(const char* name, D3DWindow* window)
 
 #ifdef CREATE_WINDOW
     HWND hWnd = CreateWindowEx(0,
-                               "static",
+                               TEXT("static"),
                                NULL, 0x0,
                                CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, NULL, NULL, GetModuleHandle(NULL), NULL);
 #else

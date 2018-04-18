@@ -44,18 +44,18 @@ int GDIWMOpen(void)
     GDIWMClass.hCursor = LoadCursor(NULL, IDC_ARROW);
     GDIWMClass.hbrBackground = NULL;
     GDIWMClass.lpszMenuName = NULL;
-    GDIWMClass.lpszClassName = "GDIWMClass";
+    GDIWMClass.lpszClassName = TEXT("GDIWMClass");
     GDIWMClass.hIconSm = NULL;
     RegisterClassEx(&GDIWMClass);
     return 1;
 }
 
-HWND GDIWMCreateWindow(const char* name, GDIWindow* window)
+HWND GDIWMCreateWindow(const TCHAR* name, GDIWindow* window)
 {
     RECT r = {0, 0, width, height};
     AdjustWindowRect(&r, WS_OVERLAPPEDWINDOW, false);
     // Create the application's window
-    HWND hWnd = CreateWindow("GDIWMClass", name,
+    HWND hWnd = CreateWindow(TEXT("GDIWMClass"), name,
                              WS_OVERLAPPEDWINDOW,
                              CW_USEDEFAULT, CW_USEDEFAULT,
                              r.right - r.left, r.bottom - r.top,
@@ -99,7 +99,7 @@ int GDIWMDestroyWindow(GDIWindow* window)
 
 int GDIWMClose(void)
 {
-    UnregisterClass("GDIWMClass", GDIWMClass.hInstance);
+    UnregisterClass(TEXT("GDIWMClass"), GDIWMClass.hInstance);
     return 0;
 }
 

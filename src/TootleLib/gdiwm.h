@@ -29,7 +29,7 @@ int GDIWMClose(void);
 * Creates and shows new window with title "pszName" and whose controlling
 * object instance is given by the pointer "window".
 \* -------------------------------------------------------------------------*/
-HWND GDIWMCreateWindow(const char* pszName, GDIWindow* window);
+HWND GDIWMCreateWindow(const TCHAR* pszName, GDIWindow* window);
 
 /* -------------------------------------------------------------------------*\
 * Destroy window controled by the object instance pointer "window".
