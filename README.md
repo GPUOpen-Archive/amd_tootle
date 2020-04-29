@@ -1,3 +1,7 @@
+# Tootle retirement
+
+amd-tootle is no longer being actively developed or supported by AMD and is being archived.
+
 # amd-tootle [![Build status](https://ci.appveyor.com/api/projects/status/t9kao41or7eqp1dg?svg=true)](https://ci.appveyor.com/project/bpurnomo/amd-tootle) [![Build Status](https://travis-ci.org/GPUOpen-Tools/amd-tootle.svg?branch=master)](https://travis-ci.org/GPUOpen-Tools/amd-tootle) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 The amd-tootle repository includes the source code of the AMD Tootle library and an application command line tool.  
 
